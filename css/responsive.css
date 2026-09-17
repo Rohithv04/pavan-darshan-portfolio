@@ -1,0 +1,217 @@
+/* ==========================================================================
+   RESPONSIVE STYLESHEET
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Tablet & Medium Desktops (<= 1024px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .section {
+    padding-top: var(--space-4xl);
+    padding-bottom: var(--space-4xl);
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    text-align: left;
+  }
+
+  .hero-visual {
+    order: 2;
+    margin-top: var(--space-lg);
+  }
+
+  .hero-frame-container {
+    max-width: 380px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .research-grid,
+  .extra-research-drawer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .involvement-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .focus-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile & Small Tablets (<= 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 68px;
+  }
+
+  .section {
+    padding-top: var(--space-3xl);
+    padding-bottom: var(--space-3xl);
+  }
+
+  .container {
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+
+  /* Navigation */
+  .nav-menu,
+  .nav-cta {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: flex;
+  }
+
+  .mobile-menu-overlay {
+    display: flex;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding-top: calc(var(--header-height) + var(--space-lg));
+    min-height: auto;
+  }
+
+  .hero-title {
+    font-size: clamp(1.85rem, 6.5vw, 2.75rem);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-frame-container {
+    max-width: 320px;
+  }
+
+  .badge-top-left {
+    left: -10px;
+    top: 12px;
+  }
+
+  .badge-bottom-right {
+    right: -10px;
+    bottom: 16px;
+  }
+
+  /* Metrics Grid: 2 columns on mobile */
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Projects Grid: 1 column */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Research Grid: 1 column */
+  .research-grid,
+  .extra-research-drawer {
+    grid-template-columns: 1fr;
+  }
+
+  /* Experience Timeline */
+  .timeline-line {
+    left: 12px;
+  }
+
+  .timeline-marker {
+    left: 5px;
+  }
+
+  .timeline-item {
+    padding-left: 36px;
+  }
+
+  .exp-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .exp-dates {
+    align-self: flex-start;
+  }
+
+  /* Education */
+  .education-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .edu-meta {
+    align-items: flex-start;
+  }
+
+  .involvement-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Snapshot Grid */
+  .snapshot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  .footer-top {
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Small Mobile Devices (<= 420px & 390px iPhone)
+   -------------------------------------------------------------------------- */
+@media (max-width: 420px) {
+  .hero-title {
+    font-size: clamp(1.6rem, 6.6vw, 1.95rem);
+  }
+
+  .metric-number {
+    font-size: 1.85rem;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-frame-container {
+    max-width: 280px;
+  }
+
+  .hero-floating-badge {
+    padding: 8px 12px;
+  }
+
+  .floating-badge-number {
+    font-size: 1.25rem;
+  }
+}
