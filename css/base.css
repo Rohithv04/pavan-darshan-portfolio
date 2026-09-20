@@ -184,17 +184,9 @@ p {
   margin: var(--space-2xl) 0;
 }
 
-/* Scroll reveal utility classes */
+/* Scroll reveal utility classes - Managed by GSAP */
 .reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 700ms var(--easing-smooth), transform 700ms var(--easing-smooth);
   will-change: opacity, transform;
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Reduced Motion Override */

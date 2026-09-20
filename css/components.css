@@ -390,12 +390,36 @@
   padding-bottom: 16px;
 }
 
+/* Page Scroll Progress Indicator */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: linear-gradient(90deg, var(--accent-orange), #FF7A22);
+  transform-origin: left center;
+  transform: scaleX(0);
+  z-index: 9999;
+  pointer-events: none;
+}
+
 .hero-title {
   font-size: clamp(1.85rem, 2.5vw + 0.3rem, 2.75rem); /* Crisp reduced size */
   line-height: 1.1;
   letter-spacing: -0.025em;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.hero-title-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-title-line {
+  display: block;
+  will-change: transform, opacity;
 }
 
 .hero-title .nowrap-line {

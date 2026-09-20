@@ -68,6 +68,8 @@
   </script>
 </head>
 <body>
+  <!-- Page Scroll Progress Indicator (GSAP ScrollTrigger) -->
+  <div id="scrollProgress" class="scroll-progress-bar" aria-hidden="true"></div>
 
   <!-- =========================================================================
        1. STICKY NAVIGATION
@@ -134,8 +136,8 @@
           <div class="section-eyebrow">HELLO, I'M</div>
           
           <h1 class="hero-title">
-            <span class="nowrap-line"><span class="hero-highlight">PAVAN</span> DARSHAN</span>
-            <span class="nowrap-line">DODDALA</span>
+            <span class="hero-title-mask"><span class="hero-title-line nowrap-line"><span class="hero-highlight">PAVAN</span> DARSHAN</span></span>
+            <span class="hero-title-mask"><span class="hero-title-line nowrap-line">DODDALA</span></span>
           </h1>
 
           <div class="hero-role">FINANCE &amp; PROJECT LEADERSHIP PROFESSIONAL</div>
@@ -1218,8 +1220,18 @@
   </footer>
 
   <!-- Core JavaScript Scripts -->
-  <script src="js/counters.js"></script>
   <script src="js/interactions.js"></script>
   <script src="js/main.js"></script>
+
+  <!-- GSAP Animation System -->
+  <script type="importmap">
+  {
+    "imports": {
+      "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+      "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js"
+    }
+  }
+  </script>
+  <script type="module" src="js/animations.js"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@ Then visit `http://localhost:8000`.
 │   ├── components.css    # Cards, timeline, hero frame, forms
 │   └── responsive.css    # Mobile and tablet breakpoints
 ├── js/
-│   ├── counters.js       # Viewport count-up & hover counter animations
+│   ├── animations.js     # GSAP & ScrollTrigger executive animation system
 │   ├── interactions.js   # Research expander & contact form handling
 │   └── main.js           # Scrollspy, sticky navigation & mobile menu
 └── assets/
