@@ -121,7 +121,8 @@ function initAnimations() {
         y: 18,
         opacity: 0,
         duration: 0.5,
-        stagger: 0.08
+        stagger: 0.08,
+        clearProps: "opacity,transform"
       }, "-=0.35");
 
       // Hero Socials
@@ -129,7 +130,8 @@ function initAnimations() {
         y: 12,
         opacity: 0,
         duration: 0.4,
-        stagger: 0.06
+        stagger: 0.06,
+        clearProps: "opacity,transform"
       }, "-=0.25");
 
       // 8. Hero portrait image (opacity 0 -> 1, scale 1.04 -> 1)
@@ -242,13 +244,15 @@ function initAnimations() {
         y: 14,
         opacity: 0,
         duration: 0.45,
-        stagger: 0.06
+        stagger: 0.06,
+        clearProps: "opacity,transform"
       }, "-=0.3")
       .from(".hero-socials .icon-btn", {
         y: 10,
         opacity: 0,
         duration: 0.35,
-        stagger: 0.05
+        stagger: 0.05,
+        clearProps: "opacity,transform"
       }, "-=0.2")
       .from(".hero-portrait-image", {
         opacity: 0,
@@ -341,7 +345,8 @@ function initAnimations() {
       opacity: 0,
       duration: 0.6,
       stagger: 0.07,
-      ease: "power2.out"
+      ease: "power2.out",
+      clearProps: "opacity,transform"
     }, "-=0.25");
 
     // ------------------------------------------------------------------------
@@ -542,13 +547,7 @@ function initAnimations() {
     // ------------------------------------------------------------------------
     // 6. SELECTED PROJECTS
     // ------------------------------------------------------------------------
-    // Section Header
-    gsap.from("#projects .section-header > *", {
-      y: 28,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.09,
-      ease: "power3.out",
+    const projectsTL = gsap.timeline({
       scrollTrigger: {
         trigger: "#projects",
         start: "top 82%",
@@ -556,49 +555,26 @@ function initAnimations() {
       }
     });
 
-    // Project Cards Reveal
-    const projectCards = document.querySelectorAll(".projects-grid .project-card");
-    projectCards.forEach((card, index) => {
-      const cardTL = gsap.timeline({
-        scrollTrigger: {
-          trigger: card,
-          start: "top 83%",
-          once: true
-        }
-      });
-
-      cardTL.from(card, {
-        y: 35,
-        scale: 0.985,
-        opacity: 0,
-        duration: 0.75,
-        ease: "power3.out"
-      })
-      .from(card.querySelectorAll(".project-title, .project-description, .project-metrics-callout"), {
-        y: 12,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: "power2.out"
-      }, "-=0.4")
-      .from(card.querySelectorAll(".tag-pill"), {
-        y: 8,
-        opacity: 0,
-        duration: 0.4,
-        stagger: 0.04,
-        ease: "power2.out"
-      }, "-=0.3");
-    });
-
-    // ------------------------------------------------------------------------
-    // 7. APPLIED RESEARCH SECTION
-    // ------------------------------------------------------------------------
-    gsap.from("#research .section-header > *", {
+    projectsTL.from("#projects .section-header > *", {
       y: 28,
       opacity: 0,
       duration: 0.7,
       stagger: 0.09,
+      ease: "power3.out"
+    })
+    .from(".projects-grid .project-card", {
+      y: 35,
+      opacity: 0,
+      duration: 0.75,
+      stagger: 0.1,
       ease: "power3.out",
+      clearProps: "opacity,transform"
+    }, "-=0.35");
+
+    // ------------------------------------------------------------------------
+    // 7. APPLIED RESEARCH SECTION
+    // ------------------------------------------------------------------------
+    const researchTL = gsap.timeline({
       scrollTrigger: {
         trigger: "#research",
         start: "top 82%",
@@ -606,70 +582,33 @@ function initAnimations() {
       }
     });
 
-    // Research Cards Batch Reveal
-    const researchCards = document.querySelectorAll(".research-grid .research-card");
-    researchCards.forEach((card) => {
-      const resTL = gsap.timeline({
-        scrollTrigger: {
-          trigger: card,
-          start: "top 84%",
-          once: true
-        }
-      });
-
-      resTL.from(card, {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: "power3.out"
-      })
-      // 01, 02, 03 enters ~80ms before title
-      .from(card.querySelector(".research-num"), {
-        y: 14,
-        opacity: 0,
-        duration: 0.45,
-        ease: "power2.out"
-      }, "-=0.45")
-      .from(card.querySelector(".research-card-title"), {
-        y: 12,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out"
-      }, "-=0.37")
-      .from(card.querySelectorAll(".research-card-desc, .research-microstat, .tag-pill"), {
-        y: 10,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.06,
-        ease: "power2.out"
-      }, "-=0.3");
-    });
-
-    // Research Status Banner
-    const researchBanner = document.querySelector(".research-status-banner");
-    if (researchBanner) {
-      gsap.from(researchBanner, {
-        y: 22,
-        opacity: 0,
-        duration: 0.65,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: researchBanner,
-          start: "top 88%",
-          once: true
-        }
-      });
-    }
-
-    // ------------------------------------------------------------------------
-    // 8. EDUCATION & CREDENTIALS
-    // ------------------------------------------------------------------------
-    gsap.from("#education .section-header > *", {
+    researchTL.from("#research .section-header > *", {
       y: 28,
       opacity: 0,
       duration: 0.7,
       stagger: 0.09,
+      ease: "power3.out"
+    })
+    .from(".research-grid .research-card", {
+      y: 30,
+      opacity: 0,
+      duration: 0.7,
+      stagger: 0.08,
       ease: "power3.out",
+      clearProps: "opacity,transform"
+    }, "-=0.35")
+    .from(".research-status-banner", {
+      y: 20,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power3.out",
+      clearProps: "opacity,transform"
+    }, "-=0.2");
+
+    // ------------------------------------------------------------------------
+    // 8. EDUCATION & CREDENTIALS
+    // ------------------------------------------------------------------------
+    const eduTL = gsap.timeline({
       scrollTrigger: {
         trigger: "#education",
         start: "top 82%",
@@ -677,56 +616,37 @@ function initAnimations() {
       }
     });
 
-    // Education Cards (SCU, Stevens, SRM) sequentially
-    const eduCards = document.querySelectorAll(".education-card");
-    if (eduCards.length) {
-      gsap.from(eduCards, {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".education-list",
-          start: "top 82%",
-          once: true
-        }
-      });
-    }
-
-    // Professional Certifications Stagger
-    const certSection = document.querySelector(".certifications-wrap");
-    if (certSection) {
-      gsap.from(".cert-card", {
-        y: 15,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.05,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: certSection,
-          start: "top 85%",
-          once: true
-        }
-      });
-    }
-
-    // Leadership Involvement Cards Stagger
-    const invGrid = document.querySelector(".involvement-grid");
-    if (invGrid) {
-      gsap.from(".involvement-card", {
-        y: 20,
-        opacity: 0,
-        duration: 0.55,
-        stagger: 0.08,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: invGrid,
-          start: "top 85%",
-          once: true
-        }
-      });
-    }
+    eduTL.from("#education .section-header > *", {
+      y: 28,
+      opacity: 0,
+      duration: 0.7,
+      stagger: 0.09,
+      ease: "power3.out"
+    })
+    .from(".education-list .education-card", {
+      y: 30,
+      opacity: 0,
+      duration: 0.7,
+      stagger: 0.12,
+      ease: "power3.out",
+      clearProps: "opacity,transform"
+    }, "-=0.35")
+    .from(".certifications-wrap .cert-card", {
+      y: 15,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: "power2.out",
+      clearProps: "opacity,transform"
+    }, "-=0.2")
+    .from(".involvement-grid .involvement-card", {
+      y: 20,
+      opacity: 0,
+      duration: 0.55,
+      stagger: 0.08,
+      ease: "power2.out",
+      clearProps: "opacity,transform"
+    }, "-=0.25");
 
     // ------------------------------------------------------------------------
     // 9. CAREER FOCUS & CAPABILITIES
@@ -760,7 +680,8 @@ function initAnimations() {
       opacity: 0,
       duration: 0.5,
       stagger: 0.1,
-      ease: "power2.out"
+      ease: "power2.out",
+      clearProps: "opacity,transform"
     }, "-=0.3");
 
     // Subtle chips micro-stagger inside skill categories
@@ -774,6 +695,7 @@ function initAnimations() {
           duration: 0.45,
           stagger: 0.03,
           ease: "power2.out",
+          clearProps: "opacity,transform",
           scrollTrigger: {
             trigger: cat,
             start: "top 85%",
@@ -784,6 +706,13 @@ function initAnimations() {
     });
 
   }); // end gsap.context
+
+  // --------------------------------------------------------------------------
+  // Recalculate ScrollTrigger on window load (after images & fonts load)
+  // --------------------------------------------------------------------------
+  window.addEventListener("load", () => {
+    ScrollTrigger.refresh();
+  });
 
   // --------------------------------------------------------------------------
   // Clean up on page unload
