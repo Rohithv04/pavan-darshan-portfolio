@@ -2,11 +2,11 @@
 
 A responsive, single-page personal portfolio website for **Pavan Darshan Doddala** (Finance & Project Leadership Professional; Full-Time MBA Candidate at Santa Clara University’s Leavey School of Business).
 
-Built with a dark finance aesthetic inspired by investment banking pitch-books, featuring deep charcoal tones (`#080808` / `#101010`), vivid finance orange accents (`#FF5A00`), crisp modern typography (`Plus Jakarta Sans` & `Inter`), custom vector financial diagrams, and responsive micro-interactions.
+Built with a premium black and champagne gold theme inspired by investment banking and elite management consulting, featuring deep obsidian and charcoal tones (`#0A0A0A` / `#111111`), refined champagne gold accents (`#C6A15B` / `#D8BC7A`), crisp typography (`Plus Jakarta Sans` & `Inter`), custom vector financial diagrams, and responsive micro-interactions.
 
 ## 🌟 Key Features
 
-- **Executive Aesthetic**: Dark theme with tailored orange accents, clean typography, and subtle card elevation.
+- **Executive Aesthetic**: Premium black + champagne gold theme with restrained accents, warm white typography, and subtle surface elevation.
 - **Dynamic Impact Section**: 6 quantifiable achievement metrics with viewport count-up animations and interactive hover card expansion.
 - **Experience Timeline**: Career progression with promotional badges and structured bullet points across banking and enterprise systems.
 - **Selected Projects**: Custom inline SVG illustrations for POS-to-GL ledger workflows, automated payroll calculation engines, credit risk curves, and SME alternative-data underwriting architecture.

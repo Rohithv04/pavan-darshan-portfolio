@@ -33,16 +33,16 @@ body::before {
   position: fixed;
   inset: 0;
   background-image: 
-    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 90, 0, 0.05), transparent 70%);
+    radial-gradient(rgba(245, 241, 232, 0.03) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(198, 161, 91, 0.035), transparent 70%);
   background-size: 32px 32px, 100% 100%;
   pointer-events: none;
   z-index: var(--z-negative);
 }
 
 ::selection {
-  background-color: var(--accent-orange);
-  color: #FFFFFF;
+  background-color: var(--accent-gold);
+  color: var(--text-inverse);
 }
 
 a {
@@ -55,7 +55,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--accent-orange);
+  outline: 2px solid var(--accent-gold);
   outline-offset: 3px;
 }
 
@@ -125,7 +125,7 @@ p {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   font-weight: 700;
-  color: var(--accent-orange);
+  color: var(--accent-gold);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin-bottom: var(--space-sm);
@@ -136,7 +136,7 @@ p {
   display: inline-block;
   width: 14px;
   height: 2px;
-  background-color: var(--accent-orange);
+  background-color: var(--accent-gold);
 }
 
 .section-title {
