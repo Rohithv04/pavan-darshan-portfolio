@@ -3,26 +3,93 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Research Drawer Expand / Collapse
-  const researchToggleBtn = document.getElementById('toggleResearchBtn');
-  const extraResearchDrawer = document.getElementById('extraResearchDrawer');
-  const toggleIcon = document.getElementById('researchToggleIcon');
-  const toggleText = document.getElementById('researchToggleText');
+  // 1. PDF Research Preview Modal Controller
+  const pdfModal = document.getElementById('pdfModal');
+  const pdfModalBackdrop = document.getElementById('pdfModalBackdrop');
+  const pdfModalClose = document.getElementById('pdfModalClose');
+  const pdfModalTitle = document.getElementById('pdfModalTitle');
+  const pdfModalDownload = document.getElementById('pdfModalDownload');
+  const pdfModalOpenTab = document.getElementById('pdfModalOpenTab');
+  const pdfFrame = document.getElementById('pdfFrame');
+  const pdfLoader = document.getElementById('pdfLoader');
+  let lastActiveElement = null;
 
-  if (researchToggleBtn && extraResearchDrawer) {
-    researchToggleBtn.addEventListener('click', () => {
-      const isExpanded = extraResearchDrawer.classList.toggle('is-expanded');
-      researchToggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+  function openPdfModal(pdfUrl, title) {
+    if (!pdfModal || !pdfFrame) return;
 
-      if (isExpanded) {
-        toggleText.textContent = 'Show Fewer Research Areas';
-        if (toggleIcon) toggleIcon.style.transform = 'rotate(180deg)';
-      } else {
-        toggleText.textContent = 'View All Research Areas';
-        if (toggleIcon) toggleIcon.style.transform = 'rotate(0deg)';
-      }
-    });
+    lastActiveElement = document.activeElement;
+
+    if (pdfModalTitle) pdfModalTitle.textContent = title;
+    if (pdfModalDownload) {
+      pdfModalDownload.href = pdfUrl;
+      const filename = pdfUrl.split('/').pop();
+      pdfModalDownload.setAttribute('download', filename);
+    }
+    if (pdfModalOpenTab) {
+      pdfModalOpenTab.href = pdfUrl;
+    }
+
+    if (pdfLoader) pdfLoader.classList.remove('is-hidden');
+
+    // Load PDF in iframe
+    pdfFrame.onload = () => {
+      if (pdfLoader) pdfLoader.classList.add('is-hidden');
+    };
+    pdfFrame.src = pdfUrl;
+
+    // Open modal
+    pdfModal.classList.add('is-active');
+    pdfModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    // Focus close button for accessibility
+    setTimeout(() => {
+      if (pdfModalClose) pdfModalClose.focus();
+    }, 100);
   }
+
+  function closePdfModal() {
+    if (!pdfModal) return;
+
+    pdfModal.classList.remove('is-active');
+    pdfModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+
+    // Clear iframe src to release browser memory and cancel rendering
+    if (pdfFrame) pdfFrame.src = '';
+    if (pdfLoader) pdfLoader.classList.remove('is-hidden');
+
+    if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+      lastActiveElement.focus();
+    }
+  }
+
+  // Delegated click handler for preview buttons
+  document.addEventListener('click', (e) => {
+    const previewBtn = e.target.closest('.btn-preview');
+    if (previewBtn) {
+      e.preventDefault();
+      const pdfSrc = previewBtn.getAttribute('data-pdf');
+      const pdfTitle = previewBtn.getAttribute('data-title') || 'Research Paper Preview';
+      if (pdfSrc) {
+        openPdfModal(pdfSrc, pdfTitle);
+      }
+    }
+  });
+
+  if (pdfModalClose) {
+    pdfModalClose.addEventListener('click', closePdfModal);
+  }
+
+  if (pdfModalBackdrop) {
+    pdfModalBackdrop.addEventListener('click', closePdfModal);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && pdfModal && pdfModal.classList.contains('is-active')) {
+      closePdfModal();
+    }
+  });
 
   // 2. Contact Form Validation & Mailto Action
   const contactForm = document.getElementById('portfolioContactForm');
