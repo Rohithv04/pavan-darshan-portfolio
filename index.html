@@ -145,9 +145,7 @@
           </div>
 
           <p class="hero-bio">
-            I am a finance and project leadership professional with 5+ years of experience across banking, financial analysis, enterprise systems, and technology-enabled transformation.
-            <br><br>
-            Currently pursuing a Full-Time MBA at Santa Clara University’s Leavey School of Business, with a primary focus on Investment Banking Analyst and MBA Associate opportunities.
+            Finance &amp; project leadership professional with 5+ years driving banking, enterprise systems, and strategic transformation. Currently pursuing a Full-Time MBA at Santa Clara University (Leavey School of Business), targeting Investment Banking Analyst &amp; MBA Associate roles.
           </p>
 
           <!-- Action Buttons -->
@@ -190,58 +188,26 @@
           </div>
         </div>
 
-        <!-- Right Column: Visual Portrait & Geometry Area -->
+        <!-- Right Column: Visual Portrait with Circular Light Spots & Grounded Base -->
         <div class="hero-visual reveal">
-          <div class="hero-frame-container">
-            <!-- Diagonal Accent Block behind frame -->
-            <div class="hero-backdrop-shape"></div>
-
-            <!-- Portrait Card -->
-            <div class="hero-portrait-card">
-              <div class="hero-graphic-art">
-                <!-- Abstract Executive Finance Silhouette & Geometric Architecture -->
-                <svg class="hero-silhouette-art" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="execGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stop-color="#242424" />
-                      <stop offset="100%" stop-color="#121212" />
-                    </linearGradient>
-                    <linearGradient id="orangeLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stop-color="#FF5A00" stop-opacity="0.8" />
-                      <stop offset="100%" stop-color="#FF5A00" stop-opacity="0.1" />
-                    </linearGradient>
-                  </defs>
-
-                  <!-- Coordinate data grid background -->
-                  <g opacity="0.15">
-                    <line x1="40" y1="50" x2="360" y2="50" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                    <line x1="40" y1="130" x2="360" y2="130" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                    <line x1="40" y1="210" x2="360" y2="210" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                    <line x1="40" y1="290" x2="360" y2="290" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                    <line x1="40" y1="370" x2="360" y2="370" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                    <line x1="120" y1="40" x2="120" y2="440" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                    <line x1="200" y1="40" x2="200" y2="440" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                    <line x1="280" y1="40" x2="280" y2="440" stroke="#FFFFFF" stroke-dasharray="4 4" />
-                  </g>
-
-                  <!-- Subtle circular orbital arc -->
-                  <circle cx="200" cy="230" r="140" stroke="rgba(255, 90, 0, 0.25)" stroke-width="1.5" stroke-dasharray="8 6" />
-                  <circle cx="200" cy="230" r="105" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" />
-
-                  <!-- Executive Silhouette Body & Shoulders -->
-                  <path d="M120 480 C120 380 145 350 170 335 C155 315 150 280 150 240 C150 185 172 150 200 150 C228 150 250 185 250 240 C250 280 245 315 230 335 C255 350 280 380 280 480 Z" fill="url(#execGrad)" stroke="rgba(255, 255, 255, 0.12)" stroke-width="2" />
-                  
-                  <!-- Lapel / Tie geometry -->
-                  <path d="M185 340 L200 375 L215 340" stroke="rgba(255, 90, 0, 0.5)" stroke-width="2" fill="none" />
-                  <path d="M200 375 L195 440 L205 440 Z" fill="#FF5A00" opacity="0.6" />
-
-                  <!-- Upward financial trendline indicator -->
-                  <path d="M60 380 L150 320 L230 340 L340 180" stroke="url(#orangeLineGrad)" stroke-width="3" stroke-linecap="round" fill="none" />
-                  <circle cx="340" cy="180" r="5" fill="#FF5A00" />
-                  <circle cx="340" cy="180" r="10" stroke="#FF5A00" stroke-width="1.5" opacity="0.5" />
-                </svg>
-              </div>
+          <div class="hero-portrait-wrapper">
+            <!-- Circular Gradient Light Spots behind the portrait -->
+            <div class="hero-light-spots" aria-hidden="true">
+              <div class="light-spot spot-head"></div>
+              <div class="light-spot spot-shoulder"></div>
+              <div class="light-spot spot-ambient"></div>
             </div>
+
+            <!-- Man's Portrait (Base sits directly on the section separator) -->
+            <img 
+              src="assets/pavan-darshan.png" 
+              alt="Pavan Darshan Doddala - Finance & Project Leadership Professional" 
+              class="hero-portrait-image"
+              width="819" 
+              height="1024"
+              loading="eager"
+              fetchpriority="high"
+            />
 
             <!-- Metric Badge 1: Top Left -->
             <div class="hero-floating-badge badge-top-left">
@@ -257,6 +223,9 @@
           </div>
         </div>
       </div>
+
+      <!-- Section Separator at base of hero section -->
+      <div class="hero-section-separator" aria-hidden="true"></div>
     </section>
 
     <!-- =======================================================================
