@@ -157,8 +157,43 @@ function initAnimations() {
         opacity: 0,
         duration: 0.6,
         stagger: 0.12,
-        ease: "power2.out"
+        ease: "power2.out",
+        clearProps: "transform,opacity"
       }, "-=0.45");
+
+      // Minimal cursor-reactive float parallax for hero floating badges (Desktop)
+      const heroEl = document.getElementById("hero");
+      const badge1 = document.querySelector(".badge-top-left");
+      const badge2 = document.querySelector(".badge-bottom-right");
+
+      if (heroEl && badge1 && badge2) {
+        const xTo1 = gsap.quickTo(badge1, "x", { duration: 0.85, ease: "power2.out" });
+        const yTo1 = gsap.quickTo(badge1, "y", { duration: 0.85, ease: "power2.out" });
+        const xTo2 = gsap.quickTo(badge2, "x", { duration: 0.85, ease: "power2.out" });
+        const yTo2 = gsap.quickTo(badge2, "y", { duration: 0.85, ease: "power2.out" });
+
+        const handleHeroMouseMove = (e) => {
+          const rect = heroEl.getBoundingClientRect();
+          const normX = (e.clientX - rect.left) / rect.width - 0.5;
+          const normY = (e.clientY - rect.top) / rect.height - 0.5;
+
+          // Subtle, minimal reaction (14-18px max travel)
+          xTo1(normX * 18);
+          yTo1(normY * 14);
+          xTo2(-normX * 14);
+          yTo2(-normY * 12);
+        };
+
+        const handleHeroMouseLeave = () => {
+          xTo1(0);
+          yTo1(0);
+          xTo2(0);
+          yTo2(0);
+        };
+
+        heroEl.addEventListener("mousemove", handleHeroMouseMove);
+        heroEl.addEventListener("mouseleave", handleHeroMouseLeave);
+      }
 
       // ----------------------------------------------------------------------
       // CONTACT SECTION (Desktop: Opposing subtle horizontal slide-ins)
@@ -204,7 +239,7 @@ function initAnimations() {
     // ========================================================================
     mm.add("(max-width: 768px)", () => {
       // ----------------------------------------------------------------------
-      // HERO SECTION (Mobile: Tighter 15-25px movement distances)
+      // HERO SECTION (Mobile: Portrait & Badges First, then Title & CTAs)
       // ----------------------------------------------------------------------
       const heroTLMobile = gsap.timeline({
         defaults: { ease: "power3.out" },
@@ -217,11 +252,24 @@ function initAnimations() {
         duration: 0.5,
         ease: "power2.out"
       })
+      .from(".hero-portrait-image", {
+        opacity: 0,
+        scale: 1.03,
+        duration: 0.8,
+        ease: "power3.out"
+      }, "-=0.2")
+      .from(".hero-floating-badge", {
+        y: 12,
+        opacity: 0,
+        duration: 0.45,
+        stagger: 0.08,
+        clearProps: "transform,opacity"
+      }, "-=0.35")
       .from("#hero .section-eyebrow", {
         y: 12,
         opacity: 0,
         duration: 0.5
-      }, "-=0.3")
+      }, "-=0.2")
       .from(".hero-title-line", {
         yPercent: 100,
         opacity: 0,
@@ -253,19 +301,7 @@ function initAnimations() {
         duration: 0.35,
         stagger: 0.05,
         clearProps: "opacity,transform"
-      }, "-=0.2")
-      .from(".hero-portrait-image", {
-        opacity: 0,
-        scale: 1.03,
-        duration: 0.9,
-        ease: "power3.out"
-      }, "-=0.15")
-      .from(".hero-floating-badge", {
-        y: 14,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.1
-      }, "-=0.35");
+      }, "-=0.2");
 
       // ----------------------------------------------------------------------
       // CONTACT SECTION (Mobile: Clean sequential vertical fade-up, NO X transforms)
