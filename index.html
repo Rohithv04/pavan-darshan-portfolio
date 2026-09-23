@@ -1504,7 +1504,7 @@
     <!-- =======================================================================
          9B. INSIGHTS PREVIEW SECTION (Dynamic Supabase integration)
          ======================================================================= -->
-    <section id="insights" class="section" style="display: none;">
+    <section id="insights" class="section">
       <div class="container">
         <div class="section-header reveal" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-2xl);">
           <div>
@@ -1517,7 +1517,48 @@
           </a>
         </div>
         <div class="blog-grid" id="homepageInsightsGrid" style="margin-bottom: 0;">
-          <!-- Dynamically populated from Supabase -->
+          <article class="blog-card reveal">
+            <a href="/blog/understanding-capital-allocation-discipline-over-velocity" class="blog-card-img-wrap" aria-label="Understanding Capital Allocation: Discipline Over Velocity">
+              <img src="/assets/capital-allocation-discipline.jpg" alt="Understanding Capital Allocation: Discipline Over Velocity" loading="lazy">
+            </a>
+            <div class="blog-card-body">
+              <div class="blog-card-meta-top">
+                <span class="blog-card-badge">Finance</span>
+              </div>
+              <a href="/blog/understanding-capital-allocation-discipline-over-velocity">
+                <h3 class="blog-card-title" style="font-size: 1.15rem;">Understanding Capital Allocation: Discipline Over Velocity</h3>
+              </a>
+              <p class="blog-card-excerpt" style="font-size: 0.88rem; -webkit-line-clamp: 2;">Why the most critical strategic lever in corporate finance is not the pace of capital deployment, but the hurdle rate discipline and terminal value rigor.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-date">September 23, 2026</span>
+                <a href="/blog/understanding-capital-allocation-discipline-over-velocity" class="blog-card-cta">
+                  <span>Read Article</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </article>
+          <article class="blog-card reveal">
+            <a href="/blog/credit-risk-and-alternative-data-in-sme-underwriting" class="blog-card-img-wrap" aria-label="Credit Risk and Alternative Data in SME Underwriting">
+              <img src="/assets/credit-risk-underwriting.jpg" alt="Credit Risk and Alternative Data in SME Underwriting" loading="lazy">
+            </a>
+            <div class="blog-card-body">
+              <div class="blog-card-meta-top">
+                <span class="blog-card-badge">Banking</span>
+              </div>
+              <a href="/blog/credit-risk-and-alternative-data-in-sme-underwriting">
+                <h3 class="blog-card-title" style="font-size: 1.15rem;">Credit Risk and Alternative Data in SME Underwriting</h3>
+              </a>
+              <p class="blog-card-excerpt" style="font-size: 0.88rem; -webkit-line-clamp: 2;">How real-time ledger access and transactional velocity indices are transforming commercial banking underwriting beyond static balance sheet ratios.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-date">September 20, 2026</span>
+                <a href="/blog/credit-risk-and-alternative-data-in-sme-underwriting" class="blog-card-cta">
+                  <span>Read Article</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -1742,6 +1783,11 @@
   <script type="module">
     import { getSupabase, formatDate } from './js/supabase-client.js';
 
+    const POST_IMAGE_DEFAULTS = {
+      'understanding-capital-allocation-discipline-over-velocity': '/assets/capital-allocation-discipline.jpg',
+      'credit-risk-and-alternative-data-in-sme-underwriting': '/assets/credit-risk-underwriting.jpg'
+    };
+
     async function loadHomepageInsights() {
       try {
         const supabase = await getSupabase();
@@ -1763,8 +1809,9 @@
         grid.innerHTML = posts.map(post => {
           const pubDate = formatDate(post.published_at);
           const postUrl = isCleanRouting ? `/blog/${post.slug}` : `/blog/post.html?slug=${post.slug}`;
-          const imageHtml = post.featured_image_url
-            ? `<img src="${post.featured_image_url}" alt="${post.title}" loading="lazy">`
+          const imgUrl = post.featured_image_url || POST_IMAGE_DEFAULTS[post.slug] || (post.category?.toLowerCase() === 'banking' ? '/assets/credit-risk-underwriting.jpg' : '/assets/capital-allocation-discipline.jpg');
+          const imageHtml = imgUrl
+            ? `<img src="${imgUrl}" alt="${post.title}" loading="lazy">`
             : `<div class="blog-card-img-fallback">
                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                  <span>${post.category || 'FINANCE'}</span>

@@ -236,6 +236,8 @@ Key advantages include:
 
 The modern credit analyst must combine quantitative statistical modeling with qualitative domain knowledge of supply chain logistics.',
     'Banking',
+    '/assets/credit-risk-underwriting.jpg',
+    'Editorial illustration depicting commercial credit risk and alternative data: analyst examining real-time data flows across geometric ledger planes with an optical prism.',
     'published',
     timezone('utc'::text, now() - interval '3 days'),
     'Credit Risk and Alternative Data in SME Underwriting | Pavan Doddala',

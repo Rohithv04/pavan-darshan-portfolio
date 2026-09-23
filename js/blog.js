@@ -76,6 +76,33 @@ export function parseMarkdown(md) {
   return html;
 }
 
+export const DEFAULT_POST_IMAGES = {
+  'understanding-capital-allocation-discipline-over-velocity': {
+    url: '/assets/capital-allocation-discipline.jpg',
+    alt: 'Editorial illustration depicting capital allocation discipline over velocity: measuring plumb-line and phase-gate arches filtering momentum into stable compounding foundations.'
+  },
+  'credit-risk-and-alternative-data-in-sme-underwriting': {
+    url: '/assets/credit-risk-underwriting.jpg',
+    alt: 'Editorial illustration depicting commercial credit risk and alternative data: analyst examining real-time data flows across geometric ledger planes with an optical prism.'
+  }
+};
+
+export function resolvePostImage(post) {
+  if (post.featured_image_url) {
+    return {
+      url: post.featured_image_url,
+      alt: post.featured_image_alt || post.title
+    };
+  }
+  if (DEFAULT_POST_IMAGES[post.slug]) {
+    return DEFAULT_POST_IMAGES[post.slug];
+  }
+  if (post.category && post.category.toLowerCase() === 'banking') {
+    return DEFAULT_POST_IMAGES['credit-risk-and-alternative-data-in-sme-underwriting'];
+  }
+  return DEFAULT_POST_IMAGES['understanding-capital-allocation-discipline-over-velocity'];
+}
+
 /**
  * Initializes the Public Blog Listing Page (/blog)
  */
@@ -204,8 +231,9 @@ export async function initBlogList() {
       const readingTime = calculateReadingTime(post.content || post.excerpt || '');
       const pubDate = formatDate(post.published_at);
       const postUrl = isCleanRouting ? `/blog/${post.slug}` : `/blog/post.html?slug=${post.slug}`;
-      const imageHtml = post.featured_image_url
-        ? `<img src="${post.featured_image_url}" alt="${post.featured_image_alt || post.title}" loading="lazy">`
+      const postImg = resolvePostImage(post);
+      const imageHtml = postImg?.url
+        ? `<img src="${postImg.url}" alt="${postImg.alt || post.title}" loading="lazy">`
         : `<div class="blog-card-img-fallback">
              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
              <span>${post.category || 'FINANCE'}</span>
@@ -308,10 +336,11 @@ export async function initArticlePage() {
     const pubDate = formatDate(post.published_at);
     const parsedBody = parseMarkdown(post.content);
 
-    const imageHtml = post.featured_image_url ? `
+    const postImg = resolvePostImage(post);
+    const imageHtml = postImg?.url ? `
       <div class="article-hero-media">
-        <img src="${post.featured_image_url}" alt="${post.featured_image_alt || post.title}">
-        ${post.featured_image_alt ? `<div class="article-hero-caption">${post.featured_image_alt}</div>` : ''}
+        <img src="${postImg.url}" alt="${postImg.alt || post.title}">
+        ${postImg.alt ? `<div class="article-hero-caption">${postImg.alt}</div>` : ''}
       </div>
     ` : '';
 
