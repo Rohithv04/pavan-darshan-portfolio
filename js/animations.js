@@ -107,6 +107,8 @@ function initAnimations() {
           const posEl = document.getElementById(`pos-${fact.id}`);
           if (posEl && fact.desktop) {
             gsap.set(posEl, {
+              xPercent: -50,
+              yPercent: -50,
               x: fact.desktop.x,
               y: fact.desktop.y,
               z: fact.desktop.z,
@@ -118,8 +120,8 @@ function initAnimations() {
           }
         });
 
-        // Initial state of Pavan, halo, and watermark
-        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: -200, y: 0 });
+        // Initial state of Pavan, halo, and watermark (Pavan strictly in front at z: 40)
+        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: 40, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
         gsap.set("#introWatermark", { opacity: 0, scale: 0.95 });
         gsap.set(introSection, { opacity: 1, pointerEvents: "auto" });
@@ -293,7 +295,7 @@ function initAnimations() {
           .to("#introPortrait", {
             scale: 1.0,
             opacity: 1,
-            z: 0,
+            z: 40,
             duration: 22,
             ease: "power2.out"
           }, 0)
@@ -384,6 +386,8 @@ function initAnimations() {
           const posEl = document.getElementById(`pos-${fact.id}`);
           if (posEl) {
             masterIntroTL.to(posEl, {
+              xPercent: -50,
+              yPercent: -50,
               x: 0,
               y: 0,
               z: -40,
@@ -400,6 +404,8 @@ function initAnimations() {
         // 78% -> 92%: COLLAPSED CARD CLUSTER MOVES DOWNWARD TOGETHER & EXITS
         masterIntroTL
           .to("#pos-focus-ib, #pos-res-silent-auctions, #pos-cost-opt, #pos-lending-growth, #pos-payroll-auto, #pos-analytics-stack, #pos-proj-enterprise, #pos-risk-gov, #pos-exec-leadership", {
+            xPercent: -50,
+            yPercent: -50,
             y: 150,
             scale: 0.2,
             opacity: 0,
@@ -541,6 +547,8 @@ function initAnimations() {
           const posEl = document.getElementById(`pos-${fact.id}`);
           if (posEl && fact.tablet) {
             gsap.set(posEl, {
+              xPercent: -50,
+              yPercent: -50,
               x: fact.tablet.x,
               y: fact.tablet.y,
               z: fact.tablet.z,
@@ -552,7 +560,7 @@ function initAnimations() {
           }
         });
 
-        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: -150, y: 0 });
+        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: 35, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
         gsap.set("#introWatermark", { opacity: 0, scale: 0.95 });
         gsap.set(introSection, { opacity: 1, pointerEvents: "auto" });
@@ -591,9 +599,9 @@ function initAnimations() {
           }
         });
 
-        // 0% -> 22%: Pavan emerges
+        // 0% -> 22%: Pavan emerges (strictly in front at z: 35)
         tabletIntroTL
-          .to("#introPortrait", { scale: 1.0, opacity: 1, z: 0, duration: 22, ease: "power2.out" }, 0)
+          .to("#introPortrait", { scale: 1.0, opacity: 1, z: 35, duration: 22, ease: "power2.out" }, 0)
           .to(".intro-portrait-halo", { scale: 1.0, opacity: 0.7, duration: 22 }, 0)
           .to("#introWatermark", { opacity: 0.4, scale: 1.05, duration: 22 }, 0)
           .to("#introScrollIndicator", { opacity: 0.8, duration: 16 }, 0);
@@ -620,6 +628,8 @@ function initAnimations() {
           const posEl = document.getElementById(`pos-${fact.id}`);
           if (posEl) {
             tabletIntroTL.to(posEl, {
+              xPercent: -50,
+              yPercent: -50,
               x: 0,
               y: 0,
               z: -40,
@@ -636,6 +646,8 @@ function initAnimations() {
         // 78% -> 92%: Collapsed card cluster moves downward together & exits
         tabletIntroTL
           .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-proj-enterprise, #pos-exec-leadership", {
+            xPercent: -50,
+            yPercent: -50,
             y: 140,
             scale: 0.2,
             opacity: 0,
@@ -710,15 +722,26 @@ function initAnimations() {
         gsap.set("#hero .light-spot", { opacity: 0 });
         gsap.set(introSection, { opacity: 1, pointerEvents: "auto" });
 
-        // Mobile perimeter coordinates — zero face overlap (Strict 6 cards)
-        gsap.set("#pos-focus-ib",        { x: "0vw",   y: "-37vh", z: 30, rotation: 0,    opacity: 0, scale: 0.6, transformOrigin: "center center" });
-        gsap.set("#pos-cost-opt",        { x: "-28vw", y: "-22vh", z: 35, rotation: -2,   opacity: 0, scale: 0.6, transformOrigin: "center center" });
-        gsap.set("#pos-payroll-auto",     { x: "28vw",  y: "-22vh", z: 35, rotation: 2,    opacity: 0, scale: 0.6, transformOrigin: "center center" });
-        gsap.set("#pos-lending-growth",   { x: "-28vw", y: "24vh",  z: 30, rotation: 1.5,  opacity: 0, scale: 0.6, transformOrigin: "center center" });
-        gsap.set("#pos-risk-gov",         { x: "28vw",  y: "24vh",  z: 30, rotation: -1.5, opacity: 0, scale: 0.6, transformOrigin: "center center" });
-        gsap.set("#pos-exec-leadership",  { x: "0vw",   y: "37vh",  z: 35, rotation: 0,    opacity: 0, scale: 0.6, transformOrigin: "center center" });
+        // Mobile perimeter coordinates — zero face overlap (Strict 6 cards, surrounding Pavan)
+        INTRO_FACTS.filter(f => f.mobile).forEach(fact => {
+          const posEl = document.getElementById(`pos-${fact.id}`);
+          if (posEl) {
+            gsap.set(posEl, {
+              xPercent: -50,
+              yPercent: -50,
+              x: fact.mobile.x,
+              y: fact.mobile.y,
+              z: 0, // Cards stay behind Pavan in 3D camera depth
+              rotation: fact.mobile.rot,
+              opacity: 0,
+              scale: 0.6,
+              transformOrigin: "center center"
+            });
+          }
+        });
 
-        gsap.set("#introPortrait", { scale: 0.78, opacity: 0, z: -100, y: 0 });
+        // Pavan is strictly on top of everything: z: 30, z-index: 50
+        gsap.set("#introPortrait", { scale: 0.78, opacity: 0, z: 30, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
 
         // Initial mobile navbar entrance
@@ -750,9 +773,9 @@ function initAnimations() {
           }
         });
 
-        // 0% -> 22%: Pavan emerges cleanly
+        // 0% -> 22%: Pavan emerges cleanly (strictly on top of everything at z: 30)
         mobileIntroTL
-          .to("#introPortrait", { scale: 1.0, opacity: 1, z: 0, duration: 22, ease: "power2.out" }, 0)
+          .to("#introPortrait", { scale: 1.0, opacity: 1, z: 30, duration: 22, ease: "power2.out" }, 0)
           .to(".intro-portrait-halo", { scale: 1.0, opacity: 0.7, duration: 22 }, 0)
           .to("#introScrollIndicator", { opacity: 0.8, duration: 16 }, 0);
 
@@ -769,8 +792,11 @@ function initAnimations() {
 
         // 62% -> 78%: Mobile cards pivot & collapse inward toward center
         mobileIntroTL.to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-exec-leadership", {
+          xPercent: -50,
+          yPercent: -50,
           x: 0,
           y: 0,
+          z: -20,
           scale: 0.4,
           opacity: 0.9,
           duration: 16,
@@ -781,6 +807,8 @@ function initAnimations() {
         // 76% -> 90%: Collapsed group moves downward together & exits
         mobileIntroTL
           .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-exec-leadership", {
+            xPercent: -50,
+            yPercent: -50,
             y: 120,
             scale: 0.2,
             opacity: 0,

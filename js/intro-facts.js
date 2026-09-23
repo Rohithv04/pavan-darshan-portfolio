@@ -21,9 +21,9 @@ export const INTRO_FACTS = [
     type: "capability",
     size: "medium",
     pivot: { rot: 4, tiltX: 3 },
-    desktop: { x: "-22vw", y: "-30vh", z: 60, rot: -1.5 },
-    tablet:  { x: "-22vw", y: "-28vh", z: 50, rot: -1.5 },
-    mobile:  { x: "0vw",   y: "-37vh", z: 30, rot: 0 } // Above head on mobile
+    desktop: { x: "-22vw", y: "-30vh", z: 20, rot: -1.5 },
+    tablet:  { x: "-22vw", y: "-28vh", z: 15, rot: -1.5 },
+    mobile:  { x: "0vw",   y: "-33vh", z: 0,  rot: 0 } // Centered directly above head
   },
 
   // --------------------------------------------------------------------------
@@ -34,7 +34,7 @@ export const INTRO_FACTS = [
     type: "research",
     size: "small",
     pivot: { rot: 5, tiltX: 2 },
-    desktop: { x: "-37vw", y: "-16vh", z: 20, rot: -2.5 },
+    desktop: { x: "-36vw", y: "-16vh", z: 10, rot: -2.5 },
     tablet:  null,
     mobile:  null
   },
@@ -47,9 +47,9 @@ export const INTRO_FACTS = [
     type: "metric",
     size: "large",
     pivot: { rot: 4, tiltX: 0 },
-    desktop: { x: "-34vw", y: "3vh", z: 80, rot: -2 },
-    tablet:  { x: "-30vw", y: "0vh", z: 65, rot: -2 },
-    mobile:  { x: "-28vw", y: "-22vh", z: 35, rot: -2 } // Top-left of shoulder
+    desktop: { x: "-33vw", y: "3vh", z: 25, rot: -2 },
+    tablet:  { x: "-30vw", y: "0vh", z: 20, rot: -2 },
+    mobile:  { x: "-31vw", y: "-17vh", z: 0, rot: -2 } // Upper-left flanking head
   },
 
   // --------------------------------------------------------------------------
@@ -60,9 +60,9 @@ export const INTRO_FACTS = [
     type: "metric",
     size: "large",
     pivot: { rot: 3, tiltX: -3 },
-    desktop: { x: "-26vw", y: "26vh", z: 70, rot: 2 },
-    tablet:  { x: "-24vw", y: "24vh", z: 45, rot: 1.5 },
-    mobile:  { x: "-28vw", y: "24vh",  z: 30, rot: 1.5 } // Lower-left waist
+    desktop: { x: "-26vw", y: "26vh", z: 20, rot: 2 },
+    tablet:  { x: "-24vw", y: "24vh", z: 15, rot: 1.5 },
+    mobile:  { x: "-31vw", y: "22vh",  z: 0, rot: 1.5 } // Lower-left flanking waist
   },
 
   // --------------------------------------------------------------------------
@@ -73,9 +73,9 @@ export const INTRO_FACTS = [
     type: "metric",
     size: "large",
     pivot: { rot: -4, tiltX: 3 },
-    desktop: { x: "22vw", y: "-28vh", z: 80, rot: 2 },
-    tablet:  { x: "24vw", y: "-26vh", z: 55, rot: 2 },
-    mobile:  { x: "28vw",  y: "-22vh", z: 35, rot: 2 } // Top-right of shoulder
+    desktop: { x: "22vw", y: "-28vh", z: 25, rot: 2 },
+    tablet:  { x: "24vw", y: "-26vh", z: 20, rot: 2 },
+    mobile:  { x: "31vw",  y: "-17vh", z: 0, rot: 2 } // Upper-right flanking head
   },
 
   // --------------------------------------------------------------------------
@@ -86,7 +86,7 @@ export const INTRO_FACTS = [
     type: "capability",
     size: "small",
     pivot: { rot: -5, tiltX: 2 },
-    desktop: { x: "37vw", y: "-16vh", z: 20, rot: 2.5 },
+    desktop: { x: "36vw", y: "-16vh", z: 10, rot: 2.5 },
     tablet:  null,
     mobile:  null
   },
@@ -99,8 +99,8 @@ export const INTRO_FACTS = [
     type: "project",
     size: "medium",
     pivot: { rot: -4, tiltX: 0 },
-    desktop: { x: "34vw", y: "4vh", z: 50, rot: 2 },
-    tablet:  { x: "30vw", y: "2vh", z: 45, rot: 1.8 },
+    desktop: { x: "33vw", y: "4vh", z: 15, rot: 2 },
+    tablet:  { x: "30vw", y: "2vh", z: 15, rot: 1.8 },
     mobile:  null
   },
 
@@ -112,9 +112,9 @@ export const INTRO_FACTS = [
     type: "metric",
     size: "large",
     pivot: { rot: -3, tiltX: -3 },
-    desktop: { x: "26vw", y: "24vh", z: 70, rot: -2 },
-    tablet:  { x: "24vw", y: "22vh", z: 45, rot: -1.5 },
-    mobile:  { x: "28vw",  y: "24vh",  z: 30, rot: -1.5 } // Lower-right waist
+    desktop: { x: "26vw", y: "24vh", z: 20, rot: -2 },
+    tablet:  { x: "24vw", y: "22vh", z: 15, rot: -1.5 },
+    mobile:  { x: "31vw",  y: "22vh",  z: 0, rot: -1.5 } // Lower-right flanking waist
   },
 
   // --------------------------------------------------------------------------
@@ -125,8 +125,8 @@ export const INTRO_FACTS = [
     type: "capability",
     size: "medium",
     pivot: { rot: -2, tiltX: -4 },
-    desktop: { x: "8vw", y: "36vh", z: 60, rot: -1 },
-    tablet:  { x: "6vw", y: "35vh", z: 50, rot: -1 },
-    mobile:  { x: "0vw", y: "37vh", z: 35, rot: 0 } // Bottom center
+    desktop: { x: "8vw", y: "36vh", z: 20, rot: -1 },
+    tablet:  { x: "6vw", y: "35vh", z: 15, rot: -1 },
+    mobile:  { x: "0vw", y: "35vh", z: 0, rot: 0 } // Centered directly below torso
   }
 ];
