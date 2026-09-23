@@ -12,6 +12,10 @@
     {
       "source": "/admin/posts/:id/edit",
       "destination": "/admin/post-edit"
+    },
+    {
+      "source": "/admin/resume",
+      "destination": "/admin/resume"
     }
   ],
   "headers": [

@@ -382,13 +382,13 @@
                 </svg>
               </a>
               
-              <a href="#contact" class="btn btn-secondary" onclick="alert('Resume download initiated: Pavan Darshan Doddala - Finance & Project Leadership. To request the formal PDF copy directly, please use the contact form or email pavandarshan007@gmail.com.');">
+              <a id="heroDownloadResumeBtn" href="/assets/Pavan_Darshan_Doddala_Resume.pdf" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" download="Pavan_Darshan_Doddala_Resume.pdf">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>
                   <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
-                Download Resume
+                <span id="heroResumeBtnText">Download Resume</span>
               </a>
 
               <a href="#contact" class="btn-text">Contact Me &rarr;</a>
@@ -1715,7 +1715,7 @@
           <a href="mailto:pavandarshan007@gmail.com" class="footer-nav-link">pavandarshan007@gmail.com</a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-nav-link">LinkedIn Profile &rarr;</a>
           <a href="#contact" class="footer-nav-link">Contact Form</a>
-          <a href="#contact" class="footer-nav-link" onclick="alert('To request the official resume PDF, please contact pavandarshan007@gmail.com.');">Request Resume PDF</a>
+          <a id="footerDownloadResumeBtn" href="/assets/Pavan_Darshan_Doddala_Resume.pdf" class="footer-nav-link" target="_blank" rel="noopener noreferrer" download="Pavan_Darshan_Doddala_Resume.pdf">Download Resume PDF</a>
         </div>
       </div>
 
@@ -1781,12 +1781,66 @@
   <!-- Supabase Dynamic Homepage Insights -->
   <script src="js/env.js" onerror="/* env.js is optional; client will fallback to /api/config */"></script>
   <script type="module">
-    import { getSupabase, formatDate } from './js/supabase-client.js';
+    import { getSupabase, formatDate, getActiveResume } from './js/supabase-client.js';
 
     const POST_IMAGE_DEFAULTS = {
       'understanding-capital-allocation-discipline-over-velocity': '/assets/capital-allocation-discipline.jpg',
       'credit-risk-and-alternative-data-in-sme-underwriting': '/assets/credit-risk-underwriting.jpg'
     };
+
+    async function initHeroResume() {
+      const heroBtn = document.getElementById('heroDownloadResumeBtn');
+      const heroBtnText = document.getElementById('heroResumeBtnText');
+      const footerBtn = document.getElementById('footerDownloadResumeBtn');
+
+      if (!heroBtn) return;
+
+      try {
+        const resume = await getActiveResume();
+        if (resume && !resume.is_deleted && resume.file_url) {
+          heroBtn.href = resume.file_url;
+          heroBtn.setAttribute('download', resume.file_name || 'Pavan_Darshan_Doddala_Resume.pdf');
+          heroBtn.target = '_blank';
+          heroBtn.onclick = null;
+          if (heroBtnText) heroBtnText.textContent = 'Download Resume';
+
+          if (footerBtn) {
+            footerBtn.href = resume.file_url;
+            footerBtn.setAttribute('download', resume.file_name || 'Pavan_Darshan_Doddala_Resume.pdf');
+            footerBtn.target = '_blank';
+            footerBtn.onclick = null;
+            footerBtn.textContent = 'Download Resume PDF';
+          }
+        } else {
+          if (heroBtnText) heroBtnText.textContent = 'Request Resume';
+          heroBtn.removeAttribute('download');
+          heroBtn.href = '#contact';
+          heroBtn.onclick = (e) => {
+            e.preventDefault();
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+              contactSection.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => {
+                alert('Resume is currently being updated. Please use the contact form below or email pavandarshan007@gmail.com to receive the latest copy directly.');
+              }, 400);
+            }
+          };
+
+          if (footerBtn) {
+            footerBtn.href = '#contact';
+            footerBtn.textContent = 'Request Resume PDF';
+            footerBtn.removeAttribute('download');
+            footerBtn.onclick = (e) => {
+              e.preventDefault();
+              const contactSection = document.getElementById('contact');
+              if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+            };
+          }
+        }
+      } catch (err) {
+        console.warn('Hero resume setup error:', err);
+      }
+    }
 
     async function loadHomepageInsights() {
       try {
@@ -1848,6 +1902,7 @@
       }
     }
 
+    initHeroResume();
     loadHomepageInsights();
   </script>
 </body>

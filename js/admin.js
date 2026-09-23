@@ -3,7 +3,7 @@
  * Admin CMS Dashboard, Posts Management, Editor & Subscribers Logic
  * Pavan Darshan Doddala Portfolio
  */
-import { getSupabase, requireAdminAuth, generateSlug, formatDate, uploadBlogImage } from './supabase-client.js';
+import { getSupabase, requireAdminAuth, generateSlug, formatDate, uploadBlogImage, getActiveResume, uploadResumeFile, deleteActiveResume } from './supabase-client.js';
 import { parseMarkdown } from './blog.js';
 
 /**
@@ -844,4 +844,166 @@ export async function initAdminSubscribers() {
   }
 
   loadSubscribers();
+}
+
+/**
+ * 4. Admin Resume Management Page (/admin/resume)
+ */
+export async function initAdminResume() {
+  const session = await requireAdminAuth('/admin');
+  if (!session) return;
+  setupAdminSidebar(session);
+
+  const activeSection = document.getElementById('activeResumeSection');
+  const emptySection = document.getElementById('emptyResumeSection');
+  const fileInput = document.getElementById('resumeFileInput');
+  const btnUploadNew = document.getElementById('btnUploadNewResume');
+  const btnReplace = document.getElementById('btnReplaceResume');
+  const btnDelete = document.getElementById('btnDeleteResume');
+  const btnPreview = document.getElementById('btnPreviewResume');
+  const btnDownload = document.getElementById('btnDownloadResume');
+  const dropzone = document.getElementById('resumeDropzone');
+  const progressWrap = document.getElementById('uploadProgressWrap');
+  const progressBar = document.getElementById('uploadProgressBar');
+  const progressPercent = document.getElementById('uploadProgressPercent');
+
+  const activeFileName = document.getElementById('activeFileName');
+  const activeFileSize = document.getElementById('activeFileSize');
+  const activeUploadDate = document.getElementById('activeUploadDate');
+
+  let currentResume = null;
+
+  function formatBytes(bytes) {
+    if (!bytes || bytes === 0) return '0 KB';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  }
+
+  async function refreshResumeState() {
+    try {
+      currentResume = await getActiveResume();
+      if (currentResume && !currentResume.is_deleted && currentResume.file_url) {
+        // Active
+        activeFileName.textContent = currentResume.file_name || 'Resume Document';
+        activeFileSize.textContent = formatBytes(currentResume.file_size);
+        activeUploadDate.textContent = currentResume.uploaded_at ? `Updated ${formatDate(currentResume.uploaded_at)}` : 'Active';
+        
+        btnPreview.href = currentResume.file_url;
+        btnDownload.href = currentResume.file_url;
+        btnDownload.download = currentResume.file_name || 'Pavan_Darshan_Doddala_Resume.pdf';
+
+        activeSection.style.display = 'block';
+        emptySection.style.display = 'none';
+        if (btnUploadNew) btnUploadNew.style.display = 'none';
+      } else {
+        // Empty / Deleted
+        activeSection.style.display = 'none';
+        emptySection.style.display = 'block';
+        if (btnUploadNew) btnUploadNew.style.display = 'inline-flex';
+      }
+    } catch (err) {
+      console.error('Error loading resume:', err);
+      showToast('Could not load current resume status.', 'error');
+    }
+  }
+
+  async function handleFile(file) {
+    if (!file) return;
+
+    if (progressWrap) {
+      progressWrap.style.display = 'block';
+      progressBar.style.width = '30%';
+      progressPercent.textContent = '30%';
+    }
+
+    try {
+      if (progressWrap) {
+        progressBar.style.width = '65%';
+        progressPercent.textContent = '65%';
+      }
+
+      const uploaded = await uploadResumeFile(file);
+
+      if (progressWrap) {
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        setTimeout(() => {
+          progressWrap.style.display = 'none';
+          progressBar.style.width = '0%';
+        }, 500);
+      }
+
+      showToast(`Resume "${uploaded.file_name}" uploaded and activated!`, 'success');
+      await refreshResumeState();
+    } catch (err) {
+      if (progressWrap) progressWrap.style.display = 'none';
+      console.error('Upload error:', err);
+      showToast(err.message || 'Failed to upload resume.', 'error');
+    } finally {
+      if (fileInput) fileInput.value = '';
+    }
+  }
+
+  // Upload button listeners
+  if (btnUploadNew) {
+    btnUploadNew.addEventListener('click', () => fileInput && fileInput.click());
+  }
+
+  if (btnReplace) {
+    btnReplace.addEventListener('click', () => fileInput && fileInput.click());
+  }
+
+  // Drag & drop
+  if (dropzone) {
+    dropzone.addEventListener('click', () => fileInput && fileInput.click());
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        handleFile(e.target.files[0]);
+      }
+    });
+  }
+
+  // Delete Action
+  if (btnDelete) {
+    btnDelete.addEventListener('click', async () => {
+      const confirmed = confirm(
+        'Are you sure you want to delete this resume?\n\n' +
+        'Once deleted, visitors to the portfolio will see that your resume is currently being updated and will be prompted to contact you directly.'
+      );
+      if (!confirmed) return;
+
+      try {
+        await deleteActiveResume();
+        showToast('Resume removed successfully. You can upload a new one anytime.', 'success');
+        await refreshResumeState();
+      } catch (err) {
+        console.error('Delete error:', err);
+        showToast('Could not delete resume.', 'error');
+      }
+    });
+  }
+
+  await refreshResumeState();
 }

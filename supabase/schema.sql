@@ -244,3 +244,91 @@ The modern credit analyst must combine quantitative statistical modeling with qu
     'How real-time ledger access and transactional velocity indices are transforming commercial banking underwriting beyond static balance sheet ratios.'
 )
 ON CONFLICT (slug) DO NOTHING;
+
+-- ============================================================================
+-- 7. RESUMES TABLE (CMS Resume Management)
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS public.resumes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    file_name TEXT NOT NULL,
+    file_url TEXT NOT NULL,
+    file_size INTEGER DEFAULT 0,
+    mime_type TEXT DEFAULT 'application/pdf',
+    is_active BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+CREATE INDEX IF NOT EXISTS idx_resumes_active ON public.resumes(is_active, created_at DESC);
+
+-- RLS
+ALTER TABLE public.resumes ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public can view active resume" ON public.resumes;
+DROP POLICY IF EXISTS "Authenticated admin has full access to resumes" ON public.resumes;
+
+CREATE POLICY "Public can view active resume"
+    ON public.resumes
+    FOR SELECT
+    TO anon, authenticated
+    USING (is_active = true);
+
+CREATE POLICY "Authenticated admin has full access to resumes"
+    ON public.resumes
+    FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+-- Resumes Storage Bucket
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES (
+    'resumes',
+    'resumes',
+    true,
+    15728640, -- 15 MB limit
+    ARRAY['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+)
+ON CONFLICT (id) DO UPDATE SET
+    public = true,
+    file_size_limit = 15728640;
+
+DROP POLICY IF EXISTS "Public can view resumes" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated admin can upload resumes" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated admin can delete resumes" ON storage.objects;
+
+CREATE POLICY "Public can view resumes"
+    ON storage.objects
+    FOR SELECT
+    TO public
+    USING (bucket_id = 'resumes');
+
+CREATE POLICY "Authenticated admin can upload resumes"
+    ON storage.objects
+    FOR INSERT
+    TO authenticated
+    WITH CHECK (bucket_id = 'resumes');
+
+CREATE POLICY "Authenticated admin can delete resumes"
+    ON storage.objects
+    FOR DELETE
+    TO authenticated
+    USING (bucket_id = 'resumes');
+
+-- Seed Default Active Resume
+INSERT INTO public.resumes (
+    file_name,
+    file_url,
+    file_size,
+    mime_type,
+    is_active
+)
+VALUES (
+    'Pavan_Darshan_Doddala_Resume.pdf',
+    '/assets/Pavan_Darshan_Doddala_Resume.pdf',
+    245760,
+    'application/pdf',
+    true
+)
+ON CONFLICT DO NOTHING;
+

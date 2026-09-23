@@ -226,3 +226,182 @@ export async function uploadBlogImage(file, postId = 'general') {
 
   return publicUrlData.publicUrl;
 }
+
+/**
+ * Resume Management Configuration & Utilities
+ */
+export const RESUME_STORAGE_KEY = 'pavan_active_resume';
+export const DEFAULT_RESUME = {
+  id: 'default',
+  file_name: 'Pavan_Darshan_Doddala_Resume.pdf',
+  file_url: '/assets/Pavan_Darshan_Doddala_Resume.pdf',
+  file_size: 245760,
+  mime_type: 'application/pdf',
+  is_active: true,
+  uploaded_at: '2026-09-23T00:00:00.000Z',
+  is_default: true
+};
+
+/**
+ * Retrieves the currently active resume from Supabase with localStorage & default fallback
+ */
+export async function getActiveResume() {
+  let localData = null;
+  try {
+    const raw = localStorage.getItem(RESUME_STORAGE_KEY);
+    if (raw) localData = JSON.parse(raw);
+  } catch (e) {
+    console.warn('Could not read resume from localStorage:', e);
+  }
+
+  try {
+    const supabase = await getSupabase();
+    const { data, error } = await supabase
+      .from('resumes')
+      .select('*')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!error && data) {
+      const activeObj = {
+        id: data.id,
+        file_name: data.file_name,
+        file_url: data.file_url,
+        file_size: data.file_size,
+        mime_type: data.mime_type,
+        is_active: true,
+        uploaded_at: data.created_at,
+        is_default: false
+      };
+      try {
+        localStorage.setItem(RESUME_STORAGE_KEY, JSON.stringify(activeObj));
+      } catch (err) {}
+      return activeObj;
+    }
+  } catch (err) {
+    // If table doesn't exist yet, graceful fallback
+  }
+
+  // If Supabase didn't have an active record or errored, check localStorage
+  if (localData) {
+    if (localData.is_active === false || localData.is_deleted === true) {
+      return { is_deleted: true, is_active: false };
+    }
+    return localData;
+  }
+
+  // Default active resume
+  return DEFAULT_RESUME;
+}
+
+/**
+ * Uploads a new resume document (PDF or Word DOC/DOCX)
+ */
+export async function uploadResumeFile(file) {
+  if (!file) throw new Error('No resume file selected.');
+
+  const maxSize = 15 * 1024 * 1024; // 15MB
+  if (file.size > maxSize) {
+    throw new Error('Resume file exceeds 15MB size limit.');
+  }
+
+  const validExtensions = ['.pdf', '.doc', '.docx'];
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
+  const validMimes = [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/octet-stream'
+  ];
+
+  if (!validExtensions.includes(ext) && !validMimes.includes(file.type)) {
+    throw new Error('Invalid file format. Please upload a PDF or Word document (.pdf, .docx, .doc).');
+  }
+
+  let uploadedUrl = null;
+  const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+  const path = `resumes/${Date.now()}-${cleanName}`;
+
+  try {
+    const supabase = await getSupabase();
+    // Try uploading to 'resumes' bucket first, fallback to 'blog-images'
+    let uploadRes = await supabase.storage.from('resumes').upload(path, file, { upsert: true });
+    let bucketName = 'resumes';
+
+    if (uploadRes.error) {
+      uploadRes = await supabase.storage.from('blog-images').upload(path, file, { upsert: true });
+      bucketName = 'blog-images';
+    }
+
+    if (!uploadRes.error && uploadRes.data?.path) {
+      const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(uploadRes.data.path);
+      uploadedUrl = publicUrlData.publicUrl;
+    }
+  } catch (err) {
+    console.warn('Storage upload fallback:', err);
+  }
+
+  // Fallback to data URL for immediate client persistence
+  if (!uploadedUrl) {
+    uploadedUrl = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const resumeRecord = {
+    file_name: file.name,
+    file_url: uploadedUrl,
+    file_size: file.size,
+    mime_type: file.type || (ext === '.pdf' ? 'application/pdf' : 'application/msword'),
+    is_active: true,
+    uploaded_at: new Date().toISOString(),
+    is_default: false
+  };
+
+  try {
+    const supabase = await getSupabase();
+    await supabase.from('resumes').update({ is_active: false }).eq('is_active', true);
+    const { data } = await supabase.from('resumes').insert([resumeRecord]).select().single();
+    if (data?.id) resumeRecord.id = data.id;
+  } catch (err) {
+    // If table not yet migrated, still saved in localStorage
+  }
+
+  try {
+    localStorage.setItem(RESUME_STORAGE_KEY, JSON.stringify(resumeRecord));
+  } catch (e) {
+    console.warn('LocalStorage save error:', e);
+  }
+
+  return resumeRecord;
+}
+
+/**
+ * Deletes / Deactivates the active resume
+ */
+export async function deleteActiveResume() {
+  try {
+    const supabase = await getSupabase();
+    await supabase.from('resumes').update({ is_active: false }).eq('is_active', true);
+  } catch (err) {
+    console.warn('Supabase deleteActiveResume error:', err);
+  }
+
+  const deletedMeta = {
+    is_active: false,
+    is_deleted: true,
+    deleted_at: new Date().toISOString()
+  };
+
+  try {
+    localStorage.setItem(RESUME_STORAGE_KEY, JSON.stringify(deletedMeta));
+  } catch (e) {}
+
+  return { success: true };
+}
+
