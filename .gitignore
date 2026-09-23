@@ -2,4 +2,12 @@ node_modules/
 .DS_Store
 *.log
 
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.env
+js/env.js
+
+
 

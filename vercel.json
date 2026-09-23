@@ -1,0 +1,53 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/blog",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/blog/post.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/posts",
+      "destination": "/admin/posts.html"
+    },
+    {
+      "source": "/admin/posts/new",
+      "destination": "/admin/post-edit.html"
+    },
+    {
+      "source": "/admin/posts/:id/edit",
+      "destination": "/admin/post-edit.html"
+    },
+    {
+      "source": "/admin/subscribers",
+      "destination": "/admin/subscribers.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/admin",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | Pavan Darshan Doddala</title>
+  
+  <!-- Security: Prevent indexing of admin pages -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <div class="admin-login-wrap">
+    <div class="admin-login-box">
+      <div class="admin-login-header">
+        <div class="admin-monogram">P</div>
+        <h1 style="font-size: 1.35rem; margin-top: 12px; margin-bottom: 4px;">Content Management</h1>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">Sign in to manage insights & newsletter</p>
+      </div>
+
+      <div id="loginError" class="newsletter-feedback error" style="display: none; margin-bottom: var(--space-md); text-align: center;"></div>
+
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label for="loginEmail" class="form-label">Email Address</label>
+          <input type="email" id="loginEmail" class="form-input" required placeholder="admin@example.com" autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword" class="form-label">Password</label>
+          <input type="password" id="loginPassword" class="form-input" required placeholder="••••••••••••" autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="loginSubmitBtn" class="btn-primary" style="width: 100%; justify-content: center; margin-top: var(--space-sm);">
+          <span>Sign In</span>
+        </button>
+      </form>
+
+      <div style="margin-top: var(--space-xl); text-align: center; border-top: 1px solid var(--border-subtle); padding-top: var(--space-md);">
+        <a href="/" style="font-size: 0.8rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px;">
+          <span>&larr; Return to Website</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/env.js" onerror="/* env.js is optional; client will fallback to /api/config */"></script>
+  <script type="module">
+    import { initAdminLogin } from '../js/admin.js';
+    initAdminLogin();
+  </script>
+</body>
+</html>

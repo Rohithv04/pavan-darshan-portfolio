@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor | CMS — Pavan Darshan Doddala</title>
+  
+  <!-- Security: Prevent indexing -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/blog.css">
+  <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body class="admin-body">
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <a href="/admin/posts" class="admin-brand">
+        <div class="admin-monogram">P</div>
+        <div class="admin-title-wrap">
+          <span class="admin-portal-title">Content Management</span>
+          <span class="admin-portal-subtitle">CMS Portal</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="/admin/posts" class="admin-nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>Posts</span>
+      </a>
+      <a href="/admin/subscribers" class="admin-nav-item">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Subscribers</span>
+      </a>
+      <a href="/" target="_blank" class="admin-nav-item">
+        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <span>View Website</span>
+      </a>
+    </nav>
+
+    <div class="admin-sidebar-footer">
+      <div class="admin-user-info" id="adminUserEmail">Administrator</div>
+      <button class="admin-logout-btn" id="adminLogoutBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Form -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="admin-heading-group">
+        <h1 id="editorPageHeading">Create New Insight</h1>
+        <p id="editorPageSubheading">Draft and publish editorial notes, market analysis, or strategic perspectives.</p>
+      </div>
+      <div class="admin-header-actions">
+        <a href="/admin/posts" class="btn-action">Cancel</a>
+        <button type="button" id="btnDeletePost" class="btn-action delete" style="display: none;">Delete</button>
+        <button type="button" id="btnSaveDraft" class="btn-action">Save Draft</button>
+        <button type="button" id="btnPublish" class="btn-primary">Publish</button>
+      </div>
+    </header>
+
+    <form id="postEditForm" onsubmit="return false;" style="max-width: 960px;">
+      <!-- Title & Slug -->
+      <div class="form-group">
+        <label for="postTitle" class="form-label">Article Title <span class="required">*</span></label>
+        <input type="text" id="postTitle" class="form-input" placeholder="e.g. Understanding Capital Allocation: Discipline Over Velocity" required>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="postSlug" class="form-label">URL Slug <span class="required">*</span></label>
+          <input type="text" id="postSlug" class="form-input" placeholder="understanding-capital-allocation" required>
+          <div class="form-hint">Generated automatically from title; lowercase letters, numbers, and hyphens only.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="postCategory" class="form-label">Category</label>
+          <input type="text" id="postCategory" class="form-input" list="categoryOptions" placeholder="Finance" value="Finance">
+          <datalist id="categoryOptions">
+            <option value="Finance">
+            <option value="Strategy">
+            <option value="Markets">
+            <option value="Banking">
+            <option value="Technology">
+            <option value="Leadership">
+          </datalist>
+        </div>
+      </div>
+
+      <!-- Excerpt -->
+      <div class="form-group">
+        <label for="postExcerpt" class="form-label">Excerpt / Summary</label>
+        <textarea id="postExcerpt" class="form-textarea" rows="3" placeholder="A concise 1–2 sentence overview for the card preview and article lead..."></textarea>
+      </div>
+
+      <!-- Featured Image Upload -->
+      <div class="form-group">
+        <label class="form-label">Featured Image</label>
+        <div class="upload-dropzone" onclick="document.getElementById('featuredImageFile').click()">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 8px; color: var(--accent-gold);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <div style="font-size: 0.9rem; font-weight: 500;">Click to upload featured image</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Supports JPEG, PNG, WebP (Max 5MB)</div>
+        </div>
+        <input type="file" id="featuredImageFile" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml" style="display: none;">
+        
+        <div id="imagePreviewWrap" class="upload-preview-wrap" style="display: none;">
+          <img id="imagePreviewImg" src="" alt="Featured preview">
+          <button type="button" id="removeImageBtn" class="upload-remove-btn">Remove</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="postFeaturedAlt" class="form-label">Featured Image ALT Text</label>
+        <input type="text" id="postFeaturedAlt" class="form-input" placeholder="Descriptive description for screen readers and accessibility">
+      </div>
+
+      <!-- Markdown Article Content Editor -->
+      <div class="form-group">
+        <label class="form-label">Article Content (Markdown) <span class="required">*</span></label>
+        <div class="editor-container">
+          <div class="editor-toolbar">
+            <button type="button" class="toolbar-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button type="button" class="toolbar-btn" data-cmd="italic" title="Italic"><i>I</i></button>
+            <div class="toolbar-sep"></div>
+            <button type="button" class="toolbar-btn" data-cmd="h2" title="Heading 2">H2</button>
+            <button type="button" class="toolbar-btn" data-cmd="h3" title="Heading 3">H3</button>
+            <div class="toolbar-sep"></div>
+            <button type="button" class="toolbar-btn" data-cmd="quote" title="Quote">&ldquo;&rdquo;</button>
+            <button type="button" class="toolbar-btn" data-cmd="link" title="Link">Link</button>
+            <button type="button" class="toolbar-btn" data-cmd="ul" title="Bullet List">&bull; List</button>
+            <button type="button" class="toolbar-btn" data-cmd="ol" title="Numbered List">1. List</button>
+            <button type="button" class="toolbar-btn" data-cmd="hr" title="Divider">—</button>
+            <button type="button" class="toolbar-btn" data-cmd="code" title="Inline Code">&lt;/&gt;</button>
+            <div class="toolbar-sep"></div>
+            <button type="button" class="toolbar-btn" id="btnInsertInlineImage" title="Insert Image from Supabase Storage">+ Image</button>
+            <input type="file" id="inlineImageFile" accept="image/*" style="display: none;">
+
+            <div class="editor-tabs">
+              <button type="button" id="btnTabWrite" class="editor-tab-btn active">Write</button>
+              <button type="button" id="btnTabPreview" class="editor-tab-btn">Preview</button>
+            </div>
+          </div>
+
+          <textarea id="postContent" class="editor-textarea" placeholder="Write your article in Markdown..."></textarea>
+          <div id="editorPreview" class="editor-preview"></div>
+        </div>
+      </div>
+
+      <!-- Hidden status field to sync status -->
+      <input type="hidden" id="postStatus" value="draft">
+
+      <!-- SEO Accordion -->
+      <div class="accordion-box">
+        <div class="accordion-header" id="seoAccordionHeader">
+          <span>Search Engine Optimization (SEO) & Social Metadata</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="accordion-body" id="seoAccordionBody">
+          <div class="form-group">
+            <label for="postSeoTitle" class="form-label">SEO Title</label>
+            <input type="text" id="postSeoTitle" class="form-input" placeholder="Defaults to Article Title">
+          </div>
+
+          <div class="form-group">
+            <label for="postSeoDesc" class="form-label">SEO Meta Description</label>
+            <textarea id="postSeoDesc" class="form-textarea" rows="2" placeholder="Defaults to Excerpt"></textarea>
+          </div>
+
+          <!-- Google Snippet Live Preview -->
+          <div class="google-snippet-preview">
+            <div class="google-url" id="snippetUrl">https://pavandoddala.com/blog/insight-slug</div>
+            <div class="google-title" id="snippetTitle">Insight Title | Pavan Doddala</div>
+            <div class="google-desc" id="snippetDesc">Insight description preview...</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteConfirmModal" class="admin-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <h3>Delete This Post?</h3>
+      <p>Are you sure you want to delete this article? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="cancelDeleteBtn" class="btn-action">Cancel</button>
+        <button id="confirmDeleteBtn" class="btn-primary" style="background-color:#DC2626; border-color:#DC2626; color:#FFF;">Delete Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="adminToast" class="admin-toast"></div>
+
+  <!-- Scripts -->
+  <script src="../../js/env.js" onerror="/* env.js is optional; client will fallback to /api/config */"></script>
+  <script type="module">
+    import { initAdminPostEdit } from '../../js/admin.js';
+    initAdminPostEdit();
+  </script>
+</body>
+</html>

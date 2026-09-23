@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights | Pavan Darshan Doddala</title>
+  
+  <!-- Dynamic Meta Tags initialized with defaults; updated via js/blog.js -->
+  <meta name="description" content="Notes, analysis, and perspectives on corporate finance, banking, markets, and strategic execution.">
+  <meta name="author" content="Pavan Darshan Doddala">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Pavan Darshan Doddala">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/blog.css">
+</head>
+<body class="blog-page">
+  <!-- Sticky Navigation Header -->
+  <header id="navbar" class="navbar">
+    <div class="container nav-inner">
+      <a href="../#hero" class="nav-brand" aria-label="Pavan Darshan Doddala Home">
+        <div class="brand-monogram">P</div>
+        <div class="brand-name">PAVAN DODDALA <span>| FINANCE</span></div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="../#hero" class="nav-link">Home</a>
+        <a href="../#about" class="nav-link">About</a>
+        <a href="../#impact" class="nav-link">Impact</a>
+        <a href="../#experience" class="nav-link">Experience</a>
+        <a href="../#projects" class="nav-link">Projects</a>
+        <a href="../#research" class="nav-link">Research</a>
+        <a href="../#education" class="nav-link">Education</a>
+        <a href="/blog" class="nav-link active">Insights</a>
+      </nav>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <a href="../#contact" class="nav-cta">Let's Connect</a>
+        <button id="mobileToggle" class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Overlay Menu -->
+  <div id="mobileMenu" class="mobile-menu-overlay" aria-label="Mobile Navigation Overlay">
+    <nav class="mobile-nav-links">
+      <a href="../#hero" class="mobile-nav-link">Home</a>
+      <a href="../#about" class="mobile-nav-link">About</a>
+      <a href="../#impact" class="mobile-nav-link">Selected Impact</a>
+      <a href="../#experience" class="mobile-nav-link">Experience</a>
+      <a href="../#projects" class="mobile-nav-link">Selected Projects</a>
+      <a href="../#research" class="mobile-nav-link">Research</a>
+      <a href="../#education" class="mobile-nav-link">Education & Credentials</a>
+      <a href="/blog" class="mobile-nav-link active">Insights</a>
+      <a href="../#contact" class="mobile-nav-link">Contact</a>
+    </nav>
+  </div>
+
+  <!-- Dynamic Article Content Area -->
+  <main class="blog-main">
+    <article class="article-container" id="articleContent">
+      <div class="blog-empty">
+        <p>Loading insight...</p>
+      </div>
+    </article>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          &copy; 2026 Pavan Darshan Doddala. All rights reserved.
+        </div>
+        <div class="footer-location">
+          San Jose, CA • Leavey School of Business
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/env.js" onerror="/* env.js is optional; client will fallback to /api/config */"></script>
+  <script type="module">
+    import { initArticlePage } from '../js/blog.js';
+    initArticlePage();
+
+    // Mobile nav toggle
+    const toggle = document.getElementById('mobileToggle');
+    const menu = document.getElementById('mobileMenu');
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const isOpen = menu.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+    }
+  </script>
+</body>
+</html>
