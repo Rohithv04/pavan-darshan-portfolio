@@ -164,7 +164,15 @@
   z-index: 100 !important;
 }
 
-/* 4. Visual Card: Visual styles, hover transitions & idle bobs */
+/* 4. Idle Wrapper: Controlled by gentle harmonic idle bobs */
+.card-idle-wrap {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* 5. Visual Card: Visual styles, hover transitions & elevations */
 .visual-card {
   position: relative;
   background-color: rgba(17, 17, 17, 0.92);
@@ -172,7 +180,7 @@
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-sm);
-  padding: 14px 18px;
+  padding: 13px 17px;
   box-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.85), 0 0 16px rgba(198, 161, 91, 0.06);
   color: var(--text-primary);
   transform-style: preserve-3d;
@@ -198,6 +206,39 @@
   background-color: rgba(14, 14, 14, 0.86);
   border-color: var(--border-subtle);
   opacity: 0.92;
+}
+
+/* ==========================================================================
+   CARD SIZE HIERARCHY (Large: 230-280px, Medium: 180-230px, Small: 100-160px)
+   ========================================================================== */
+.card-size-lg {
+  width: clamp(230px, 17.5vw, 280px);
+}
+
+.card-size-md {
+  width: clamp(180px, 13.5vw, 230px);
+}
+
+.card-size-sm {
+  width: clamp(115px, 9vw, 155px);
+}
+
+.visual-card.card-size-sm {
+  padding: 8px 12px;
+}
+
+.card-size-sm .card-main-title {
+  font-size: 0.84rem;
+}
+
+.card-size-sm .card-header {
+  font-size: 0.62rem;
+  margin-bottom: 3px;
+}
+
+.card-size-sm .mini-pill {
+  font-size: 0.6rem;
+  padding: 1px 5px;
 }
 
 /* ==========================================================================
@@ -247,7 +288,7 @@
 
 /* Metric Card Layout */
 .card-metric {
-  width: 250px;
+  /* Width driven by .card-size-lg */
 }
 
 .metric-val-row {
@@ -256,7 +297,7 @@
 
 .metric-huge {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 2.6vw, 2.45rem);
+  font-size: clamp(1.85rem, 2.3vw, 2.35rem);
   font-weight: 800;
   color: var(--accent-gold);
   line-height: 1.05;
@@ -266,7 +307,7 @@
 
 .card-title {
   font-family: var(--font-display);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.3;
@@ -274,7 +315,7 @@
 }
 
 .card-subtext {
-  font-size: 0.72rem;
+  font-size: 0.71rem;
   color: var(--text-secondary);
   line-height: 1.38;
   margin-top: 3px;
@@ -300,12 +341,12 @@
 
 /* Capability Card Layout */
 .card-capability {
-  width: 270px;
+  /* Width driven by .card-size-md */
 }
 
 .card-main-title {
   font-family: var(--font-display);
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   font-weight: 800;
   color: var(--accent-gold);
   letter-spacing: 0.02em;
@@ -314,12 +355,11 @@
 
 /* Project Card Layout */
 .card-project {
-  width: 260px;
+  /* Width driven by .card-size-md */
 }
 
 /* Research Paper Card Layout */
 .card-research {
-  width: 265px;
   border-left: 2px solid var(--accent-gold);
 }
 
@@ -335,7 +375,7 @@
 
 .research-heading {
   font-family: var(--font-display);
-  font-size: 0.86rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.35;
@@ -438,34 +478,46 @@
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1024px) {
-  /* Tablet adjustments: hide heavy rear research cards */
+  /* Tablet adjustments: art-directed 8-9 cards, hide heavy rear research */
+  #pos-analytics-stack,
+  #pos-res-silent-auctions,
   #pos-res-volatility,
   #pos-res-universal,
   #pos-proj-enterprise,
-  #pos-billing-ctrl {
+  #pos-customer-acq,
+  #pos-billing-ctrl,
+  #pos-pill-1 {
     display: none !important;
   }
 
-  .visual-card {
-    padding: 11px 14px;
-  }
-
-  .card-metric, .card-capability, .card-project, .card-research {
+  .card-size-lg {
     width: 220px;
   }
 
+  .card-size-md {
+    width: 185px;
+  }
+
+  .card-size-sm {
+    width: 130px;
+  }
+
+  .visual-card {
+    padding: 10px 14px;
+  }
+
   .metric-huge {
-    font-size: 1.85rem;
+    font-size: 1.8rem;
   }
 
   .intro-portrait-anchor {
-    height: 56vh;
-    max-height: 440px;
+    height: 52vh;
+    max-height: 420px;
   }
 }
 
-@media (max-width: 640px) {
-  /* Mobile: Clean, focused composition with Pavan and key verified anchors */
+@media (max-width: 768px) {
+  /* Mobile: Dedicated composition with strictly 6-7 verified anchors */
   #pos-customer-acq,
   #pos-billing-ctrl,
   #pos-cap-markets,
@@ -475,37 +527,64 @@
   #pos-res-volatility,
   #pos-res-universal,
   #pos-pill-1,
-  #pos-pill-2,
-  #pos-pill-3 {
+  #pos-pill-2 {
     display: none !important;
   }
 
-  /* Disable dragging on mobile to prioritize native vertical scrolling */
+  /* Disable dragging on mobile to prioritize native vertical touch scrolling */
   .card-draggable {
     cursor: default !important;
     touch-action: auto !important;
   }
 
   .intro-portrait-anchor {
-    height: 50vh;
-    max-height: 380px;
+    height: 46vh;
+    max-height: 350px;
+    min-height: 250px;
   }
 
-  .card-metric, .card-capability {
-    width: 165px;
-    padding: 9px 12px;
+  .intro-portrait-img {
+    max-width: min(72vw, 280px);
+  }
+
+  /* Strict mobile card size scale-down: avoids clipping and face overlap */
+  .card-size-lg,
+  .card-size-md {
+    width: clamp(128px, 38vw, 155px) !important;
+  }
+
+  .card-size-sm {
+    width: clamp(90px, 30vw, 125px) !important;
+  }
+
+  .visual-card {
+    padding: 7px 10px;
+    border-radius: var(--radius-xs);
+  }
+
+  .card-header {
+    font-size: 0.58rem;
+    margin-bottom: 2px;
+  }
+
+  .card-badge {
+    font-size: 0.54rem;
+    padding: 1px 4px;
   }
 
   .metric-huge {
-    font-size: 1.55rem;
+    font-size: clamp(1.35rem, 4.4vw, 1.6rem);
+    line-height: 1;
   }
 
   .card-title {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
+    line-height: 1.22;
   }
 
   .card-subtext {
-    font-size: 0.67rem;
+    font-size: 0.62rem;
+    line-height: 1.25;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -513,16 +592,21 @@
   }
 
   .card-main-title {
-    font-size: 0.88rem;
+    font-size: 0.8rem;
   }
 
   .card-pill-row {
-    display: none;
+    display: none !important;
+  }
+
+  .intro-pill-tag {
+    padding: 5px 12px;
+    font-size: 0.62rem;
   }
 
   .intro-scroll-indicator {
     bottom: 16px;
-    font-size: 0.65rem;
+    font-size: 0.64rem;
   }
 }
 
