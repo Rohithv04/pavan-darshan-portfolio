@@ -177,6 +177,8 @@ INSERT INTO public.posts (
     excerpt,
     content,
     category,
+    featured_image_url,
+    featured_image_alt,
     status,
     published_at,
     seo_title,
@@ -207,6 +209,8 @@ When evaluating new ventures, three rules must govern allocation:
 
 Disciplined leadership requires establishing automated checkpoints throughout project lifecycles. Rather than releasing full capex commitments up front, phase-gate milestones preserve optionality and protect enterprise balance sheets from unexpected macro shocks.',
     'Finance',
+    '/assets/capital-allocation-discipline.jpg',
+    'Editorial illustration depicting capital allocation discipline over velocity: measuring plumb-line and phase-gate arches filtering momentum into stable compounding foundations.',
     'published',
     timezone('utc'::text, now()),
     'Understanding Capital Allocation: Discipline Over Velocity | Pavan Doddala',
