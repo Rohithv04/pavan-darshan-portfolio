@@ -10,7 +10,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { INTRO_FACTS, INTRO_WATERMARK, INTRO_PILLS } from "./intro-facts.js";
+import { INTRO_FACTS, INTRO_WATERMARK } from "./intro-facts.js";
 
 // Register ScrollTrigger plugin once
 gsap.registerPlugin(ScrollTrigger);
@@ -102,7 +102,7 @@ function initAnimations() {
       const introStage = document.getElementById("introStage");
 
       if (introSection && introStage) {
-        // Initial setup for desktop resting coordinates
+        // Initial setup for desktop resting coordinates (Curated 9 non-overlapping cards)
         INTRO_FACTS.forEach(fact => {
           const posEl = document.getElementById(`pos-${fact.id}`);
           if (posEl && fact.desktop) {
@@ -118,30 +118,16 @@ function initAnimations() {
           }
         });
 
-        // Pill tags initial coordinates
-        Object.entries(INTRO_PILLS).forEach(([pillId, coords]) => {
-          if (coords.desktop) {
-            gsap.set(`#pos-${pillId}`, {
-              x: coords.desktop.x,
-              y: coords.desktop.y,
-              z: coords.desktop.z,
-              rotation: coords.desktop.rot,
-              opacity: 0,
-              scale: 0.5,
-              transformOrigin: "center center"
-            });
-          }
-        });
-
         // Initial state of Pavan, halo, and watermark
-        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: -200 });
+        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: -200, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
         gsap.set("#introWatermark", { opacity: 0, scale: 0.95 });
+        gsap.set(introSection, { opacity: 1, pointerEvents: "auto" });
 
         // Pre-set Hero elements hidden until Intro transition scrub
-        gsap.set("#hero .hero-content", { opacity: 0, y: 35 });
-        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.96 });
-        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 15 });
+        gsap.set("#hero .hero-content", { opacity: 0, y: 55 });
+        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.95, y: 55 });
+        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 25 });
         gsap.set("#hero .light-spot", { opacity: 0 });
 
         // 1. Initial Navbar entrance
@@ -153,7 +139,7 @@ function initAnimations() {
           delay: 0.15
         });
 
-        // 2. Desktop Card Dragging with Spring-Back Return
+        // 2. Desktop Card Dragging with Constrained 50px Radius & Spring-Back Return
         const draggableCards = document.querySelectorAll(".card-draggable");
         draggableCards.forEach(dragWrap => {
           let isDragging = false;
@@ -161,9 +147,10 @@ function initAnimations() {
           let startY = 0;
           let currentX = 0;
           let currentY = 0;
+          const maxDrag = 50; // Constrained 50px drag radius guarantees zero card collisions
 
           const onPointerDown = (e) => {
-            if (e.pointerType === "touch") return;
+            if (e.pointerType === "touch" || window.innerWidth <= 768) return;
             isDragging = true;
             startX = e.clientX - currentX;
             startY = e.clientY - currentY;
@@ -174,8 +161,17 @@ function initAnimations() {
 
           const onPointerMove = (e) => {
             if (!isDragging) return;
-            currentX = e.clientX - startX;
-            currentY = e.clientY - startY;
+            const rawDx = e.clientX - startX;
+            const rawDy = e.clientY - startY;
+            const dist = Math.hypot(rawDx, rawDy);
+            if (dist > maxDrag) {
+              const angle = Math.atan2(rawDy, rawDx);
+              currentX = Math.cos(angle) * maxDrag;
+              currentY = Math.sin(angle) * maxDrag;
+            } else {
+              currentX = rawDx;
+              currentY = rawDy;
+            }
             gsap.set(dragWrap, { x: currentX, y: currentY });
           };
 
@@ -189,7 +185,7 @@ function initAnimations() {
             gsap.to(dragWrap, {
               x: 0,
               y: 0,
-              duration: 0.55,
+              duration: 0.5,
               ease: "back.out(1.4)"
             });
           };
@@ -277,13 +273,13 @@ function initAnimations() {
           scrollTrigger: {
             trigger: "#introStage",
             start: "top top",
-            end: "+=190%",
+            end: "+=180%",
             pin: true,
-            scrub: 0.7,
+            scrub: 0.6,
             anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              if (self.progress >= 0.999) {
+              if (self.progress >= 0.99) {
                 introSection.style.pointerEvents = "none";
               } else {
                 introSection.style.pointerEvents = "auto";
@@ -292,25 +288,25 @@ function initAnimations() {
           }
         });
 
-        // 0% -> 20%: Pavan emerges from depth as the protected central anchor
+        // 0% -> 22%: Pavan emerges from depth as the protected central anchor
         masterIntroTL
           .to("#introPortrait", {
             scale: 1.0,
             opacity: 1,
             z: 0,
-            duration: 20,
+            duration: 22,
             ease: "power2.out"
           }, 0)
           .to(".intro-portrait-halo", {
             scale: 1.0,
             opacity: 0.75,
-            duration: 20,
+            duration: 22,
             ease: "power2.out"
           }, 0)
           .to("#introWatermark", {
-            opacity: 0.45,
+            opacity: 0.4,
             scale: 1.05,
-            duration: 20,
+            duration: 22,
             ease: "power1.out"
           }, 0)
           .to("#introScrollIndicator", {
@@ -318,38 +314,38 @@ function initAnimations() {
             duration: 16
           }, 0);
 
-        // 18% -> 50%: Verified facts emerge in orbital waves around Pavan
-        // Wave 1: Major numerical outcomes ($2M Cost Optimization, 70%+ Payroll) + 5+ Years Badge
+        // 16% -> 48%: Verified facts emerge in orbital waves around Pavan
+        // Wave 1: Major numerical outcomes ($2M Cost Optimization, 70%+ Payroll)
         masterIntroTL
-          .to("#pos-cost-opt, #pos-payroll-auto, #pos-pill-3", {
+          .to("#pos-cost-opt, #pos-payroll-auto", {
             opacity: 1,
             scale: 1.0,
             duration: 16,
             stagger: 2,
             ease: "back.out(1.2)"
-          }, 18);
+          }, 16);
 
-        // Wave 2: Banking growth & risk (+20% Lending, -12% NPAs, Customer Acq, Billing) + MBA Leavey
+        // Wave 2: Banking growth & risk (+20% Lending Growth, -12% Risk Governance)
         masterIntroTL
-          .to("#pos-lending-growth, #pos-risk-gov, #pos-customer-acq, #pos-billing-ctrl, #pos-pill-2", {
+          .to("#pos-lending-growth, #pos-risk-gov", {
             opacity: 1,
             scale: 1.0,
             duration: 15,
             stagger: 1.5,
             ease: "back.out(1.2)"
-          }, 28);
+          }, 24);
 
-        // Wave 3: Investment Banking focus, Capital Markets, Analytics, Execution, Research Papers + Strategy Pill
+        // Wave 3: Investment Banking focus, Enterprise Systems, Promotion, Research Papers, Analytics Stack
         masterIntroTL
-          .to("#pos-focus-ib, #pos-cap-markets, #pos-analytics-stack, #pos-exec-leadership, #pos-proj-enterprise, #pos-res-silent-auctions, #pos-res-volatility, #pos-res-universal, #pos-pill-1", {
+          .to("#pos-focus-ib, #pos-proj-enterprise, #pos-exec-leadership, #pos-res-silent-auctions, #pos-analytics-stack", {
             opacity: 1,
             scale: 1.0,
             duration: 14,
             stagger: 1.2,
             ease: "power2.out"
-          }, 36);
+          }, 32);
 
-        // 48% -> 64%: Interactive universe hold (user explores freely)
+        // 48% -> 60%: Interactive universe hold (user explores freely)
         masterIntroTL
           .to("#introScrollIndicator", {
             opacity: 0,
@@ -357,100 +353,106 @@ function initAnimations() {
             duration: 8
           }, 48);
 
-        // 62% -> 72%: Idle motion gently dampens to 0 & drag offsets smoothly normalize
+        // 58% -> 66%: Idle motion gently dampens to 0 & drag offsets smoothly normalize
         masterIntroTL
           .to(idleStrength, {
             value: 0,
-            duration: 10,
+            duration: 8,
             ease: "power2.inOut"
-          }, 62)
+          }, 58)
           .to(".card-drag-wrap", {
             x: 0,
             y: 0,
             duration: 6,
             ease: "power2.out"
-          }, 62);
+          }, 58);
 
-        // 68% -> 88%: CARDS COLLAPSE INWARD toward Pavan's torso center
+        // 64% -> 80%: CARDS PIVOT & COLLAPSE INWARD toward Pavan's torso center
         masterIntroTL
-          .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-customer-acq, #pos-billing-ctrl, #pos-focus-ib, #pos-cap-markets, #pos-exec-leadership, #pos-proj-enterprise, #pos-pill-1, #pos-pill-2, #pos-pill-3", {
-            x: 0,
-            y: 0,
-            z: -80,
-            scale: 0.15,
-            opacity: 0,
-            duration: 16,
-            stagger: 0.3,
-            ease: "power2.in"
-          }, 68)
-          .to("#pos-analytics-stack, #pos-res-silent-auctions, #pos-res-volatility, #pos-res-universal", {
-            x: 0,
-            y: 0,
-            z: -120,
-            scale: 0.1,
-            opacity: 0,
-            duration: 16,
-            stagger: 0.3,
-            ease: "power2.in"
-          }, 69)
           .to("#introWatermark", {
             opacity: 0,
-            scale: 0.7,
+            scale: 0.75,
             duration: 14,
             ease: "power2.in"
-          }, 68)
+          }, 64)
           .to(".intro-ambient-mesh", {
             opacity: 0,
             duration: 14
-          }, 70);
+          }, 66);
 
-        // 74% -> 96%: HERO BEGINS REVEALING UNDERNEATH (TIMELINE OVERLAP ELIMINATES DEAD GAP)
+        INTRO_FACTS.forEach((fact, idx) => {
+          const posEl = document.getElementById(`pos-${fact.id}`);
+          if (posEl) {
+            masterIntroTL.to(posEl, {
+              x: 0,
+              y: 0,
+              z: -40,
+              scale: 0.4,
+              rotationZ: fact.pivot ? fact.pivot.rot : 0,
+              rotationX: fact.pivot ? fact.pivot.tiltX : 0,
+              opacity: 0.9,
+              duration: 16,
+              ease: "power2.inOut"
+            }, 64 + (idx % 3) * 0.4);
+          }
+        });
+
+        // 78% -> 92%: COLLAPSED CARD CLUSTER MOVES DOWNWARD TOGETHER & EXITS
         masterIntroTL
-          // Intro section fades smoothly to transparent
+          .to("#pos-focus-ib, #pos-res-silent-auctions, #pos-cost-opt, #pos-lending-growth, #pos-payroll-auto, #pos-analytics-stack, #pos-proj-enterprise, #pos-risk-gov, #pos-exec-leadership", {
+            y: 150,
+            scale: 0.2,
+            opacity: 0,
+            duration: 14,
+            ease: "power2.in"
+          }, 78)
           .to(introSection, {
             opacity: 0,
-            duration: 16,
+            duration: 14,
             ease: "power1.inOut"
-          }, 76)
-          // Hero portrait emerges seamlessly from behind
+          }, 78);
+
+        // 80% -> 100%: HERO BEGINS REVEALING UNDERNEATH SIMULTANEOUSLY (TIGHT OVERLAP, ZERO GAP)
+        masterIntroTL
           .to("#hero .hero-portrait-image", {
             opacity: 1,
+            y: 0,
             scale: 1,
             duration: 18,
             ease: "power2.out"
-          }, 74)
+          }, 80)
           .to("#hero .light-spot", {
             opacity: 1,
             duration: 16
-          }, 74)
+          }, 80)
           .to("#hero .hero-content", {
             opacity: 1,
             y: 0,
             duration: 18,
             ease: "power2.out"
-          }, 76)
+          }, 82)
           .to("#hero .hero-floating-badge", {
             opacity: 1,
             y: 0,
             stagger: 1.2,
             duration: 16,
             ease: "power2.out"
-          }, 78);
+          }, 84);
 
-        // 82% -> 92%: Pavan collapses LAST! Dissolves seamlessly into emerging hero portrait
+        // 84% -> 94%: PAVAN MOVES LAST! Sinks downward following the cluster and dissolves seamlessly
         masterIntroTL
           .to("#introPortrait", {
-            scale: 0.82,
-            z: -100,
+            y: 120,
+            scale: 0.85,
             opacity: 0,
             duration: 10,
             ease: "power2.inOut"
-          }, 82)
+          }, 84)
           .to(".intro-portrait-halo", {
             scale: 0.4,
             opacity: 0,
             duration: 10
-          }, 82);
+          }, 84);
 
         // Minimal cursor-reactive float parallax for hero floating badges (Desktop)
         const heroEl = document.getElementById("hero");
@@ -534,7 +536,7 @@ function initAnimations() {
       const introStage = document.getElementById("introStage");
 
       if (introSection && introStage) {
-        // Initial setup for tablet resting coordinates
+        // Initial setup for tablet resting coordinates (Curated 7 cards)
         INTRO_FACTS.forEach(fact => {
           const posEl = document.getElementById(`pos-${fact.id}`);
           if (posEl && fact.tablet) {
@@ -550,29 +552,15 @@ function initAnimations() {
           }
         });
 
-        // Pill tags tablet coordinates
-        Object.entries(INTRO_PILLS).forEach(([pillId, coords]) => {
-          if (coords.tablet) {
-            gsap.set(`#pos-${pillId}`, {
-              x: coords.tablet.x,
-              y: coords.tablet.y,
-              z: coords.tablet.z,
-              rotation: coords.tablet.rot,
-              opacity: 0,
-              scale: 0.5,
-              transformOrigin: "center center"
-            });
-          }
-        });
-
-        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: -150 });
+        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: -150, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
         gsap.set("#introWatermark", { opacity: 0, scale: 0.95 });
+        gsap.set(introSection, { opacity: 1, pointerEvents: "auto" });
 
         // Pre-set Hero elements hidden
-        gsap.set("#hero .hero-content", { opacity: 0, y: 30 });
-        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.96 });
-        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 15 });
+        gsap.set("#hero .hero-content", { opacity: 0, y: 45 });
+        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.95, y: 45 });
+        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 20 });
         gsap.set("#hero .light-spot", { opacity: 0 });
 
         gsap.from("#navbar", {
@@ -583,18 +571,18 @@ function initAnimations() {
           delay: 0.15
         });
 
-        // Tablet Continuous Master Timeline (160% scroll length)
+        // Tablet Continuous Master Timeline (150% scroll length)
         const tabletIntroTL = gsap.timeline({
           scrollTrigger: {
             trigger: "#introStage",
             start: "top top",
-            end: "+=160%",
+            end: "+=150%",
             pin: true,
-            scrub: 0.7,
+            scrub: 0.6,
             anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              if (self.progress >= 0.999) {
+              if (self.progress >= 0.99) {
                 introSection.style.pointerEvents = "none";
               } else {
                 introSection.style.pointerEvents = "auto";
@@ -603,52 +591,70 @@ function initAnimations() {
           }
         });
 
-        // 0% -> 20%: Pavan emerges
+        // 0% -> 22%: Pavan emerges
         tabletIntroTL
-          .to("#introPortrait", { scale: 1.0, opacity: 1, z: 0, duration: 20, ease: "power2.out" }, 0)
-          .to(".intro-portrait-halo", { scale: 1.0, opacity: 0.7, duration: 20 }, 0)
-          .to("#introWatermark", { opacity: 0.4, scale: 1.05, duration: 20 }, 0)
+          .to("#introPortrait", { scale: 1.0, opacity: 1, z: 0, duration: 22, ease: "power2.out" }, 0)
+          .to(".intro-portrait-halo", { scale: 1.0, opacity: 0.7, duration: 22 }, 0)
+          .to("#introWatermark", { opacity: 0.4, scale: 1.05, duration: 22 }, 0)
           .to("#introScrollIndicator", { opacity: 0.8, duration: 16 }, 0);
 
-        // 18% -> 48%: Tablet cards emerge
+        // 16% -> 48%: Tablet cards emerge in 3 waves
         tabletIntroTL
-          .to("#pos-cost-opt, #pos-payroll-auto, #pos-pill-3", { opacity: 1, scale: 1.0, duration: 16, stagger: 2, ease: "back.out(1.2)" }, 18)
-          .to("#pos-lending-growth, #pos-risk-gov, #pos-pill-2", { opacity: 1, scale: 1.0, duration: 15, stagger: 1.5, ease: "back.out(1.2)" }, 28)
-          .to("#pos-focus-ib, #pos-cap-markets, #pos-exec-leadership", { opacity: 1, scale: 1.0, duration: 14, stagger: 1.5, ease: "power2.out" }, 36);
+          .to("#pos-cost-opt, #pos-payroll-auto", { opacity: 1, scale: 1.0, duration: 16, stagger: 2, ease: "back.out(1.2)" }, 16)
+          .to("#pos-lending-growth, #pos-risk-gov", { opacity: 1, scale: 1.0, duration: 15, stagger: 1.5, ease: "back.out(1.2)" }, 24)
+          .to("#pos-focus-ib, #pos-proj-enterprise, #pos-exec-leadership", { opacity: 1, scale: 1.0, duration: 14, stagger: 1.2, ease: "power2.out" }, 32);
 
         tabletIntroTL.to("#introScrollIndicator", { opacity: 0, y: 15, duration: 8 }, 48);
 
-        // 60% -> 70%: Dampen idle & normalize drag
+        // 58% -> 66%: Dampen idle & normalize drag
         tabletIntroTL
-          .to(idleStrength, { value: 0, duration: 10, ease: "power2.inOut" }, 60)
-          .to(".card-drag-wrap", { x: 0, y: 0, duration: 6, ease: "power2.out" }, 60);
+          .to(idleStrength, { value: 0, duration: 8, ease: "power2.inOut" }, 58)
+          .to(".card-drag-wrap", { x: 0, y: 0, duration: 6, ease: "power2.out" }, 58);
 
-        // 66% -> 86%: Cards collapse inward
+        // 64% -> 80%: Cards pivot & collapse inward
         tabletIntroTL
-          .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-cap-markets, #pos-exec-leadership, #pos-pill-2, #pos-pill-3", {
-            x: 0,
-            y: 0,
-            scale: 0.15,
+          .to("#introWatermark", { opacity: 0, scale: 0.75, duration: 14, ease: "power2.in" }, 64)
+          .to(".intro-ambient-mesh", { opacity: 0, duration: 14 }, 66);
+
+        INTRO_FACTS.filter(f => f.tablet).forEach((fact, idx) => {
+          const posEl = document.getElementById(`pos-${fact.id}`);
+          if (posEl) {
+            tabletIntroTL.to(posEl, {
+              x: 0,
+              y: 0,
+              z: -40,
+              scale: 0.4,
+              rotationZ: fact.pivot ? fact.pivot.rot : 0,
+              rotationX: fact.pivot ? fact.pivot.tiltX : 0,
+              opacity: 0.9,
+              duration: 16,
+              ease: "power2.inOut"
+            }, 64 + (idx % 3) * 0.4);
+          }
+        });
+
+        // 78% -> 92%: Collapsed card cluster moves downward together & exits
+        tabletIntroTL
+          .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-proj-enterprise, #pos-exec-leadership", {
+            y: 140,
+            scale: 0.2,
             opacity: 0,
-            duration: 16,
-            stagger: 0.3,
+            duration: 14,
             ease: "power2.in"
-          }, 66)
-          .to("#introWatermark", { opacity: 0, scale: 0.7, duration: 14 }, 66)
-          .to(".intro-ambient-mesh", { opacity: 0, duration: 14 }, 68);
+          }, 78)
+          .to(introSection, { opacity: 0, duration: 14, ease: "power1.inOut" }, 78);
 
-        // 72% -> 94%: Hero reveal with seamless overlap
+        // 80% -> 100%: Hero reveal with seamless overlap (tight transition)
         tabletIntroTL
-          .to(introSection, { opacity: 0, duration: 16, ease: "power1.inOut" }, 74)
-          .to("#hero .hero-portrait-image", { opacity: 1, scale: 1, duration: 18, ease: "power2.out" }, 72)
-          .to("#hero .light-spot", { opacity: 1, duration: 16 }, 72)
-          .to("#hero .hero-content", { opacity: 1, y: 0, duration: 18, ease: "power2.out" }, 74)
-          .to("#hero .hero-floating-badge", { opacity: 1, y: 0, stagger: 1, duration: 16, ease: "power2.out" }, 76);
+          .to("#hero .hero-portrait-image", { opacity: 1, y: 0, scale: 1, duration: 18, ease: "power2.out" }, 80)
+          .to("#hero .light-spot", { opacity: 1, duration: 16 }, 80)
+          .to("#hero .hero-content", { opacity: 1, y: 0, duration: 18, ease: "power2.out" }, 82)
+          .to("#hero .hero-floating-badge", { opacity: 1, y: 0, stagger: 1, duration: 16, ease: "power2.out" }, 84);
 
-        // 80% -> 90%: Pavan dissolves last into hero
+        // 84% -> 94%: Pavan dissolves last into hero
         tabletIntroTL
-          .to("#introPortrait", { scale: 0.82, opacity: 0, duration: 10, ease: "power2.inOut" }, 80)
-          .to(".intro-portrait-halo", { opacity: 0, duration: 10 }, 80);
+          .to("#introPortrait", { y: 110, scale: 0.85, opacity: 0, duration: 10, ease: "power2.inOut" }, 84)
+          .to(".intro-portrait-halo", { scale: 0.4, opacity: 0, duration: 10 }, 84);
       }
 
       // Contact Section Tablet
@@ -698,21 +704,21 @@ function initAnimations() {
 
       if (introSection && introStage) {
         // Pre-set mobile hero hidden
-        gsap.set("#hero .hero-content", { opacity: 0, y: 25 });
-        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.96 });
-        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 12 });
+        gsap.set("#hero .hero-content", { opacity: 0, y: 35 });
+        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.95, y: 35 });
+        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 15 });
         gsap.set("#hero .light-spot", { opacity: 0 });
+        gsap.set(introSection, { opacity: 1, pointerEvents: "auto" });
 
-        // Mobile perimeter coordinates — zero face overlap
-        gsap.set("#pos-focus-ib",        { x: "0vw",   y: "-36vh", z: 30, rotation: 0,    opacity: 0, scale: 0.6 });
-        gsap.set("#pos-cost-opt",        { x: "-28vw", y: "-22vh", z: 35, rotation: -2,   opacity: 0, scale: 0.6 });
-        gsap.set("#pos-payroll-auto",     { x: "28vw",  y: "-22vh", z: 35, rotation: 2,    opacity: 0, scale: 0.6 });
-        gsap.set("#pos-lending-growth",   { x: "-28vw", y: "24vh",  z: 30, rotation: 1.5,  opacity: 0, scale: 0.6 });
-        gsap.set("#pos-risk-gov",         { x: "28vw",  y: "24vh",  z: 30, rotation: -1.5, opacity: 0, scale: 0.6 });
-        gsap.set("#pos-exec-leadership",  { x: "0vw",   y: "35vh",  z: 35, rotation: 0,    opacity: 0, scale: 0.6 });
-        gsap.set("#pos-pill-3",           { x: "0vw",   y: "-43vh", z: 25, rotation: 0,    opacity: 0, scale: 0.6 });
+        // Mobile perimeter coordinates — zero face overlap (Strict 6 cards)
+        gsap.set("#pos-focus-ib",        { x: "0vw",   y: "-37vh", z: 30, rotation: 0,    opacity: 0, scale: 0.6, transformOrigin: "center center" });
+        gsap.set("#pos-cost-opt",        { x: "-28vw", y: "-22vh", z: 35, rotation: -2,   opacity: 0, scale: 0.6, transformOrigin: "center center" });
+        gsap.set("#pos-payroll-auto",     { x: "28vw",  y: "-22vh", z: 35, rotation: 2,    opacity: 0, scale: 0.6, transformOrigin: "center center" });
+        gsap.set("#pos-lending-growth",   { x: "-28vw", y: "24vh",  z: 30, rotation: 1.5,  opacity: 0, scale: 0.6, transformOrigin: "center center" });
+        gsap.set("#pos-risk-gov",         { x: "28vw",  y: "24vh",  z: 30, rotation: -1.5, opacity: 0, scale: 0.6, transformOrigin: "center center" });
+        gsap.set("#pos-exec-leadership",  { x: "0vw",   y: "37vh",  z: 35, rotation: 0,    opacity: 0, scale: 0.6, transformOrigin: "center center" });
 
-        gsap.set("#introPortrait", { scale: 0.78, opacity: 0, z: -100 });
+        gsap.set("#introPortrait", { scale: 0.78, opacity: 0, z: -100, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
 
         // Initial mobile navbar entrance
@@ -724,18 +730,18 @@ function initAnimations() {
           delay: 0.15
         });
 
-        // Mobile Master Timeline (shorter 135% pinned scroll for faster access)
+        // Mobile Master Timeline (shorter 125% pinned scroll for clean, fast access)
         const mobileIntroTL = gsap.timeline({
           scrollTrigger: {
             trigger: "#introStage",
             start: "top top",
-            end: "+=135%",
+            end: "+=125%",
             pin: true,
             scrub: 0.6,
             anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              if (self.progress >= 0.999) {
+              if (self.progress >= 0.99) {
                 introSection.style.pointerEvents = "none";
               } else {
                 introSection.style.pointerEvents = "auto";
@@ -744,46 +750,56 @@ function initAnimations() {
           }
         });
 
-        // 0 -> 22: Pavan emerges cleanly
+        // 0% -> 22%: Pavan emerges cleanly
         mobileIntroTL
           .to("#introPortrait", { scale: 1.0, opacity: 1, z: 0, duration: 22, ease: "power2.out" }, 0)
           .to(".intro-portrait-halo", { scale: 1.0, opacity: 0.7, duration: 22 }, 0)
           .to("#introScrollIndicator", { opacity: 0.8, duration: 16 }, 0);
 
-        // 18 -> 48: 6 verified mobile cards emerge around perimeter
+        // 16% -> 46%: 6 verified mobile cards emerge around perimeter in 3 waves
         mobileIntroTL
-          .to("#pos-cost-opt, #pos-payroll-auto", { opacity: 1, scale: 1.0, duration: 15, stagger: 2, ease: "back.out(1.2)" }, 18)
-          .to("#pos-lending-growth, #pos-risk-gov", { opacity: 1, scale: 1.0, duration: 15, stagger: 2, ease: "back.out(1.2)" }, 26)
-          .to("#pos-focus-ib, #pos-exec-leadership, #pos-pill-3", { opacity: 1, scale: 1.0, duration: 14, stagger: 1.5, ease: "power2.out" }, 34);
+          .to("#pos-cost-opt, #pos-payroll-auto", { opacity: 1, scale: 1.0, duration: 15, stagger: 2, ease: "back.out(1.2)" }, 16)
+          .to("#pos-lending-growth, #pos-risk-gov", { opacity: 1, scale: 1.0, duration: 15, stagger: 2, ease: "back.out(1.2)" }, 24)
+          .to("#pos-focus-ib, #pos-exec-leadership", { opacity: 1, scale: 1.0, duration: 14, stagger: 1.5, ease: "power2.out" }, 32);
 
         mobileIntroTL.to("#introScrollIndicator", { opacity: 0, y: 10, duration: 8 }, 46);
 
-        // 56 -> 66: Dampen idle motion
-        mobileIntroTL.to(idleStrength, { value: 0, duration: 10, ease: "power2.inOut" }, 56);
+        // 56% -> 64%: Dampen idle motion
+        mobileIntroTL.to(idleStrength, { value: 0, duration: 8, ease: "power2.inOut" }, 56);
 
-        // 62 -> 82: Mobile cards collapse inward toward center
-        mobileIntroTL.to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-exec-leadership, #pos-pill-3", {
+        // 62% -> 78%: Mobile cards pivot & collapse inward toward center
+        mobileIntroTL.to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-exec-leadership", {
           x: 0,
           y: 0,
-          scale: 0.15,
-          opacity: 0,
+          scale: 0.4,
+          opacity: 0.9,
           duration: 16,
-          stagger: 0.3,
-          ease: "power2.in"
+          stagger: 0.2,
+          ease: "power2.inOut"
         }, 62);
 
-        // 68 -> 92: Seamless overlapping mobile hero reveal
+        // 76% -> 90%: Collapsed group moves downward together & exits
         mobileIntroTL
-          .to(introSection, { opacity: 0, duration: 16, ease: "power1.inOut" }, 70)
-          .to("#hero .hero-portrait-image", { opacity: 1, scale: 1, duration: 18, ease: "power2.out" }, 68)
-          .to("#hero .light-spot", { opacity: 1, duration: 16 }, 68)
-          .to("#hero .hero-content", { opacity: 1, y: 0, duration: 18, ease: "power2.out" }, 70)
-          .to("#hero .hero-floating-badge", { opacity: 1, y: 0, stagger: 0.8, duration: 16, ease: "power2.out" }, 72);
+          .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-exec-leadership", {
+            y: 120,
+            scale: 0.2,
+            opacity: 0,
+            duration: 14,
+            ease: "power2.in"
+          }, 76)
+          .to(introSection, { opacity: 0, duration: 14, ease: "power1.inOut" }, 76);
 
-        // 76 -> 86: Pavan dissolves last into hero
+        // 78% -> 98%: Seamless overlapping mobile hero reveal (tight transition)
         mobileIntroTL
-          .to("#introPortrait", { scale: 0.82, opacity: 0, duration: 10, ease: "power2.inOut" }, 76)
-          .to(".intro-portrait-halo", { opacity: 0, duration: 10 }, 76);
+          .to("#hero .hero-portrait-image", { opacity: 1, y: 0, scale: 1, duration: 18, ease: "power2.out" }, 78)
+          .to("#hero .light-spot", { opacity: 1, duration: 16 }, 78)
+          .to("#hero .hero-content", { opacity: 1, y: 0, duration: 18, ease: "power2.out" }, 80)
+          .to("#hero .hero-floating-badge", { opacity: 1, y: 0, stagger: 0.8, duration: 16, ease: "power2.out" }, 82);
+
+        // 82% -> 92%: Pavan dissolves last into hero
+        mobileIntroTL
+          .to("#introPortrait", { y: 95, scale: 0.85, opacity: 0, duration: 10, ease: "power2.inOut" }, 82)
+          .to(".intro-portrait-halo", { scale: 0.4, opacity: 0, duration: 10 }, 82);
 
         const scrollIndicator = document.getElementById("introScrollIndicator");
         if (scrollIndicator) {

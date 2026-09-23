@@ -180,19 +180,24 @@
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-sm);
-  padding: 13px 17px;
+  padding: 12px 16px;
+  height: auto;
+  min-height: auto;
   box-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.85), 0 0 16px rgba(198, 161, 91, 0.06);
   color: var(--text-primary);
   transform-style: preserve-3d;
   will-change: transform, opacity;
   user-select: none;
   pointer-events: auto;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  word-wrap: break-word;
+  overflow: visible;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
 .visual-card:hover {
   border-color: var(--accent-gold);
-  box-shadow: 0 18px 44px -8px rgba(0, 0, 0, 0.95), 0 0 22px rgba(198, 161, 91, 0.18);
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.95), 0 0 20px rgba(198, 161, 91, 0.18);
+  transform: translateZ(16px) scale(1.02);
 }
 
 .card-draggable.is-dragging .visual-card {
@@ -209,22 +214,22 @@
 }
 
 /* ==========================================================================
-   CARD SIZE HIERARCHY (Large: 230-280px, Medium: 180-230px, Small: 100-160px)
+   CARD SIZE HIERARCHY (Large: 220-255px, Medium: 180-215px, Small: 140-175px)
    ========================================================================== */
 .card-size-lg {
-  width: clamp(230px, 17.5vw, 280px);
+  width: clamp(220px, 16.5vw, 255px);
 }
 
 .card-size-md {
-  width: clamp(180px, 13.5vw, 230px);
+  width: clamp(180px, 13.5vw, 215px);
 }
 
 .card-size-sm {
-  width: clamp(115px, 9vw, 155px);
+  width: clamp(140px, 10.5vw, 175px);
 }
 
 .visual-card.card-size-sm {
-  padding: 8px 12px;
+  padding: 9px 12px;
 }
 
 .card-size-sm .card-main-title {
@@ -478,28 +483,18 @@
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1024px) {
-  /* Tablet adjustments: art-directed 8-9 cards, hide heavy rear research */
+  /* Tablet adjustments: 7 clean non-overlapping cards */
   #pos-analytics-stack,
-  #pos-res-silent-auctions,
-  #pos-res-volatility,
-  #pos-res-universal,
-  #pos-proj-enterprise,
-  #pos-customer-acq,
-  #pos-billing-ctrl,
-  #pos-pill-1 {
+  #pos-res-silent-auctions {
     display: none !important;
   }
 
   .card-size-lg {
-    width: 220px;
+    width: 215px;
   }
 
   .card-size-md {
-    width: 185px;
-  }
-
-  .card-size-sm {
-    width: 130px;
+    width: 180px;
   }
 
   .visual-card {
@@ -507,7 +502,7 @@
   }
 
   .metric-huge {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
   }
 
   .intro-portrait-anchor {
@@ -517,17 +512,15 @@
 }
 
 @media (max-width: 768px) {
-  /* Mobile: Dedicated composition with strictly 6-7 verified anchors */
-  #pos-customer-acq,
-  #pos-billing-ctrl,
-  #pos-cap-markets,
+  /* Mobile: Exactly 6 perimeter cards around Pavan, zero face overlap */
   #pos-analytics-stack,
-  #pos-proj-enterprise,
   #pos-res-silent-auctions,
-  #pos-res-volatility,
-  #pos-res-universal,
-  #pos-pill-1,
-  #pos-pill-2 {
+  #pos-proj-enterprise {
+    display: none !important;
+  }
+
+  /* Shorter mobile copy: hide long descriptive subtitles */
+  .desktop-only-text {
     display: none !important;
   }
 
@@ -544,21 +537,17 @@
   }
 
   .intro-portrait-img {
-    max-width: min(72vw, 280px);
+    max-width: min(70vw, 270px);
   }
 
-  /* Strict mobile card size scale-down: avoids clipping and face overlap */
+  /* Compact card dimensions for small mobile viewports */
   .card-size-lg,
   .card-size-md {
-    width: clamp(128px, 38vw, 155px) !important;
-  }
-
-  .card-size-sm {
-    width: clamp(90px, 30vw, 125px) !important;
+    width: clamp(125px, 37vw, 145px) !important;
   }
 
   .visual-card {
-    padding: 7px 10px;
+    padding: 8px 10px;
     border-radius: var(--radius-xs);
   }
 
@@ -573,7 +562,7 @@
   }
 
   .metric-huge {
-    font-size: clamp(1.35rem, 4.4vw, 1.6rem);
+    font-size: clamp(1.35rem, 4.4vw, 1.55rem);
     line-height: 1;
   }
 
@@ -582,26 +571,12 @@
     line-height: 1.22;
   }
 
-  .card-subtext {
-    font-size: 0.62rem;
-    line-height: 1.25;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
   .card-main-title {
     font-size: 0.8rem;
   }
 
   .card-pill-row {
     display: none !important;
-  }
-
-  .intro-pill-tag {
-    padding: 5px 12px;
-    font-size: 0.62rem;
   }
 
   .intro-scroll-indicator {
