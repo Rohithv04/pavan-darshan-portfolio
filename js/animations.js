@@ -10,6 +10,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { INTRO_FACTS, INTRO_WATERMARK } from "./intro-facts.js";
 
 // Register ScrollTrigger plugin once
 gsap.registerPlugin(ScrollTrigger);
@@ -67,137 +68,142 @@ function initAnimations() {
     // ========================================================================
     mm.add("(min-width: 769px)", () => {
       // ----------------------------------------------------------------------
+      // ----------------------------------------------------------------------
       // INTERACTIVE 3D SCROLL-DEPTH INTRO & HERO TRANSITION (Desktop)
       // ----------------------------------------------------------------------
       const introSection = document.getElementById("intro");
       const introStage = document.getElementById("introStage");
 
       if (introSection && introStage) {
-        // Initial 3D layer depth setup
-        gsap.set(".intro-layer-fg", { z: 90 });
-        gsap.set(".intro-layer-near", { z: 40 });
-        gsap.set(".intro-layer-bg", { z: -50 });
-        gsap.set("#introPortrait", { z: 15 });
-
-        // Pre-set Hero elements hidden until Intro transition scrub
-        gsap.set("#hero .hero-content", { opacity: 0, y: 35 });
-        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.96 });
-        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 20 });
-        gsap.set("#hero .light-spot", { opacity: 0 });
-
-        // 1. Initial Entrance Timeline on Load
-        const introEntranceTL = gsap.timeline({
-          defaults: { ease: "power3.out" },
-          delay: 0.15
-        });
-
-        introEntranceTL
-          .from("#navbar", {
-            y: -15,
-            opacity: 0,
-            duration: 0.6,
-            ease: "power2.out"
-          })
-          .from("#introPortrait", {
-            scale: 0.9,
-            opacity: 0,
-            duration: 1.1,
-            ease: "power3.out"
-          }, "-=0.3")
-          .from(".intro-portrait-halo", {
-            scale: 0.6,
-            opacity: 0,
-            duration: 1.2,
-            ease: "power2.out"
-          }, "-=0.8")
-          .from("#introWatermark", {
-            opacity: 0,
-            scale: 0.95,
-            duration: 1.2,
-            ease: "power2.out"
-          }, "-=1.0")
-          .from(".intro-floating-card, .intro-pill-tag", {
-            scale: 0.65,
-            opacity: 0,
-            y: 28,
-            stagger: 0.05,
-            duration: 0.85,
-            ease: "back.out(1.2)"
-          }, "-=0.8")
-          .from("#introScrollIndicator", {
-            opacity: 0,
-            y: 15,
-            duration: 0.6,
-            ease: "power2.out"
-          }, "-=0.3");
-
-        // 2. Continuous Ambient Floating / Hover Loops (Joinswsh style organic bounciness)
-        const idleHoverAnimations = [
-          { sel: "#cardCandlestick", y: -8, rot: 1.2, dur: 3.2 },
-          { sel: "#cardYield", y: 9, rot: -1.0, dur: 3.8 },
-          { sel: "#cardResearch", y: -7, rot: 0.8, dur: 4.2 },
-          { sel: "#cardCapalloc", y: 10, rot: -1.2, dur: 3.5 },
-          { sel: "#cardTerminal", y: -9, rot: 1.1, dur: 3.9 },
-          { sel: "#cardKpi", y: 7, rot: -0.9, dur: 3.6 },
-          { sel: "#cardProject", y: -8, rot: 1.0, dur: 3.7 },
-          { sel: "#cardModel", y: 9, rot: -1.1, dur: 3.4 },
-          { sel: "#pill1", y: -5, rot: 0.6, dur: 4.0 },
-          { sel: "#pill2", y: 6, rot: -0.8, dur: 3.3 },
-          { sel: "#pill3", y: -5, rot: 0.7, dur: 3.7 }
-        ];
-
-        idleHoverAnimations.forEach(item => {
-          const el = document.querySelector(item.sel);
-          if (el) {
-            gsap.to(el, {
-              y: item.y,
-              rotationZ: item.rot,
-              duration: item.dur,
-              repeat: -1,
-              yoyo: true,
-              ease: "sine.inOut"
+        // Initial setup for resting coordinates
+        INTRO_FACTS.forEach(fact => {
+          const posEl = document.getElementById(`pos-${fact.id}`);
+          if (posEl) {
+            gsap.set(posEl, {
+              x: fact.desktop.x,
+              y: fact.desktop.y,
+              z: fact.desktop.z,
+              rotation: fact.desktop.rot,
+              opacity: 0,
+              scale: 0.5,
+              transformOrigin: "center center"
             });
           }
         });
 
-        // 3. Interactive Cursor Parallax via gsap.quickTo
-        const scene = document.getElementById("introScene");
-        const portrait = document.getElementById("introPortrait");
-        const fgCards = document.querySelectorAll(".intro-layer-fg");
-        const nearCards = document.querySelectorAll(".intro-layer-near");
-        const bgCards = document.querySelectorAll(".intro-layer-bg");
+        // Pill tags initial coordinates
+        gsap.set("#pos-pill-1", { x: "28vw", y: "-34vh", z: -20, rotation: 1.5, opacity: 0, scale: 0.5 });
+        gsap.set("#pos-pill-2", { x: "30vw", y: "30vh", z: 75, rotation: -2, opacity: 0, scale: 0.5 });
+        gsap.set("#pos-pill-3", { x: "-26vw", y: "-36vh", z: 85, rotation: -1, opacity: 0, scale: 0.5 });
 
-        const xToScene = gsap.quickTo(scene, "rotationY", { duration: 0.9, ease: "power2.out" });
-        const yToScene = gsap.quickTo(scene, "rotationX", { duration: 0.9, ease: "power2.out" });
-        const xToPortrait = gsap.quickTo(portrait, "x", { duration: 1.1, ease: "power2.out" });
-        const yToPortrait = gsap.quickTo(portrait, "y", { duration: 1.1, ease: "power2.out" });
+        // Initial state of Pavan, halo, and watermark
+        gsap.set("#introPortrait", { scale: 0.72, opacity: 0, z: -200 });
+        gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
+        gsap.set("#introWatermark", { opacity: 0, scale: 0.95 });
 
-        const xToFG = Array.from(fgCards).map(el => gsap.quickTo(el, "x", { duration: 0.8, ease: "power2.out" }));
-        const yToFG = Array.from(fgCards).map(el => gsap.quickTo(el, "y", { duration: 0.8, ease: "power2.out" }));
+        // Pre-set Hero elements hidden until Intro transition scrub
+        gsap.set("#hero .hero-content", { opacity: 0, y: 45 });
+        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.95 });
+        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 20 });
+        gsap.set("#hero .light-spot", { opacity: 0 });
 
-        const xToNear = Array.from(nearCards).map(el => gsap.quickTo(el, "x", { duration: 0.95, ease: "power2.out" }));
-        const yToNear = Array.from(nearCards).map(el => gsap.quickTo(el, "y", { duration: 0.95, ease: "power2.out" }));
+        // 1. Initial Navbar entrance
+        gsap.from("#navbar", {
+          y: -15,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          delay: 0.15
+        });
 
-        const xToBG = Array.from(bgCards).map(el => gsap.quickTo(el, "x", { duration: 1.1, ease: "power2.out" }));
-        const yToBG = Array.from(bgCards).map(el => gsap.quickTo(el, "y", { duration: 1.1, ease: "power2.out" }));
+        // 2. Desktop Card Dragging with Spring-Back Return
+        const draggableCards = document.querySelectorAll(".card-draggable");
+        draggableCards.forEach(dragWrap => {
+          let isDragging = false;
+          let startX = 0;
+          let startY = 0;
+          let currentX = 0;
+          let currentY = 0;
+
+          const onPointerDown = (e) => {
+            if (e.pointerType === "touch") return; // Touch devices retain standard scroll
+            isDragging = true;
+            startX = e.clientX - currentX;
+            startY = e.clientY - currentY;
+            dragWrap.classList.add("is-dragging");
+            dragWrap.setPointerCapture(e.pointerId);
+            e.preventDefault();
+          };
+
+          const onPointerMove = (e) => {
+            if (!isDragging) return;
+            currentX = e.clientX - startX;
+            currentY = e.clientY - startY;
+            gsap.set(dragWrap, { x: currentX, y: currentY });
+          };
+
+          const onPointerUp = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            dragWrap.classList.remove("is-dragging");
+            try { dragWrap.releasePointerCapture(e.pointerId); } catch(err) {}
+            currentX = 0;
+            currentY = 0;
+            // Soft spring return to designed resting position
+            gsap.to(dragWrap, {
+              x: 0,
+              y: 0,
+              duration: 0.55,
+              ease: "back.out(1.4)"
+            });
+          };
+
+          dragWrap.addEventListener("pointerdown", onPointerDown);
+          dragWrap.addEventListener("pointermove", onPointerMove);
+          dragWrap.addEventListener("pointerup", onPointerUp);
+          dragWrap.addEventListener("pointercancel", onPointerUp);
+        });
+
+        // 3. Cursor Parallax Interaction via gsap.quickTo
+        const fgParallax = document.querySelectorAll('[data-layer="foreground"] .card-parallax-wrap');
+        const midParallax = document.querySelectorAll('[data-layer="midground"] .card-parallax-wrap');
+        const rearParallax = document.querySelectorAll('[data-layer="rear"] .card-parallax-wrap');
+        const portraitAnchor = document.getElementById("introPortrait");
+        const sceneEl = document.getElementById("introScene");
+
+        const xToScene = gsap.quickTo(sceneEl, "rotationY", { duration: 1.0, ease: "power2.out" });
+        const yToScene = gsap.quickTo(sceneEl, "rotationX", { duration: 1.0, ease: "power2.out" });
+        const xToPortrait = gsap.quickTo(portraitAnchor, "x", { duration: 1.2, ease: "power2.out" });
+        const yToPortrait = gsap.quickTo(portraitAnchor, "y", { duration: 1.2, ease: "power2.out" });
+
+        const xToFG = Array.from(fgParallax).map(el => gsap.quickTo(el, "x", { duration: 0.8, ease: "power2.out" }));
+        const yToFG = Array.from(fgParallax).map(el => gsap.quickTo(el, "y", { duration: 0.8, ease: "power2.out" }));
+        const rotToFG = Array.from(fgParallax).map(el => gsap.quickTo(el, "rotationZ", { duration: 0.8, ease: "power2.out" }));
+
+        const xToMid = Array.from(midParallax).map(el => gsap.quickTo(el, "x", { duration: 0.95, ease: "power2.out" }));
+        const yToMid = Array.from(midParallax).map(el => gsap.quickTo(el, "y", { duration: 0.95, ease: "power2.out" }));
+
+        const xToRear = Array.from(rearParallax).map(el => gsap.quickTo(el, "x", { duration: 1.1, ease: "power2.out" }));
+        const yToRear = Array.from(rearParallax).map(el => gsap.quickTo(el, "y", { duration: 1.1, ease: "power2.out" }));
 
         const onIntroMouseMove = (e) => {
           const normX = (e.clientX / window.innerWidth) - 0.5;
           const normY = (e.clientY / window.innerHeight) - 0.5;
 
-          xToScene(normX * 9);
-          yToScene(-normY * 7);
-          xToPortrait(normX * 12);
-          yToPortrait(normY * 10);
+          xToScene(normX * 8);
+          yToScene(-normY * 6);
+          xToPortrait(normX * 5);
+          yToPortrait(normY * 5);
 
-          xToFG.forEach(fn => fn(normX * 42));
+          xToFG.forEach(fn => fn(normX * 36));
           yToFG.forEach(fn => fn(normY * 32));
+          rotToFG.forEach(fn => fn(normX * 4));
 
-          xToNear.forEach(fn => fn(normX * 24));
-          yToNear.forEach(fn => fn(normY * 18));
+          xToMid.forEach(fn => fn(normX * 20));
+          yToMid.forEach(fn => fn(normY * 18));
 
-          xToBG.forEach(fn => fn(normX * 12));
-          yToBG.forEach(fn => fn(normY * 10));
+          xToRear.forEach(fn => fn(normX * 10));
+          yToRear.forEach(fn => fn(normY * 10));
         };
 
         const onIntroMouseLeave = () => {
@@ -207,31 +213,49 @@ function initAnimations() {
           yToPortrait(0);
           xToFG.forEach(fn => fn(0));
           yToFG.forEach(fn => fn(0));
-          xToNear.forEach(fn => fn(0));
-          yToNear.forEach(fn => fn(0));
-          xToBG.forEach(fn => fn(0));
-          yToBG.forEach(fn => fn(0));
+          rotToFG.forEach(fn => fn(0));
+          xToMid.forEach(fn => fn(0));
+          yToMid.forEach(fn => fn(0));
+          xToRear.forEach(fn => fn(0));
+          yToRear.forEach(fn => fn(0));
         };
 
         window.addEventListener("mousemove", onIntroMouseMove, { passive: true });
         document.addEventListener("mouseleave", onIntroMouseLeave);
 
-        // Click on scroll indicator scrolls past the pinned intro
+        // 4. Organic Independent Idle Hover Bobs
+        const visualCards = document.querySelectorAll(".visual-card");
+        const durations = [3.5, 5.2, 6.7, 7.8, 4.3, 5.9, 6.2, 7.1, 4.8, 5.5, 6.4];
+        visualCards.forEach((card, idx) => {
+          const dur = durations[idx % durations.length];
+          const yOffset = (idx % 2 === 0 ? -4 : 4);
+          const rotOffset = (idx % 3 === 0 ? 0.8 : -0.8);
+          gsap.to(card, {
+            y: yOffset,
+            rotationZ: rotOffset,
+            duration: dur,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+          });
+        });
+
+        // 5. Scroll Indicator Click
         const scrollIndicator = document.getElementById("introScrollIndicator");
         if (scrollIndicator) {
           scrollIndicator.addEventListener("click", () => {
             const introStageRect = introStage.getBoundingClientRect();
-            const scrollTarget = window.pageYOffset + introStageRect.top + window.innerHeight * 1.85;
+            const scrollTarget = window.pageYOffset + introStageRect.top + window.innerHeight * 2.25;
             window.scrollTo({ top: scrollTarget, behavior: "smooth" });
           });
         }
 
-        // 4. Pinned Scroll-Depth Master Sequence & Seamless Hero Transition
-        const introMasterTL = gsap.timeline({
+        // 6. SINGLE MASTER SCROLLTRIGGER SCRUB TIMELINE (100% REVERSIBLE)
+        const masterIntroTL = gsap.timeline({
           scrollTrigger: {
             trigger: "#introStage",
             start: "top top",
-            end: "+=180%",
+            end: "+=220%",
             pin: true,
             scrub: 0.8,
             anticipatePin: 1,
@@ -247,68 +271,161 @@ function initAnimations() {
           }
         });
 
-        // Stage 1 & 2 (0.00 -> 0.60): Depth activation & 3D forward flight through financial universe
-        introMasterTL
-          .to("#introScrollIndicator", { opacity: 0, y: 15, duration: 0.15 }, 0)
-          .to("#introWatermark", { scale: 1.25, opacity: 0.2, z: -120, duration: 0.6 }, 0)
-          .to("#introPortrait", { scale: 1.05, yPercent: -4, duration: 0.6, ease: "none" }, 0)
-          // Foreground cards fly fastest outward (1.5x speed)
-          .to("#cardCandlestick", { x: -160, y: -90, scale: 1.25, z: 120, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#cardProject", { x: -170, y: 90, scale: 1.25, z: 120, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#pill2", { x: 120, y: -70, scale: 1.18, z: 90, duration: 0.6, ease: "power1.inOut" }, 0)
-          // Midground cards drift moderately (0.8x speed)
-          .to("#cardYield", { x: 150, y: -70, scale: 1.12, z: 50, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#cardTerminal", { x: 160, y: 50, scale: 1.12, z: 50, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#cardCapalloc", { x: 140, y: 90, scale: 1.1, z: 40, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#cardKpi", { x: -130, y: 80, scale: 1.12, z: 50, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#cardModel", { x: 110, y: 110, scale: 1.1, z: 40, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#pill3", { x: 90, y: 60, scale: 1.08, duration: 0.6 }, 0)
-          // Background cards subtle drift
-          .to("#cardResearch", { x: -90, y: 30, scale: 1.05, z: 10, duration: 0.6, ease: "power1.inOut" }, 0)
-          .to("#pill1", { x: -70, y: -40, scale: 1.04, duration: 0.6 }, 0)
+        // Setup timeline labels
+        masterIntroTL
+          .addLabel("portraitIn", 0)
+          .addLabel("factsIn", 25)
+          .addLabel("interactiveScene", 55)
+          .addLabel("collapse", 70)
+          .addLabel("breathingSpace", 90)
+          .addLabel("heroReveal", 94);
 
-          // Stage 3 (0.60 -> 0.80): Scatter cards outward & dissolve
-          .to(".intro-floating-card, .intro-pill-tag", {
-            opacity: 0,
-            scale: 1.45,
-            duration: 0.2,
-            ease: "power2.in"
-          }, 0.6)
-          .to("#introWatermark", { opacity: 0, duration: 0.2 }, 0.6)
-
-          // Stage 4 (0.80 -> 1.00): Seamless merge into Hero Section
-          .to(".intro-ambient-mesh", { opacity: 0, duration: 0.2 }, 0.8)
-          .to(introSection, { backgroundColor: "rgba(10, 10, 10, 0)", duration: 0.2 }, 0.8)
+        // 0% -> 25% (portraitIn): Pavan emerges from depth as the primary subject
+        masterIntroTL
           .to("#introPortrait", {
-            xPercent: 30,
+            scale: 1.0,
+            opacity: 1,
+            z: 0,
+            duration: 25,
+            ease: "power2.out"
+          }, 0)
+          .to(".intro-portrait-halo", {
+            scale: 1.0,
+            opacity: 0.75,
+            duration: 25,
+            ease: "power2.out"
+          }, 0)
+          .to("#introWatermark", {
+            opacity: 0.45,
+            scale: 1.05,
+            duration: 25,
+            ease: "power1.out"
+          }, 0)
+          .to("#introScrollIndicator", {
+            opacity: 0.8,
+            duration: 20
+          }, 0);
+
+        // 25% -> 55% (factsIn): Verified facts emerge in staggered waves
+        // Wave 1: Major numerical outcomes ($2M Cost Optimization, 70%+ Payroll) + 5+ Years Badge
+        masterIntroTL
+          .to("#pos-cost-opt, #pos-payroll-auto, #pos-pill-3", {
+            opacity: 1,
+            scale: 1.0,
+            duration: 13,
+            stagger: 2,
+            ease: "back.out(1.2)"
+          }, 25);
+
+        // Wave 2: Banking growth & risk (+20% Lending, -12% NPAs, Customer Acq, Billing) + MBA Leavey
+        masterIntroTL
+          .to("#pos-lending-growth, #pos-risk-gov, #pos-customer-acq, #pos-billing-ctrl, #pos-pill-2", {
+            opacity: 1,
+            scale: 1.0,
+            duration: 13,
+            stagger: 1.5,
+            ease: "back.out(1.2)"
+          }, 34);
+
+        // Wave 3: Investment Banking focus, Capital Markets, Analytics, Execution, Research Papers + Strategy Pill
+        masterIntroTL
+          .to("#pos-focus-ib, #pos-cap-markets, #pos-analytics-stack, #pos-exec-leadership, #pos-proj-enterprise, #pos-res-silent-auctions, #pos-res-volatility, #pos-res-universal, #pos-pill-1", {
+            opacity: 1,
+            scale: 1.0,
+            duration: 12,
+            stagger: 1.2,
+            ease: "power2.out"
+          }, 43);
+
+        // 55% -> 70% (interactiveScene): Full interactive suspended universe
+        masterIntroTL
+          .to("#introScrollIndicator", {
             opacity: 0,
-            scale: 0.98,
-            duration: 0.2,
+            y: 15,
+            duration: 8
+          }, 55);
+
+        // 70% -> 90% (collapse): Core transition — entire career universe collapses inward toward focal center
+        masterIntroTL
+          // Foreground & midground cards collapse inward quickly and scale down
+          .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-customer-acq, #pos-billing-ctrl, #pos-focus-ib, #pos-cap-markets, #pos-exec-leadership, #pos-proj-enterprise, #pos-pill-1, #pos-pill-2, #pos-pill-3", {
+            x: 0,
+            y: 0,
+            z: -80,
+            scale: 0.15,
+            opacity: 0,
+            duration: 15,
+            stagger: 0.4,
+            ease: "power3.in"
+          }, 70)
+          // Rear cards & research rotate slightly as they collapse inward
+          .to("#pos-analytics-stack, #pos-res-silent-auctions, #pos-res-volatility, #pos-res-universal", {
+            x: 0,
+            y: 0,
+            z: -140,
+            rotation: 15,
+            scale: 0.1,
+            opacity: 0,
+            duration: 16,
+            stagger: 0.5,
+            ease: "power3.in"
+          }, 71)
+          .to("#introWatermark", {
+            opacity: 0,
+            scale: 0.7,
+            duration: 15,
+            ease: "power2.in"
+          }, 70)
+          .to(".intro-ambient-mesh", {
+            opacity: 0,
+            duration: 14
+          }, 76)
+          // Pavan collapses LAST! Stays visible longest, then glides to center and dissolves
+          .to("#introPortrait", {
+            scale: 0.78,
+            z: -120,
+            opacity: 0,
+            duration: 14,
             ease: "power2.inOut"
-          }, 0.8)
+          }, 76)
+          .to(".intro-portrait-halo", {
+            scale: 0.4,
+            opacity: 0,
+            duration: 12
+          }, 78);
+
+        // 90% -> 94% (breathingSpace): Clean visual moment
+        masterIntroTL
+          .to(introSection, {
+            backgroundColor: "rgba(10, 10, 10, 0)",
+            duration: 4
+          }, 90);
+
+        // 94% -> 100% (heroReveal): Existing hero section reveals seamlessly from the focal point
+        masterIntroTL
           .to("#hero .hero-portrait-image", {
             opacity: 1,
             scale: 1,
-            duration: 0.2,
+            duration: 6,
             ease: "power2.out"
-          }, 0.82)
+          }, 94)
           .to("#hero .light-spot", {
             opacity: 1,
-            duration: 0.2
-          }, 0.82)
+            duration: 6
+          }, 94)
           .to("#hero .hero-content", {
             opacity: 1,
             y: 0,
-            duration: 0.2,
+            duration: 6,
             ease: "power2.out"
-          }, 0.84)
+          }, 95)
           .to("#hero .hero-floating-badge", {
             opacity: 1,
             y: 0,
-            stagger: 0.04,
-            duration: 0.16,
+            stagger: 0.8,
+            duration: 5,
             ease: "power2.out"
-          }, 0.86);
+          }, 95);
 
         // Minimal cursor-reactive float parallax for hero floating badges (Desktop)
         const heroEl = document.getElementById("hero");
@@ -470,51 +587,37 @@ function initAnimations() {
 
       if (introSection && introStage) {
         // Pre-set mobile hero hidden
-        gsap.set("#hero .hero-content", { opacity: 0, y: 25 });
-        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.96 });
+        gsap.set("#hero .hero-content", { opacity: 0, y: 30 });
+        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.95 });
         gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 15 });
         gsap.set("#hero .light-spot", { opacity: 0 });
 
-        // 1. Mobile Intro Entrance
-        const heroTLMobile = gsap.timeline({
-          defaults: { ease: "power3.out" },
+        // Mobile positions
+        gsap.set("#pos-cost-opt", { x: "-24vw", y: "-28vh", z: 40, rotation: -2, opacity: 0, scale: 0.6 });
+        gsap.set("#pos-payroll-auto", { x: "22vw", y: "-26vh", z: 40, rotation: 2, opacity: 0, scale: 0.6 });
+        gsap.set("#pos-lending-growth", { x: "-24vw", y: "24vh", z: 30, rotation: 1.5, opacity: 0, scale: 0.6 });
+        gsap.set("#pos-risk-gov", { x: "22vw", y: "26vh", z: 30, rotation: -1.5, opacity: 0, scale: 0.6 });
+        gsap.set("#pos-focus-ib", { x: "0vw", y: "-37vh", z: 35, rotation: 0, opacity: 0, scale: 0.6 });
+        gsap.set("#pos-exec-leadership", { x: "0vw", y: "36vh", z: 35, rotation: 0, opacity: 0, scale: 0.6 });
+
+        gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: -100 });
+        gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
+
+        // Initial mobile navbar entrance
+        gsap.from("#navbar", {
+          y: -10,
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out",
           delay: 0.15
         });
 
-        heroTLMobile
-          .from("#navbar", {
-            y: -10,
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.out"
-          })
-          .from("#introPortrait", {
-            scale: 0.92,
-            opacity: 0,
-            duration: 0.85,
-            ease: "power3.out"
-          }, "-=0.2")
-          .from(".card-candlestick, .card-yield, .card-kpi, .card-capalloc", {
-            scale: 0.7,
-            opacity: 0,
-            y: 20,
-            stagger: 0.08,
-            duration: 0.6,
-            ease: "back.out(1.2)"
-          }, "-=0.4")
-          .from("#introScrollIndicator", {
-            opacity: 0,
-            y: 10,
-            duration: 0.5,
-            ease: "power2.out"
-          }, "-=0.2");
-
-        // 2. Mobile Pinned Scroll Choreography
-        const introMobileMasterTL = gsap.timeline({
+        // Mobile Pinned Scrub Timeline (100% reversible)
+        const mobileIntroTL = gsap.timeline({
           scrollTrigger: {
             trigger: "#introStage",
             start: "top top",
-            end: "+=120%",
+            end: "+=140%",
             pin: true,
             scrub: 0.6,
             anticipatePin: 1,
@@ -530,24 +633,47 @@ function initAnimations() {
           }
         });
 
-        introMobileMasterTL
-          .to("#introScrollIndicator", { opacity: 0, y: 10, duration: 0.15 }, 0)
-          .to(".card-candlestick", { x: -60, y: -40, opacity: 0.7, duration: 0.6 }, 0)
-          .to(".card-yield", { x: 60, y: -40, opacity: 0.7, duration: 0.6 }, 0)
-          .to(".card-kpi", { x: -60, y: 40, opacity: 0.7, duration: 0.6 }, 0)
-          .to(".card-capalloc", { x: 60, y: 40, opacity: 0.7, duration: 0.6 }, 0)
-          .to(".intro-floating-card, .intro-pill-tag", { opacity: 0, scale: 1.25, duration: 0.2 }, 0.6)
-          .to(introSection, { backgroundColor: "rgba(10, 10, 10, 0)", opacity: 0, duration: 0.2 }, 0.8)
-          .to("#hero .hero-portrait-image", { opacity: 1, scale: 1, duration: 0.2 }, 0.8)
-          .to("#hero .light-spot", { opacity: 1, duration: 0.2 }, 0.8)
-          .to("#hero .hero-content", { opacity: 1, y: 0, duration: 0.2 }, 0.82)
-          .to("#hero .hero-floating-badge", { opacity: 1, y: 0, stagger: 0.05, duration: 0.18 }, 0.84);
+        // 0 -> 25: Pavan emerges
+        mobileIntroTL
+          .to("#introPortrait", { scale: 1.0, opacity: 1, z: 0, duration: 25, ease: "power2.out" }, 0)
+          .to(".intro-portrait-halo", { scale: 1.0, opacity: 0.7, duration: 25 }, 0)
+          .to("#introScrollIndicator", { opacity: 0.8, duration: 20 }, 0)
+
+          // 25 -> 55: Verified mobile cards emerge
+          .to("#pos-cost-opt, #pos-payroll-auto", { opacity: 1, scale: 1.0, duration: 15, stagger: 2, ease: "back.out(1.2)" }, 25)
+          .to("#pos-lending-growth, #pos-risk-gov", { opacity: 1, scale: 1.0, duration: 15, stagger: 2, ease: "back.out(1.2)" }, 33)
+          .to("#pos-focus-ib, #pos-exec-leadership", { opacity: 1, scale: 1.0, duration: 14, stagger: 2, ease: "power2.out" }, 41)
+
+          // 55 -> 70: Interactive resting state
+          .to("#introScrollIndicator", { opacity: 0, y: 10, duration: 8 }, 55)
+
+          // 70 -> 90: Collapse inward toward focal center
+          .to("#pos-cost-opt, #pos-payroll-auto, #pos-lending-growth, #pos-risk-gov, #pos-focus-ib, #pos-exec-leadership", {
+            x: 0,
+            y: 0,
+            scale: 0.2,
+            opacity: 0,
+            duration: 15,
+            stagger: 0.4,
+            ease: "power2.in"
+          }, 70)
+          .to("#introPortrait", { scale: 0.8, opacity: 0, duration: 14, ease: "power2.inOut" }, 76)
+          .to(".intro-portrait-halo", { opacity: 0, duration: 12 }, 78)
+
+          // 90 -> 94: Clean space
+          .to(introSection, { backgroundColor: "rgba(10, 10, 10, 0)", duration: 4 }, 90)
+
+          // 94 -> 100: Mobile hero reveal
+          .to("#hero .hero-portrait-image", { opacity: 1, scale: 1, duration: 6, ease: "power2.out" }, 94)
+          .to("#hero .light-spot", { opacity: 1, duration: 6 }, 94)
+          .to("#hero .hero-content", { opacity: 1, y: 0, duration: 6, ease: "power2.out" }, 95)
+          .to("#hero .hero-floating-badge", { opacity: 1, y: 0, stagger: 0.6, duration: 5, ease: "power2.out" }, 95);
 
         const scrollIndicator = document.getElementById("introScrollIndicator");
         if (scrollIndicator) {
           scrollIndicator.addEventListener("click", () => {
             const introStageRect = introStage.getBoundingClientRect();
-            const scrollTarget = window.pageYOffset + introStageRect.top + window.innerHeight * 1.25;
+            const scrollTarget = window.pageYOffset + introStageRect.top + window.innerHeight * 1.45;
             window.scrollTo({ top: scrollTarget, behavior: "smooth" });
           });
         }

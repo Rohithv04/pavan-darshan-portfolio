@@ -1,6 +1,7 @@
 /* ==========================================================================
    INTERACTIVE 3D SCROLL-DEPTH INTRO STYLES
-   Pavan Darshan Doddala Portfolio — Executive Black & Champagne Gold Palette
+   Pavan Darshan Doddala Portfolio — Verified Career Universe
+   Aesthetics: Executive Obsidian Black & Champagne Gold Palette
    ========================================================================== */
 
 /* Outer Stage Wrapper that coordinates Intro & Hero Pinning */
@@ -65,9 +66,9 @@
 .intro-bg-watermark {
   position: absolute;
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  font-size: clamp(3rem, 7.5vw, 6.5rem);
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(245, 241, 232, 0.025);
   white-space: nowrap;
@@ -101,7 +102,7 @@
   max-width: 90vw;
   object-fit: contain;
   object-position: bottom center;
-  filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 30px rgba(198, 161, 91, 0.1));
+  filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 30px rgba(198, 161, 91, 0.12));
   display: block;
   user-select: none;
   pointer-events: none;
@@ -113,57 +114,115 @@
   top: 15%;
   left: 50%;
   transform: translateX(-50%) translateZ(-30px);
-  width: 320px;
-  height: 320px;
+  width: 340px;
+  height: 340px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(198, 161, 91, 0.22) 0%, rgba(198, 161, 91, 0.06) 50%, transparent 75%);
-  filter: blur(28px);
+  filter: blur(30px);
   pointer-events: none;
   z-index: -1;
 }
 
 /* ==========================================================================
-   FLOATING 3D FINANCIAL OBJECTS & CARDS
+   MULTI-LAYER TRANSFORM ISOLATION ARCHITECTURE
+   Prevents ScrollTrigger, Parallax, Dragging & Idle bobs from colliding.
    ========================================================================== */
-.intro-floating-card {
+
+/* 1. Position Wrapper: Controlled by ScrollTrigger emergence & collapse */
+.card-pos-wrap {
   position: absolute;
-  background-color: rgba(17, 17, 17, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* 2. Parallax Wrapper: Controlled strictly by cursor quickTo() */
+.card-parallax-wrap {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* 3. Drag Wrapper: Controlled by desktop pointer dragging */
+.card-drag-wrap {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.card-draggable {
+  cursor: grab;
+}
+
+.card-draggable.is-dragging {
+  cursor: grabbing !important;
+  z-index: 100 !important;
+}
+
+/* 4. Visual Card: Visual styles, hover transitions & idle bobs */
+.visual-card {
+  position: relative;
+  background-color: rgba(17, 17, 17, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-sm);
-  padding: 12px 16px;
-  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.8), 0 0 16px rgba(198, 161, 91, 0.06);
+  padding: 14px 18px;
+  box-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.85), 0 0 16px rgba(198, 161, 91, 0.06);
   color: var(--text-primary);
   transform-style: preserve-3d;
   will-change: transform, opacity;
-  pointer-events: auto;
   user-select: none;
+  pointer-events: auto;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.intro-floating-card:hover {
+.visual-card:hover {
   border-color: var(--accent-gold);
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(198, 161, 91, 0.15);
+  box-shadow: 0 18px 44px -8px rgba(0, 0, 0, 0.95), 0 0 22px rgba(198, 161, 91, 0.18);
 }
 
-/* Card Typography & Header Primitives */
-.intro-card-header {
+.card-draggable.is-dragging .visual-card {
+  border-color: var(--accent-gold);
+  box-shadow: 0 22px 50px -6px rgba(0, 0, 0, 0.98), 0 0 26px rgba(198, 161, 91, 0.28);
+  transform: scale(1.03);
+}
+
+/* Deep Rear Layer cards have slightly muted presentation */
+.card-rear {
+  background-color: rgba(14, 14, 14, 0.86);
+  border-color: var(--border-subtle);
+  opacity: 0.92;
+}
+
+/* ==========================================================================
+   CARD TYPOGRAPHY, HEADERS & METRICS
+   ========================================================================== */
+.card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 6px;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
-.intro-card-badge {
+.card-eyebrow {
+  white-space: nowrap;
+}
+
+.card-badge {
   display: inline-block;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: var(--radius-xs);
   font-size: 0.65rem;
   font-weight: 700;
@@ -174,275 +233,148 @@
   border: 1px solid var(--border-subtle);
 }
 
-.intro-card-title {
+.card-badge.gold {
+  color: var(--accent-gold);
+  background-color: rgba(198, 161, 91, 0.12);
+  border-color: rgba(198, 161, 91, 0.25);
+}
+
+.card-badge.green {
+  color: #22C55E;
+  background-color: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+/* Metric Card Layout */
+.card-metric {
+  width: 250px;
+}
+
+.metric-val-row {
+  margin: 4px 0 2px;
+}
+
+.metric-huge {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 2.6vw, 2.45rem);
+  font-weight: 800;
+  color: var(--accent-gold);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  display: inline-block;
+}
+
+.card-title {
   font-family: var(--font-display);
   font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.25;
+  line-height: 1.3;
+  margin-top: 3px;
 }
 
-/* Specific Card Layouts & Spatial Positions */
-
-/* 1. Candlestick Market Card (Top Left Midground) */
-.card-candlestick {
-  top: 14%;
-  left: 9%;
-  width: 220px;
-  z-index: 12;
-}
-
-.candles-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 7px;
-  height: 48px;
-  margin: 10px 0 6px;
-  padding: 4px 6px;
-  background-color: rgba(10, 10, 10, 0.6);
-  border-radius: var(--radius-xs);
-  border: 1px solid var(--border-subtle);
-}
-
-.candle-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  height: 100%;
-  justify-content: center;
-}
-
-.candle-wick {
-  width: 1px;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.25);
-  position: relative;
-}
-
-.candle-bar {
-  position: absolute;
-  width: 8px;
-  border-radius: 1px;
-}
-
-.candle-bar.up {
-  background-color: var(--accent-gold);
-}
-
-.candle-bar.down {
-  background-color: #EF4444;
-}
-
-.candle-meta {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
-
-/* 2. Yield Curve & Benchmark Rates (Top Right Midground) */
-.card-yield {
-  top: 16%;
-  right: 10%;
-  width: 230px;
-  z-index: 8; /* Slightly behind Pavan depth layer */
-}
-
-.yield-svg-wrap {
-  width: 100%;
-  height: 46px;
-  margin: 6px 0;
-}
-
-.yield-stats {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
+.card-subtext {
   font-size: 0.72rem;
   color: var(--text-secondary);
+  line-height: 1.38;
+  margin-top: 3px;
 }
 
-.yield-stats span strong {
-  color: var(--accent-gold);
-}
-
-/* 3. Applied Research Card (Mid-Left, behind left shoulder) */
-.card-research {
-  top: 42%;
-  left: 6%;
-  width: 240px;
-  z-index: 6; /* Deep layer */
-}
-
-.card-research .research-paper-tag {
-  font-size: 0.68rem;
-  font-family: var(--font-mono);
-  color: var(--accent-gold);
-  margin-bottom: 3px;
-}
-
-.card-research .research-title {
-  font-size: 0.82rem;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-
-.card-research .research-stat {
-  font-size: 0.72rem;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-}
-
-/* 4. Capital Allocation Hurdle Tile (Bottom Right Foreground) */
-.card-capalloc {
-  bottom: 18%;
-  right: 8%;
-  width: 235px;
-  z-index: 15; /* In front of Pavan */
-}
-
-.hurdle-bar-wrap {
-  margin: 8px 0;
-}
-
-.hurdle-labels {
+.card-pill-row {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.mini-pill {
+  padding: 2px 7px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* Capability Card Layout */
+.card-capability {
+  width: 270px;
+}
+
+.card-main-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  letter-spacing: 0.02em;
+  margin: 4px 0 2px;
+}
+
+/* Project Card Layout */
+.card-project {
+  width: 260px;
+}
+
+/* Research Paper Card Layout */
+.card-research {
+  width: 265px;
+  border-left: 2px solid var(--accent-gold);
+}
+
+.research-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
   margin-bottom: 4px;
 }
 
-.hurdle-progress {
-  width: 100%;
-  height: 6px;
-  background-color: var(--bg-tertiary);
-  border-radius: var(--radius-pill);
-  overflow: hidden;
-  border: 1px solid var(--border-subtle);
-}
-
-.hurdle-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-gold-deep), var(--accent-gold));
-  border-radius: var(--radius-pill);
-}
-
-/* 5. Risk Analytics Terminal (Mid-Right Foreground) */
-.card-terminal {
-  top: 44%;
-  right: 7%;
-  width: 220px;
-  z-index: 14;
-}
-
-.terminal-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: #22C55E;
-  box-shadow: 0 0 6px #22C55E;
-  display: inline-block;
-  margin-right: 4px;
-}
-
-.terminal-rows {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-.terminal-rows strong {
-  color: var(--text-primary);
-}
-
-/* 6. Quantifiable Value KPI Card (Bottom Left Foreground) */
-.card-kpi {
-  bottom: 20%;
-  left: 10%;
-  width: 200px;
-  z-index: 16;
-}
-
-.kpi-big-number {
+.research-heading {
   font-family: var(--font-display);
-  font-size: 1.85rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.research-domain {
+  font-size: 0.71rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* Compact Chip Card Layout */
+.card-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.chip-metric {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
   font-weight: 800;
   color: var(--accent-gold);
-  line-height: 1.1;
-  margin: 4px 0 2px;
-  letter-spacing: -0.02em;
 }
 
-.kpi-subtext {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  line-height: 1.3;
-}
-
-/* 7. Workstream Execution Timeline Card (Top Center-Left) */
-.card-project {
-  top: 26%;
-  left: 28%;
-  width: 195px;
-  z-index: 11;
-}
-
-.project-step-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  margin-top: 6px;
+.chip-label {
+  font-size: 0.74rem;
+  font-weight: 500;
   color: var(--text-secondary);
 }
 
-.project-step-check {
-  color: var(--accent-gold);
-  font-weight: bold;
-}
-
-/* 8. Financial Model Spreadsheet Fragment (Bottom Center-Right) */
-.card-model {
-  bottom: 12%;
-  right: 27%;
-  width: 210px;
-  z-index: 13;
-}
-
-.spreadsheet-mini-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 8px;
-  margin-top: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-}
-
-.grid-cell-label {
-  color: var(--text-muted);
-}
-
-.grid-cell-val {
-  color: var(--text-primary);
-  text-align: right;
-  font-weight: 600;
-}
-
-.grid-cell-val.gold {
-  color: var(--accent-gold);
-}
-
-/* Floating Dimensional Pills */
+/* Floating Dimensional Label Pills */
 .intro-pill-tag {
-  position: absolute;
-  padding: 6px 14px;
-  background-color: rgba(17, 17, 17, 0.82);
+  padding: 7px 16px;
+  background-color: rgba(17, 17, 17, 0.86);
   backdrop-filter: blur(8px);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-pill);
@@ -454,44 +386,6 @@
   color: var(--accent-gold);
   white-space: nowrap;
   box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.75);
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-  pointer-events: auto;
-  user-select: none;
-}
-
-.pill-1 {
-  top: 10%;
-  left: 36%;
-  z-index: 7;
-}
-
-.pill-2 {
-  top: 32%;
-  right: 4%;
-  z-index: 9;
-}
-
-.pill-3 {
-  bottom: 28%;
-  left: 4%;
-  z-index: 12;
-}
-
-/* 3D Spatial Depth Layers */
-.intro-layer-fg {
-  transform: translateZ(90px);
-  z-index: 15;
-}
-
-.intro-layer-near {
-  transform: translateZ(40px);
-  z-index: 12;
-}
-
-.intro-layer-bg {
-  transform: translateZ(-50px);
-  z-index: 8;
 }
 
 /* ==========================================================================
@@ -543,49 +437,53 @@
 /* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
-@media (max-width: 1200px) {
-  .card-candlestick { left: 4%; top: 12%; width: 200px; }
-  .card-yield { right: 4%; top: 14%; width: 210px; }
-  .card-research { left: 3%; top: 40%; width: 220px; }
-  .card-terminal { right: 3%; top: 42%; width: 200px; }
-  .card-kpi { left: 5%; bottom: 16%; }
-  .card-capalloc { right: 5%; bottom: 16%; }
-  .card-project { left: 24%; top: 22%; }
-  .card-model { right: 22%; bottom: 10%; }
-}
-
-@media (max-width: 900px) {
-  /* Tablet: Reduce card count and scale down */
-  .card-project,
-  .card-model,
-  .pill-1,
-  .pill-3 {
+@media (max-width: 1024px) {
+  /* Tablet adjustments: hide heavy rear research cards */
+  #pos-res-volatility,
+  #pos-res-universal,
+  #pos-proj-enterprise,
+  #pos-billing-ctrl {
     display: none !important;
+  }
+
+  .visual-card {
+    padding: 11px 14px;
+  }
+
+  .card-metric, .card-capability, .card-project, .card-research {
+    width: 220px;
+  }
+
+  .metric-huge {
+    font-size: 1.85rem;
   }
 
   .intro-portrait-anchor {
-    height: 55vh;
+    height: 56vh;
     max-height: 440px;
   }
-
-  .intro-floating-card {
-    padding: 10px 12px;
-  }
-
-  .card-candlestick { left: 3%; top: 10%; width: 180px; }
-  .card-yield { right: 3%; top: 12%; width: 190px; }
-  .card-research { left: 2%; top: 42%; width: 200px; }
-  .card-terminal { right: 2%; top: 44%; width: 190px; }
-  .card-kpi { left: 3%; bottom: 14%; width: 180px; }
-  .card-capalloc { right: 3%; bottom: 14%; width: 200px; }
 }
 
 @media (max-width: 640px) {
-  /* Mobile: Clean, focused composition with Pavan and key financial anchors */
-  .card-research,
-  .card-terminal,
-  .pill-2 {
+  /* Mobile: Clean, focused composition with Pavan and key verified anchors */
+  #pos-customer-acq,
+  #pos-billing-ctrl,
+  #pos-cap-markets,
+  #pos-analytics-stack,
+  #pos-proj-enterprise,
+  #pos-res-silent-auctions,
+  #pos-res-volatility,
+  #pos-res-universal,
+  #pos-pill-1,
+  #pos-pill-2,
+  #pos-pill-3 {
     display: none !important;
+  }
+
+  /* Disable dragging on mobile to prioritize native vertical scrolling */
+  .card-draggable {
+    cursor: default !important;
+    touch-action: auto !important;
   }
 
   .intro-portrait-anchor {
@@ -593,36 +491,33 @@
     max-height: 380px;
   }
 
-  .card-candlestick {
-    left: 4%;
-    top: 8%;
-    width: 160px;
-    padding: 8px 10px;
+  .card-metric, .card-capability {
+    width: 165px;
+    padding: 9px 12px;
   }
 
-  .card-yield {
-    right: 4%;
-    top: 10%;
-    width: 170px;
-    padding: 8px 10px;
+  .metric-huge {
+    font-size: 1.55rem;
   }
 
-  .card-kpi {
-    left: 4%;
-    bottom: 12%;
-    width: 160px;
-    padding: 8px 10px;
+  .card-title {
+    font-size: 0.78rem;
   }
 
-  .kpi-big-number {
-    font-size: 1.45rem;
+  .card-subtext {
+    font-size: 0.67rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .card-capalloc {
-    right: 4%;
-    bottom: 12%;
-    width: 170px;
-    padding: 8px 10px;
+  .card-main-title {
+    font-size: 0.88rem;
+  }
+
+  .card-pill-row {
+    display: none;
   }
 
   .intro-scroll-indicator {
