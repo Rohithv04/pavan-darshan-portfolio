@@ -23,13 +23,16 @@ function initAnimations() {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (prefersReducedMotion) {
+    const introEl = document.getElementById("intro");
+    if (introEl) introEl.style.display = "none";
+
     // Ensure all data targets on metric numbers are immediately filled
     document.querySelectorAll(".metric-number").forEach((el) => {
       const target = el.getAttribute("data-target");
       if (target) el.textContent = target;
     });
     // Ensure all reveals and elements are fully visible
-    document.querySelectorAll(".reveal, .hero-title-line, .scroll-progress-bar").forEach((el) => {
+    document.querySelectorAll(".reveal, .hero-title-line, .scroll-progress-bar, #hero .hero-content, #hero .hero-visual, .hero-floating-badge").forEach((el) => {
       el.style.opacity = "1";
       el.style.transform = "none";
     });
@@ -64,135 +67,356 @@ function initAnimations() {
     // ========================================================================
     mm.add("(min-width: 769px)", () => {
       // ----------------------------------------------------------------------
-      // HERO SECTION TIMELINE (Runs once on initial load)
+      // INTERACTIVE 3D SCROLL-DEPTH INTRO & HERO TRANSITION (Desktop)
       // ----------------------------------------------------------------------
-      const heroTL = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        delay: 0.15
-      });
+      const introSection = document.getElementById("intro");
+      const introStage = document.getElementById("introStage");
 
-      // 1. Navbar enters subtly
-      heroTL.from("#navbar", {
-        y: -15,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out"
-      });
+      if (introSection && introStage) {
+        // Initial 3D layer depth setup
+        gsap.set(".intro-layer-fg", { z: 90 });
+        gsap.set(".intro-layer-near", { z: 40 });
+        gsap.set(".intro-layer-bg", { z: -50 });
+        gsap.set("#introPortrait", { z: 15 });
 
-      // 2. "HELLO, I'M" eyebrow appears
-      heroTL.from("#hero .section-eyebrow", {
-        y: 16,
-        opacity: 0,
-        duration: 0.6
-      }, "-=0.35");
+        // Pre-set Hero elements hidden until Intro transition scrub
+        gsap.set("#hero .hero-content", { opacity: 0, y: 35 });
+        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.96 });
+        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 20 });
+        gsap.set("#hero .light-spot", { opacity: 0 });
 
-      // 3. Main name masked reveal (overflow:hidden wrapper, yPercent: 100 -> 0)
-      heroTL.from(".hero-title-line", {
-        yPercent: 100,
-        opacity: 0,
-        duration: 1.0,
-        stagger: 0.12,
-        ease: "power4.out"
-      }, "-=0.4");
+        // 1. Initial Entrance Timeline on Load
+        const introEntranceTL = gsap.timeline({
+          defaults: { ease: "power3.out" },
+          delay: 0.15
+        });
 
-      // 4. Role: FINANCE & PROJECT LEADERSHIP PROFESSIONAL
-      heroTL.from(".hero-role", {
-        y: 18,
-        opacity: 0,
-        duration: 0.6
-      }, "-=0.65");
+        introEntranceTL
+          .from("#navbar", {
+            y: -15,
+            opacity: 0,
+            duration: 0.6,
+            ease: "power2.out"
+          })
+          .from("#introPortrait", {
+            scale: 0.9,
+            opacity: 0,
+            duration: 1.1,
+            ease: "power3.out"
+          }, "-=0.3")
+          .from(".intro-portrait-halo", {
+            scale: 0.6,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power2.out"
+          }, "-=0.8")
+          .from("#introWatermark", {
+            opacity: 0,
+            scale: 0.95,
+            duration: 1.2,
+            ease: "power2.out"
+          }, "-=1.0")
+          .from(".intro-floating-card, .intro-pill-tag", {
+            scale: 0.65,
+            opacity: 0,
+            y: 28,
+            stagger: 0.05,
+            duration: 0.85,
+            ease: "back.out(1.2)"
+          }, "-=0.8")
+          .from("#introScrollIndicator", {
+            opacity: 0,
+            y: 15,
+            duration: 0.6,
+            ease: "power2.out"
+          }, "-=0.3");
 
-      // 5. Descriptor line
-      heroTL.from(".hero-descriptor", {
-        y: 14,
-        opacity: 0,
-        duration: 0.5
-      }, "-=0.45");
+        // 2. Continuous Ambient Floating / Hover Loops (Joinswsh style organic bounciness)
+        const idleHoverAnimations = [
+          { sel: "#cardCandlestick", y: -8, rot: 1.2, dur: 3.2 },
+          { sel: "#cardYield", y: 9, rot: -1.0, dur: 3.8 },
+          { sel: "#cardResearch", y: -7, rot: 0.8, dur: 4.2 },
+          { sel: "#cardCapalloc", y: 10, rot: -1.2, dur: 3.5 },
+          { sel: "#cardTerminal", y: -9, rot: 1.1, dur: 3.9 },
+          { sel: "#cardKpi", y: 7, rot: -0.9, dur: 3.6 },
+          { sel: "#cardProject", y: -8, rot: 1.0, dur: 3.7 },
+          { sel: "#cardModel", y: 9, rot: -1.1, dur: 3.4 },
+          { sel: "#pill1", y: -5, rot: 0.6, dur: 4.0 },
+          { sel: "#pill2", y: 6, rot: -0.8, dur: 3.3 },
+          { sel: "#pill3", y: -5, rot: 0.7, dur: 3.7 }
+        ];
 
-      // 6. Hero bio
-      heroTL.from(".hero-bio", {
-        y: 18,
-        opacity: 0,
-        duration: 0.6
-      }, "-=0.35");
+        idleHoverAnimations.forEach(item => {
+          const el = document.querySelector(item.sel);
+          if (el) {
+            gsap.to(el, {
+              y: item.y,
+              rotationZ: item.rot,
+              duration: item.dur,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut"
+            });
+          }
+        });
 
-      // 7. Hero CTAs (View Experience, Download Resume, Contact Me)
-      heroTL.from(".hero-actions > *", {
-        y: 18,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.08,
-        clearProps: "opacity,transform"
-      }, "-=0.35");
+        // 3. Interactive Cursor Parallax via gsap.quickTo
+        const scene = document.getElementById("introScene");
+        const portrait = document.getElementById("introPortrait");
+        const fgCards = document.querySelectorAll(".intro-layer-fg");
+        const nearCards = document.querySelectorAll(".intro-layer-near");
+        const bgCards = document.querySelectorAll(".intro-layer-bg");
 
-      // Hero Socials
-      heroTL.from(".hero-socials .icon-btn", {
-        y: 12,
-        opacity: 0,
-        duration: 0.4,
-        stagger: 0.06,
-        clearProps: "opacity,transform"
-      }, "-=0.25");
+        const xToScene = gsap.quickTo(scene, "rotationY", { duration: 0.9, ease: "power2.out" });
+        const yToScene = gsap.quickTo(scene, "rotationX", { duration: 0.9, ease: "power2.out" });
+        const xToPortrait = gsap.quickTo(portrait, "x", { duration: 1.1, ease: "power2.out" });
+        const yToPortrait = gsap.quickTo(portrait, "y", { duration: 1.1, ease: "power2.out" });
 
-      // 8. Hero portrait image (opacity 0 -> 1, scale 1.04 -> 1)
-      heroTL.from(".hero-portrait-image", {
-        opacity: 0,
-        scale: 1.04,
-        duration: 1.15,
-        ease: "power3.out"
-      }, "<+=0.15");
+        const xToFG = Array.from(fgCards).map(el => gsap.quickTo(el, "x", { duration: 0.8, ease: "power2.out" }));
+        const yToFG = Array.from(fgCards).map(el => gsap.quickTo(el, "y", { duration: 0.8, ease: "power2.out" }));
 
-      // Circular gradient light spots
-      heroTL.from(".light-spot", {
-        opacity: 0,
-        scale: 0.85,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: "power2.out"
-      }, "<");
+        const xToNear = Array.from(nearCards).map(el => gsap.quickTo(el, "x", { duration: 0.95, ease: "power2.out" }));
+        const yToNear = Array.from(nearCards).map(el => gsap.quickTo(el, "y", { duration: 0.95, ease: "power2.out" }));
 
-      // 9. Floating badges (5+ Years Experience, MBA Santa Clara)
-      heroTL.from(".hero-floating-badge", {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.12,
-        ease: "power2.out",
-        clearProps: "transform,opacity"
-      }, "-=0.45");
+        const xToBG = Array.from(bgCards).map(el => gsap.quickTo(el, "x", { duration: 1.1, ease: "power2.out" }));
+        const yToBG = Array.from(bgCards).map(el => gsap.quickTo(el, "y", { duration: 1.1, ease: "power2.out" }));
 
-      // Minimal cursor-reactive float parallax for hero floating badges (Desktop)
-      const heroEl = document.getElementById("hero");
-      const badge1 = document.querySelector(".badge-top-left");
-      const badge2 = document.querySelector(".badge-bottom-right");
+        const onIntroMouseMove = (e) => {
+          const normX = (e.clientX / window.innerWidth) - 0.5;
+          const normY = (e.clientY / window.innerHeight) - 0.5;
 
-      if (heroEl && badge1 && badge2) {
-        const xTo1 = gsap.quickTo(badge1, "x", { duration: 0.85, ease: "power2.out" });
-        const yTo1 = gsap.quickTo(badge1, "y", { duration: 0.85, ease: "power2.out" });
-        const xTo2 = gsap.quickTo(badge2, "x", { duration: 0.85, ease: "power2.out" });
-        const yTo2 = gsap.quickTo(badge2, "y", { duration: 0.85, ease: "power2.out" });
+          xToScene(normX * 9);
+          yToScene(-normY * 7);
+          xToPortrait(normX * 12);
+          yToPortrait(normY * 10);
 
-        const handleHeroMouseMove = (e) => {
-          const rect = heroEl.getBoundingClientRect();
-          const normX = (e.clientX - rect.left) / rect.width - 0.5;
-          const normY = (e.clientY - rect.top) / rect.height - 0.5;
+          xToFG.forEach(fn => fn(normX * 42));
+          yToFG.forEach(fn => fn(normY * 32));
 
-          // Subtle, minimal reaction (14-18px max travel)
-          xTo1(normX * 18);
-          yTo1(normY * 14);
-          xTo2(-normX * 14);
-          yTo2(-normY * 12);
+          xToNear.forEach(fn => fn(normX * 24));
+          yToNear.forEach(fn => fn(normY * 18));
+
+          xToBG.forEach(fn => fn(normX * 12));
+          yToBG.forEach(fn => fn(normY * 10));
         };
 
-        const handleHeroMouseLeave = () => {
-          xTo1(0);
-          yTo1(0);
-          xTo2(0);
-          yTo2(0);
+        const onIntroMouseLeave = () => {
+          xToScene(0);
+          yToScene(0);
+          xToPortrait(0);
+          yToPortrait(0);
+          xToFG.forEach(fn => fn(0));
+          yToFG.forEach(fn => fn(0));
+          xToNear.forEach(fn => fn(0));
+          yToNear.forEach(fn => fn(0));
+          xToBG.forEach(fn => fn(0));
+          yToBG.forEach(fn => fn(0));
         };
 
-        heroEl.addEventListener("mousemove", handleHeroMouseMove);
-        heroEl.addEventListener("mouseleave", handleHeroMouseLeave);
+        window.addEventListener("mousemove", onIntroMouseMove, { passive: true });
+        document.addEventListener("mouseleave", onIntroMouseLeave);
+
+        // Click on scroll indicator scrolls past the pinned intro
+        const scrollIndicator = document.getElementById("introScrollIndicator");
+        if (scrollIndicator) {
+          scrollIndicator.addEventListener("click", () => {
+            const introStageRect = introStage.getBoundingClientRect();
+            const scrollTarget = window.pageYOffset + introStageRect.top + window.innerHeight * 1.85;
+            window.scrollTo({ top: scrollTarget, behavior: "smooth" });
+          });
+        }
+
+        // 4. Pinned Scroll-Depth Master Sequence & Seamless Hero Transition
+        const introMasterTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#introStage",
+            start: "top top",
+            end: "+=180%",
+            pin: true,
+            scrub: 0.8,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              if (self.progress >= 0.99) {
+                introSection.style.visibility = "hidden";
+                introSection.style.pointerEvents = "none";
+              } else {
+                introSection.style.visibility = "visible";
+                introSection.style.pointerEvents = "auto";
+              }
+            }
+          }
+        });
+
+        // Stage 1 & 2 (0.00 -> 0.60): Depth activation & 3D forward flight through financial universe
+        introMasterTL
+          .to("#introScrollIndicator", { opacity: 0, y: 15, duration: 0.15 }, 0)
+          .to("#introWatermark", { scale: 1.25, opacity: 0.2, z: -120, duration: 0.6 }, 0)
+          .to("#introPortrait", { scale: 1.05, yPercent: -4, duration: 0.6, ease: "none" }, 0)
+          // Foreground cards fly fastest outward (1.5x speed)
+          .to("#cardCandlestick", { x: -160, y: -90, scale: 1.25, z: 120, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#cardProject", { x: -170, y: 90, scale: 1.25, z: 120, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#pill2", { x: 120, y: -70, scale: 1.18, z: 90, duration: 0.6, ease: "power1.inOut" }, 0)
+          // Midground cards drift moderately (0.8x speed)
+          .to("#cardYield", { x: 150, y: -70, scale: 1.12, z: 50, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#cardTerminal", { x: 160, y: 50, scale: 1.12, z: 50, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#cardCapalloc", { x: 140, y: 90, scale: 1.1, z: 40, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#cardKpi", { x: -130, y: 80, scale: 1.12, z: 50, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#cardModel", { x: 110, y: 110, scale: 1.1, z: 40, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#pill3", { x: 90, y: 60, scale: 1.08, duration: 0.6 }, 0)
+          // Background cards subtle drift
+          .to("#cardResearch", { x: -90, y: 30, scale: 1.05, z: 10, duration: 0.6, ease: "power1.inOut" }, 0)
+          .to("#pill1", { x: -70, y: -40, scale: 1.04, duration: 0.6 }, 0)
+
+          // Stage 3 (0.60 -> 0.80): Scatter cards outward & dissolve
+          .to(".intro-floating-card, .intro-pill-tag", {
+            opacity: 0,
+            scale: 1.45,
+            duration: 0.2,
+            ease: "power2.in"
+          }, 0.6)
+          .to("#introWatermark", { opacity: 0, duration: 0.2 }, 0.6)
+
+          // Stage 4 (0.80 -> 1.00): Seamless merge into Hero Section
+          .to(".intro-ambient-mesh", { opacity: 0, duration: 0.2 }, 0.8)
+          .to(introSection, { backgroundColor: "rgba(10, 10, 10, 0)", duration: 0.2 }, 0.8)
+          .to("#introPortrait", {
+            xPercent: 30,
+            opacity: 0,
+            scale: 0.98,
+            duration: 0.2,
+            ease: "power2.inOut"
+          }, 0.8)
+          .to("#hero .hero-portrait-image", {
+            opacity: 1,
+            scale: 1,
+            duration: 0.2,
+            ease: "power2.out"
+          }, 0.82)
+          .to("#hero .light-spot", {
+            opacity: 1,
+            duration: 0.2
+          }, 0.82)
+          .to("#hero .hero-content", {
+            opacity: 1,
+            y: 0,
+            duration: 0.2,
+            ease: "power2.out"
+          }, 0.84)
+          .to("#hero .hero-floating-badge", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.04,
+            duration: 0.16,
+            ease: "power2.out"
+          }, 0.86);
+
+        // Minimal cursor-reactive float parallax for hero floating badges (Desktop)
+        const heroEl = document.getElementById("hero");
+        const badge1 = document.querySelector(".badge-top-left");
+        const badge2 = document.querySelector(".badge-bottom-right");
+
+        if (heroEl && badge1 && badge2) {
+          const xTo1 = gsap.quickTo(badge1, "x", { duration: 0.85, ease: "power2.out" });
+          const yTo1 = gsap.quickTo(badge1, "y", { duration: 0.85, ease: "power2.out" });
+          const xTo2 = gsap.quickTo(badge2, "x", { duration: 0.85, ease: "power2.out" });
+          const yTo2 = gsap.quickTo(badge2, "y", { duration: 0.85, ease: "power2.out" });
+
+          const handleHeroMouseMove = (e) => {
+            const rect = heroEl.getBoundingClientRect();
+            const normX = (e.clientX - rect.left) / rect.width - 0.5;
+            const normY = (e.clientY - rect.top) / rect.height - 0.5;
+
+            xTo1(normX * 18);
+            yTo1(normY * 14);
+            xTo2(-normX * 14);
+            yTo2(-normY * 12);
+          };
+
+          const handleHeroMouseLeave = () => {
+            xTo1(0);
+            yTo1(0);
+            xTo2(0);
+            yTo2(0);
+          };
+
+          heroEl.addEventListener("mousemove", handleHeroMouseMove);
+          heroEl.addEventListener("mouseleave", handleHeroMouseLeave);
+        }
+      } else {
+        // Fallback Hero Section Timeline (if Intro is not present)
+        const heroTL = gsap.timeline({
+          defaults: { ease: "power3.out" },
+          delay: 0.15
+        });
+
+        heroTL.from("#navbar", {
+          y: -15,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out"
+        })
+        .from("#hero .section-eyebrow", {
+          y: 16,
+          opacity: 0,
+          duration: 0.6
+        }, "-=0.35")
+        .from(".hero-title-line", {
+          yPercent: 100,
+          opacity: 0,
+          duration: 1.0,
+          stagger: 0.12,
+          ease: "power4.out"
+        }, "-=0.4")
+        .from(".hero-role", {
+          y: 18,
+          opacity: 0,
+          duration: 0.6
+        }, "-=0.65")
+        .from(".hero-descriptor", {
+          y: 14,
+          opacity: 0,
+          duration: 0.5
+        }, "-=0.45")
+        .from(".hero-bio", {
+          y: 18,
+          opacity: 0,
+          duration: 0.6
+        }, "-=0.35")
+        .from(".hero-actions > *", {
+          y: 18,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          clearProps: "opacity,transform"
+        }, "-=0.35")
+        .from(".hero-socials .icon-btn", {
+          y: 12,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.06,
+          clearProps: "opacity,transform"
+        }, "-=0.25")
+        .from(".hero-portrait-image", {
+          opacity: 0,
+          scale: 1.04,
+          duration: 1.15,
+          ease: "power3.out"
+        }, "<+=0.15")
+        .from(".light-spot", {
+          opacity: 0,
+          scale: 0.85,
+          duration: 1.2,
+          stagger: 0.15,
+          ease: "power2.out"
+        }, "<")
+        .from(".hero-floating-badge", {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: "power2.out",
+          clearProps: "transform,opacity"
+        }, "-=0.45");
       }
 
       // ----------------------------------------------------------------------
@@ -239,69 +463,158 @@ function initAnimations() {
     // ========================================================================
     mm.add("(max-width: 768px)", () => {
       // ----------------------------------------------------------------------
-      // HERO SECTION (Mobile: Portrait & Badges First, then Title & CTAs)
+      // INTERACTIVE 3D INTRO & HERO TRANSITION (Mobile)
       // ----------------------------------------------------------------------
-      const heroTLMobile = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        delay: 0.15
-      });
+      const introSection = document.getElementById("intro");
+      const introStage = document.getElementById("introStage");
 
-      heroTLMobile.from("#navbar", {
-        y: -10,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.out"
-      })
-      .from(".hero-portrait-image", {
-        opacity: 0,
-        scale: 1.03,
-        duration: 0.8,
-        ease: "power3.out"
-      }, "-=0.2")
-      .from(".hero-floating-badge", {
-        y: 12,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.08,
-        clearProps: "transform,opacity"
-      }, "-=0.35")
-      .from("#hero .section-eyebrow", {
-        y: 12,
-        opacity: 0,
-        duration: 0.5
-      }, "-=0.2")
-      .from(".hero-title-line", {
-        yPercent: 100,
-        opacity: 0,
-        duration: 0.85,
-        stagger: 0.1,
-        ease: "power4.out"
-      }, "-=0.35")
-      .from(".hero-role", {
-        y: 14,
-        opacity: 0,
-        duration: 0.5
-      }, "-=0.55")
-      .from(".hero-descriptor, .hero-bio", {
-        y: 14,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.1
-      }, "-=0.35")
-      .from(".hero-actions > *", {
-        y: 14,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.06,
-        clearProps: "opacity,transform"
-      }, "-=0.3")
-      .from(".hero-socials .icon-btn", {
-        y: 10,
-        opacity: 0,
-        duration: 0.35,
-        stagger: 0.05,
-        clearProps: "opacity,transform"
-      }, "-=0.2");
+      if (introSection && introStage) {
+        // Pre-set mobile hero hidden
+        gsap.set("#hero .hero-content", { opacity: 0, y: 25 });
+        gsap.set("#hero .hero-portrait-image", { opacity: 0, scale: 0.96 });
+        gsap.set("#hero .hero-floating-badge", { opacity: 0, y: 15 });
+        gsap.set("#hero .light-spot", { opacity: 0 });
+
+        // 1. Mobile Intro Entrance
+        const heroTLMobile = gsap.timeline({
+          defaults: { ease: "power3.out" },
+          delay: 0.15
+        });
+
+        heroTLMobile
+          .from("#navbar", {
+            y: -10,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out"
+          })
+          .from("#introPortrait", {
+            scale: 0.92,
+            opacity: 0,
+            duration: 0.85,
+            ease: "power3.out"
+          }, "-=0.2")
+          .from(".card-candlestick, .card-yield, .card-kpi, .card-capalloc", {
+            scale: 0.7,
+            opacity: 0,
+            y: 20,
+            stagger: 0.08,
+            duration: 0.6,
+            ease: "back.out(1.2)"
+          }, "-=0.4")
+          .from("#introScrollIndicator", {
+            opacity: 0,
+            y: 10,
+            duration: 0.5,
+            ease: "power2.out"
+          }, "-=0.2");
+
+        // 2. Mobile Pinned Scroll Choreography
+        const introMobileMasterTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#introStage",
+            start: "top top",
+            end: "+=120%",
+            pin: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              if (self.progress >= 0.99) {
+                introSection.style.visibility = "hidden";
+                introSection.style.pointerEvents = "none";
+              } else {
+                introSection.style.visibility = "visible";
+                introSection.style.pointerEvents = "auto";
+              }
+            }
+          }
+        });
+
+        introMobileMasterTL
+          .to("#introScrollIndicator", { opacity: 0, y: 10, duration: 0.15 }, 0)
+          .to(".card-candlestick", { x: -60, y: -40, opacity: 0.7, duration: 0.6 }, 0)
+          .to(".card-yield", { x: 60, y: -40, opacity: 0.7, duration: 0.6 }, 0)
+          .to(".card-kpi", { x: -60, y: 40, opacity: 0.7, duration: 0.6 }, 0)
+          .to(".card-capalloc", { x: 60, y: 40, opacity: 0.7, duration: 0.6 }, 0)
+          .to(".intro-floating-card, .intro-pill-tag", { opacity: 0, scale: 1.25, duration: 0.2 }, 0.6)
+          .to(introSection, { backgroundColor: "rgba(10, 10, 10, 0)", opacity: 0, duration: 0.2 }, 0.8)
+          .to("#hero .hero-portrait-image", { opacity: 1, scale: 1, duration: 0.2 }, 0.8)
+          .to("#hero .light-spot", { opacity: 1, duration: 0.2 }, 0.8)
+          .to("#hero .hero-content", { opacity: 1, y: 0, duration: 0.2 }, 0.82)
+          .to("#hero .hero-floating-badge", { opacity: 1, y: 0, stagger: 0.05, duration: 0.18 }, 0.84);
+
+        const scrollIndicator = document.getElementById("introScrollIndicator");
+        if (scrollIndicator) {
+          scrollIndicator.addEventListener("click", () => {
+            const introStageRect = introStage.getBoundingClientRect();
+            const scrollTarget = window.pageYOffset + introStageRect.top + window.innerHeight * 1.25;
+            window.scrollTo({ top: scrollTarget, behavior: "smooth" });
+          });
+        }
+      } else {
+        // Fallback Mobile Hero Section (if Intro is not present)
+        const heroTLMobile = gsap.timeline({
+          defaults: { ease: "power3.out" },
+          delay: 0.15
+        });
+
+        heroTLMobile.from("#navbar", {
+          y: -10,
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out"
+        })
+        .from(".hero-portrait-image", {
+          opacity: 0,
+          scale: 1.03,
+          duration: 0.8,
+          ease: "power3.out"
+        }, "-=0.2")
+        .from(".hero-floating-badge", {
+          y: 12,
+          opacity: 0,
+          duration: 0.45,
+          stagger: 0.08,
+          clearProps: "transform,opacity"
+        }, "-=0.35")
+        .from("#hero .section-eyebrow", {
+          y: 12,
+          opacity: 0,
+          duration: 0.5
+        }, "-=0.2")
+        .from(".hero-title-line", {
+          yPercent: 100,
+          opacity: 0,
+          duration: 0.85,
+          stagger: 0.1,
+          ease: "power4.out"
+        }, "-=0.35")
+        .from(".hero-role", {
+          y: 14,
+          opacity: 0,
+          duration: 0.5
+        }, "-=0.55")
+        .from(".hero-descriptor, .hero-bio", {
+          y: 14,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.1
+        }, "-=0.35")
+        .from(".hero-actions > *", {
+          y: 14,
+          opacity: 0,
+          duration: 0.45,
+          stagger: 0.06,
+          clearProps: "opacity,transform"
+        }, "-=0.3")
+        .from(".hero-socials .icon-btn", {
+          y: 10,
+          opacity: 0,
+          duration: 0.35,
+          stagger: 0.05,
+          clearProps: "opacity,transform"
+        }, "-=0.2");
+      }
 
       // ----------------------------------------------------------------------
       // CONTACT SECTION (Mobile: Clean sequential vertical fade-up, NO X transforms)

@@ -1,0 +1,639 @@
+/* ==========================================================================
+   INTERACTIVE 3D SCROLL-DEPTH INTRO STYLES
+   Pavan Darshan Doddala Portfolio — Executive Black & Champagne Gold Palette
+   ========================================================================== */
+
+/* Outer Stage Wrapper that coordinates Intro & Hero Pinning */
+.intro-stage {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Fullscreen Pinned Intro Section */
+.intro-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  z-index: 20;
+  will-change: opacity, visibility;
+}
+
+/* Ensure Hero section under intro-stage has proper full-screen height and positioning */
+.intro-stage .hero-section {
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+}
+
+/* 3D Scene Canvas */
+.intro-3d-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Ambient Radial Glow & Finance Grid Mesh */
+.intro-ambient-mesh {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(198, 161, 91, 0.08) 1px, transparent 1px),
+    radial-gradient(ellipse 65% 55% at 50% 50%, rgba(198, 161, 91, 0.07), transparent 75%);
+  background-size: 40px 40px, 100% 100%;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Deep Background Watermark Typography */
+.intro-bg-watermark {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245, 241, 232, 0.025);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  z-index: 2;
+  transform: translateZ(-250px);
+}
+
+/* ==========================================================================
+   CENTRAL ANCHOR: PAVAN'S PORTRAIT
+   ========================================================================== */
+.intro-portrait-anchor {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 65vh;
+  max-height: 520px;
+  min-height: 380px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+.intro-portrait-img {
+  height: 100%;
+  width: auto;
+  max-width: 90vw;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 30px rgba(198, 161, 91, 0.1));
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Portrait Halo Lighting Spots */
+.intro-portrait-halo {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%) translateZ(-30px);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(198, 161, 91, 0.22) 0%, rgba(198, 161, 91, 0.06) 50%, transparent 75%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ==========================================================================
+   FLOATING 3D FINANCIAL OBJECTS & CARDS
+   ========================================================================== */
+.intro-floating-card {
+  position: absolute;
+  background-color: rgba(17, 17, 17, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.8), 0 0 16px rgba(198, 161, 91, 0.06);
+  color: var(--text-primary);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  pointer-events: auto;
+  user-select: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.intro-floating-card:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(198, 161, 91, 0.15);
+}
+
+/* Card Typography & Header Primitives */
+.intro-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.intro-card-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  background-color: var(--accent-gold-subtle);
+  border: 1px solid var(--border-subtle);
+}
+
+.intro-card-title {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+/* Specific Card Layouts & Spatial Positions */
+
+/* 1. Candlestick Market Card (Top Left Midground) */
+.card-candlestick {
+  top: 14%;
+  left: 9%;
+  width: 220px;
+  z-index: 12;
+}
+
+.candles-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 48px;
+  margin: 10px 0 6px;
+  padding: 4px 6px;
+  background-color: rgba(10, 10, 10, 0.6);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+}
+
+.candle-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: center;
+}
+
+.candle-wick {
+  width: 1px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.25);
+  position: relative;
+}
+
+.candle-bar {
+  position: absolute;
+  width: 8px;
+  border-radius: 1px;
+}
+
+.candle-bar.up {
+  background-color: var(--accent-gold);
+}
+
+.candle-bar.down {
+  background-color: #EF4444;
+}
+
+.candle-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+/* 2. Yield Curve & Benchmark Rates (Top Right Midground) */
+.card-yield {
+  top: 16%;
+  right: 10%;
+  width: 230px;
+  z-index: 8; /* Slightly behind Pavan depth layer */
+}
+
+.yield-svg-wrap {
+  width: 100%;
+  height: 46px;
+  margin: 6px 0;
+}
+
+.yield-stats {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.yield-stats span strong {
+  color: var(--accent-gold);
+}
+
+/* 3. Applied Research Card (Mid-Left, behind left shoulder) */
+.card-research {
+  top: 42%;
+  left: 6%;
+  width: 240px;
+  z-index: 6; /* Deep layer */
+}
+
+.card-research .research-paper-tag {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--accent-gold);
+  margin-bottom: 3px;
+}
+
+.card-research .research-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.card-research .research-stat {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+/* 4. Capital Allocation Hurdle Tile (Bottom Right Foreground) */
+.card-capalloc {
+  bottom: 18%;
+  right: 8%;
+  width: 235px;
+  z-index: 15; /* In front of Pavan */
+}
+
+.hurdle-bar-wrap {
+  margin: 8px 0;
+}
+
+.hurdle-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  margin-bottom: 4px;
+}
+
+.hurdle-progress {
+  width: 100%;
+  height: 6px;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+
+.hurdle-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-gold-deep), var(--accent-gold));
+  border-radius: var(--radius-pill);
+}
+
+/* 5. Risk Analytics Terminal (Mid-Right Foreground) */
+.card-terminal {
+  top: 44%;
+  right: 7%;
+  width: 220px;
+  z-index: 14;
+}
+
+.terminal-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #22C55E;
+  box-shadow: 0 0 6px #22C55E;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.terminal-rows {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.terminal-rows strong {
+  color: var(--text-primary);
+}
+
+/* 6. Quantifiable Value KPI Card (Bottom Left Foreground) */
+.card-kpi {
+  bottom: 20%;
+  left: 10%;
+  width: 200px;
+  z-index: 16;
+}
+
+.kpi-big-number {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  line-height: 1.1;
+  margin: 4px 0 2px;
+  letter-spacing: -0.02em;
+}
+
+.kpi-subtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+/* 7. Workstream Execution Timeline Card (Top Center-Left) */
+.card-project {
+  top: 26%;
+  left: 28%;
+  width: 195px;
+  z-index: 11;
+}
+
+.project-step-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  margin-top: 6px;
+  color: var(--text-secondary);
+}
+
+.project-step-check {
+  color: var(--accent-gold);
+  font-weight: bold;
+}
+
+/* 8. Financial Model Spreadsheet Fragment (Bottom Center-Right) */
+.card-model {
+  bottom: 12%;
+  right: 27%;
+  width: 210px;
+  z-index: 13;
+}
+
+.spreadsheet-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.grid-cell-label {
+  color: var(--text-muted);
+}
+
+.grid-cell-val {
+  color: var(--text-primary);
+  text-align: right;
+  font-weight: 600;
+}
+
+.grid-cell-val.gold {
+  color: var(--accent-gold);
+}
+
+/* Floating Dimensional Pills */
+.intro-pill-tag {
+  position: absolute;
+  padding: 6px 14px;
+  background-color: rgba(17, 17, 17, 0.82);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  white-space: nowrap;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.75);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.pill-1 {
+  top: 10%;
+  left: 36%;
+  z-index: 7;
+}
+
+.pill-2 {
+  top: 32%;
+  right: 4%;
+  z-index: 9;
+}
+
+.pill-3 {
+  bottom: 28%;
+  left: 4%;
+  z-index: 12;
+}
+
+/* 3D Spatial Depth Layers */
+.intro-layer-fg {
+  transform: translateZ(90px);
+  z-index: 15;
+}
+
+.intro-layer-near {
+  transform: translateZ(40px);
+  z-index: 12;
+}
+
+.intro-layer-bg {
+  transform: translateZ(-50px);
+  z-index: 8;
+}
+
+/* ==========================================================================
+   SCROLL TO EXPLORE INDICATOR
+   ========================================================================== */
+.intro-scroll-indicator {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  z-index: 25;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: opacity var(--transition-normal);
+}
+
+.scroll-indicator-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: var(--accent-gold);
+}
+
+.scroll-indicator-arrow svg {
+  animation: introArrowBounce 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes introArrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1200px) {
+  .card-candlestick { left: 4%; top: 12%; width: 200px; }
+  .card-yield { right: 4%; top: 14%; width: 210px; }
+  .card-research { left: 3%; top: 40%; width: 220px; }
+  .card-terminal { right: 3%; top: 42%; width: 200px; }
+  .card-kpi { left: 5%; bottom: 16%; }
+  .card-capalloc { right: 5%; bottom: 16%; }
+  .card-project { left: 24%; top: 22%; }
+  .card-model { right: 22%; bottom: 10%; }
+}
+
+@media (max-width: 900px) {
+  /* Tablet: Reduce card count and scale down */
+  .card-project,
+  .card-model,
+  .pill-1,
+  .pill-3 {
+    display: none !important;
+  }
+
+  .intro-portrait-anchor {
+    height: 55vh;
+    max-height: 440px;
+  }
+
+  .intro-floating-card {
+    padding: 10px 12px;
+  }
+
+  .card-candlestick { left: 3%; top: 10%; width: 180px; }
+  .card-yield { right: 3%; top: 12%; width: 190px; }
+  .card-research { left: 2%; top: 42%; width: 200px; }
+  .card-terminal { right: 2%; top: 44%; width: 190px; }
+  .card-kpi { left: 3%; bottom: 14%; width: 180px; }
+  .card-capalloc { right: 3%; bottom: 14%; width: 200px; }
+}
+
+@media (max-width: 640px) {
+  /* Mobile: Clean, focused composition with Pavan and key financial anchors */
+  .card-research,
+  .card-terminal,
+  .pill-2 {
+    display: none !important;
+  }
+
+  .intro-portrait-anchor {
+    height: 50vh;
+    max-height: 380px;
+  }
+
+  .card-candlestick {
+    left: 4%;
+    top: 8%;
+    width: 160px;
+    padding: 8px 10px;
+  }
+
+  .card-yield {
+    right: 4%;
+    top: 10%;
+    width: 170px;
+    padding: 8px 10px;
+  }
+
+  .card-kpi {
+    left: 4%;
+    bottom: 12%;
+    width: 160px;
+    padding: 8px 10px;
+  }
+
+  .kpi-big-number {
+    font-size: 1.45rem;
+  }
+
+  .card-capalloc {
+    right: 4%;
+    bottom: 12%;
+    width: 170px;
+    padding: 8px 10px;
+  }
+
+  .intro-scroll-indicator {
+    bottom: 16px;
+    font-size: 0.65rem;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .intro-section {
+    display: none !important;
+  }
+}

@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/blog.css">
+  <link rel="stylesheet" href="css/intro.css">
 
   <!-- Structured Data (JSON-LD Person Schema) -->
   <script type="application/ld+json">
@@ -130,115 +131,279 @@
   <main id="mainContent">
 
     <!-- =======================================================================
-         2. HERO SECTION
+         1B. INTERACTIVE 3D SCROLL-DEPTH INTRO & HERO STAGE
          ======================================================================= -->
-    <section id="hero" class="hero-section">
-      <div class="container hero-grid">
-        <!-- Left Column: Content -->
-        <div class="hero-content reveal">
-          <div class="section-eyebrow">HELLO, I'M</div>
-          
-          <h1 class="hero-title">
-            <span class="hero-title-mask"><span class="hero-title-line nowrap-line"><span class="hero-highlight">PAVAN</span> DARSHAN</span></span>
-            <span class="hero-title-mask"><span class="hero-title-line nowrap-line">DODDALA</span></span>
-          </h1>
+    <div id="introStage" class="intro-stage">
+      <!-- Fullscreen Pinned 3D Intro Section -->
+      <section id="intro" class="intro-section" aria-label="Interactive 3D Intro Experience">
+        <!-- Ambient Mesh & Radial Glow -->
+        <div class="intro-ambient-mesh" aria-hidden="true"></div>
 
-          <div class="hero-role">FINANCE &amp; PROJECT LEADERSHIP PROFESSIONAL</div>
-          
-          <div class="hero-descriptor">
-            Banking • Financial Analysis • Investment Banking • Project Leadership • Enterprise Systems
-          </div>
+        <!-- Deep Background Watermark Typography -->
+        <div class="intro-bg-watermark" id="introWatermark" aria-hidden="true">CAPITAL • MARKETS • STRATEGY</div>
 
-          <p class="hero-bio">
-            Finance &amp; project leadership professional with 5+ years driving banking, enterprise systems, and strategic transformation. Currently pursuing a Full-Time MBA at Santa Clara University (Leavey School of Business), targeting Investment Banking Analyst &amp; MBA Associate roles.
-          </p>
-
-          <!-- Action Buttons -->
-          <div class="hero-actions">
-            <a href="#experience" class="btn btn-primary">
-              View Experience
-              <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-            
-            <a href="#contact" class="btn btn-secondary" onclick="alert('Resume download initiated: Pavan Darshan Doddala - Finance & Project Leadership. To request the formal PDF copy directly, please use the contact form or email pavandarshan007@gmail.com.');">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              Download Resume
-            </a>
-
-            <a href="#contact" class="btn-text">Contact Me &rarr;</a>
-          </div>
-
-          <!-- Socials -->
-          <div class="hero-socials">
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="LinkedIn Profile">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                <rect x="2" y="9" width="4" height="12"></rect>
-                <circle cx="4" cy="4" r="2"></circle>
-              </svg>
-            </a>
-            <a href="mailto:pavandarshan007@gmail.com" class="icon-btn" aria-label="Send Email">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Right Column: Visual Portrait with Circular Light Spots & Grounded Base -->
-        <div class="hero-visual reveal">
-          <div class="hero-portrait-wrapper">
-            <!-- Circular Gradient Light Spots behind the portrait -->
-            <div class="hero-light-spots" aria-hidden="true">
-              <div class="light-spot spot-head"></div>
-              <div class="light-spot spot-shoulder"></div>
-              <div class="light-spot spot-ambient"></div>
-            </div>
-
-            <!-- Man's Portrait (Base sits directly on the section separator) -->
+        <!-- 3D Interactive Scene Container -->
+        <div class="intro-3d-scene" id="introScene">
+          <!-- Central Visual Anchor: Pavan's Portrait -->
+          <div class="intro-portrait-anchor" id="introPortrait">
+            <div class="intro-portrait-halo" aria-hidden="true"></div>
             <img 
               src="assets/pavan-darshan.png" 
-              alt="Pavan Darshan Doddala - Finance & Project Leadership Professional" 
-              class="hero-portrait-image"
+              alt="Pavan Darshan Doddala - Finance Professional" 
+              class="intro-portrait-img"
               width="819" 
               height="1024"
               loading="eager"
               fetchpriority="high"
             />
+          </div>
 
-            <!-- Metric Badges Container -->
-            <div class="hero-badges-container">
-              <!-- Metric Badge 1: Top Left -->
-              <div class="hero-floating-badge badge-top-left">
-                <div class="floating-badge-inner">
-                  <div class="floating-badge-number">5+</div>
-                  <div class="floating-badge-text">YEARS OF<br>EXPERIENCE</div>
-                </div>
+          <!-- 1. Candlestick Market Tile (Layer 4) -->
+          <div class="intro-floating-card card-candlestick intro-layer-fg" id="cardCandlestick">
+            <div class="intro-card-header">
+              <span>S&amp;P 500 / VIX</span>
+              <span class="intro-card-badge">+1.42%</span>
+            </div>
+            <div class="candles-chart" aria-hidden="true">
+              <div class="candle-col"><div class="candle-wick"><div class="candle-bar up" style="top: 10px; height: 18px;"></div></div></div>
+              <div class="candle-col"><div class="candle-wick"><div class="candle-bar down" style="top: 16px; height: 14px;"></div></div></div>
+              <div class="candle-col"><div class="candle-wick"><div class="candle-bar up" style="top: 8px; height: 24px;"></div></div></div>
+              <div class="candle-col"><div class="candle-wick"><div class="candle-bar up" style="top: 4px; height: 30px;"></div></div></div>
+              <div class="candle-col"><div class="candle-wick"><div class="candle-bar down" style="top: 14px; height: 16px;"></div></div></div>
+              <div class="candle-col"><div class="candle-wick"><div class="candle-bar up" style="top: 6px; height: 26px;"></div></div></div>
+            </div>
+            <div class="candle-meta">
+              <span style="color: var(--text-primary); font-weight: 600;">5,864.20</span>
+              <span style="color: var(--text-muted);">Sharpe 2.18</span>
+            </div>
+          </div>
+
+          <!-- 2. Yield Curve & Rates Tile (Layer 2) -->
+          <div class="intro-floating-card card-yield intro-layer-bg" id="cardYield">
+            <div class="intro-card-header">
+              <span>RATES &amp; YIELD</span>
+              <span class="intro-card-badge">BENCHMARK</span>
+            </div>
+            <div class="yield-svg-wrap" aria-hidden="true">
+              <svg viewBox="0 0 200 46" width="100%" height="100%" fill="none">
+                <path d="M 0 38 Q 45 32, 90 22 T 180 8" stroke="#C6A15B" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="10" cy="37" r="3" fill="#C6A15B"/>
+                <circle cx="90" cy="22" r="3" fill="#C6A15B"/>
+                <circle cx="180" cy="8" r="3.5" fill="#D8BC7A" stroke="#0A0A0A" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="yield-stats">
+              <span>SOFR: <strong>5.32%</strong></span>
+              <span>10Y UST: <strong>4.18%</strong></span>
+            </div>
+          </div>
+
+          <!-- 3. Applied Research Manuscript Tile (Layer 2) -->
+          <div class="intro-floating-card card-research intro-layer-bg" id="cardResearch">
+            <div class="research-paper-tag">APPLIED RESEARCH 04</div>
+            <div class="research-title">Data Integrity in High-Volume Banking Ledgers</div>
+            <div class="research-stat">99.98% Verification • p &lt; 0.001</div>
+          </div>
+
+          <!-- 4. Capital Allocation Hurdle Tile (Layer 4) -->
+          <div class="intro-floating-card card-capalloc intro-layer-fg" id="cardCapalloc">
+            <div class="intro-card-header">
+              <span>CAPITAL ALLOCATION</span>
+              <span class="intro-card-badge">+12.6% SPREAD</span>
+            </div>
+            <div class="hurdle-bar-wrap">
+              <div class="hurdle-labels">
+                <span>ROIC: 24.6%</span>
+                <span style="color: var(--text-muted);">Hurdle: 12.0%</span>
+              </div>
+              <div class="hurdle-progress">
+                <div class="hurdle-fill" style="width: 78%;"></div>
+              </div>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Terminal Value Discipline</div>
+          </div>
+
+          <!-- 5. Risk Analytics Terminal (Layer 4) -->
+          <div class="intro-floating-card card-terminal intro-layer-fg" id="cardTerminal">
+            <div class="intro-card-header">
+              <span><span class="terminal-status-dot"></span>RISK TERMINAL</span>
+              <span>LIVE</span>
+            </div>
+            <div class="terminal-rows">
+              <div>VaR (99%): <strong>$1.45M</strong></div>
+              <div>BETA COEFFICIENT: <strong>0.84</strong></div>
+              <div>MAX DRAWDOWN: <strong style="color: var(--accent-gold);">-4.2%</strong></div>
+            </div>
+          </div>
+
+          <!-- 6. Quantifiable Value KPI Card (Layer 5) -->
+          <div class="intro-floating-card card-kpi intro-layer-near" id="cardKpi">
+            <div class="intro-card-header">
+              <span>QUANTIFIABLE IMPACT</span>
+            </div>
+            <div class="kpi-big-number">+$42M+</div>
+            <div class="kpi-subtext">Enterprise Value Generated Across Engagements</div>
+          </div>
+
+          <!-- 7. Workstream Execution Timeline (Layer 4) -->
+          <div class="intro-floating-card card-project intro-layer-fg" id="cardProject">
+            <div class="intro-card-header">
+              <span>WORKSTREAM</span>
+              <span class="intro-card-badge">ACTIVE</span>
+            </div>
+            <div class="intro-card-title" style="font-size: 0.8rem; margin: 4px 0 2px;">ERP Ledger Modernization</div>
+            <div class="project-step-row">
+              <span class="project-step-check">✓</span>
+              <span>Phase 01: Core Architecture</span>
+            </div>
+            <div class="project-step-row">
+              <span class="project-step-check" style="color: #22C55E;">●</span>
+              <span style="color: var(--text-primary); font-weight: 500;">Phase 02: GL Synchronization</span>
+            </div>
+          </div>
+
+          <!-- 8. Financial Model Spreadsheet Fragment (Layer 5) -->
+          <div class="intro-floating-card card-model intro-layer-near" id="cardModel">
+            <div class="intro-card-header">
+              <span>LBO / MODEL FRAGMENT</span>
+              <span style="color: var(--accent-gold); font-weight: bold;">FY26E</span>
+            </div>
+            <div class="spreadsheet-mini-grid">
+              <span class="grid-cell-label">REVENUE:</span>
+              <span class="grid-cell-val">$184.2M</span>
+              <span class="grid-cell-label">EBITDA MARGIN:</span>
+              <span class="grid-cell-val gold">26.4%</span>
+              <span class="grid-cell-label">FCF CONV:</span>
+              <span class="grid-cell-val">88.2%</span>
+            </div>
+          </div>
+
+          <!-- Floating Dimensional Label Pills -->
+          <div class="intro-pill-tag pill-1 intro-layer-bg" id="pill1">STRATEGIC EXECUTION</div>
+          <div class="intro-pill-tag pill-2 intro-layer-fg" id="pill2">CAPITAL MARKETS</div>
+          <div class="intro-pill-tag pill-3 intro-layer-near" id="pill3">CREDIT &amp; RISK</div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="intro-scroll-indicator" id="introScrollIndicator" aria-hidden="true">
+          <span>SCROLL TO EXPLORE</span>
+          <div class="scroll-indicator-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           2. HERO SECTION
+           ======================================================================= -->
+      <section id="hero" class="hero-section">
+        <div class="container hero-grid">
+          <!-- Left Column: Content -->
+          <div class="hero-content reveal">
+            <div class="section-eyebrow">HELLO, I'M</div>
+            
+            <h1 class="hero-title">
+              <span class="hero-title-mask"><span class="hero-title-line nowrap-line"><span class="hero-highlight">PAVAN</span> DARSHAN</span></span>
+              <span class="hero-title-mask"><span class="hero-title-line nowrap-line">DODDALA</span></span>
+            </h1>
+
+            <div class="hero-role">FINANCE &amp; PROJECT LEADERSHIP PROFESSIONAL</div>
+            
+            <div class="hero-descriptor">
+              Banking • Financial Analysis • Investment Banking • Project Leadership • Enterprise Systems
+            </div>
+
+            <p class="hero-bio">
+              Finance &amp; project leadership professional with 5+ years driving banking, enterprise systems, and strategic transformation. Currently pursuing a Full-Time MBA at Santa Clara University (Leavey School of Business), targeting Investment Banking Analyst &amp; MBA Associate roles.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="hero-actions">
+              <a href="#experience" class="btn btn-primary">
+                View Experience
+                <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              
+              <a href="#contact" class="btn btn-secondary" onclick="alert('Resume download initiated: Pavan Darshan Doddala - Finance & Project Leadership. To request the formal PDF copy directly, please use the contact form or email pavandarshan007@gmail.com.');">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Resume
+              </a>
+
+              <a href="#contact" class="btn-text">Contact Me &rarr;</a>
+            </div>
+
+            <!-- Socials -->
+            <div class="hero-socials">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="LinkedIn Profile">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect x="2" y="9" width="4" height="12"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+              </a>
+              <a href="mailto:pavandarshan007@gmail.com" class="icon-btn" aria-label="Send Email">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Visual Portrait with Circular Light Spots & Grounded Base -->
+          <div class="hero-visual reveal">
+            <div class="hero-portrait-wrapper">
+              <!-- Circular Gradient Light Spots behind the portrait -->
+              <div class="hero-light-spots" aria-hidden="true">
+                <div class="light-spot spot-head"></div>
+                <div class="light-spot spot-shoulder"></div>
+                <div class="light-spot spot-ambient"></div>
               </div>
 
-              <!-- Metric Badge 2: Bottom Right -->
-              <div class="hero-floating-badge badge-bottom-right">
-                <div class="floating-badge-inner">
-                  <div class="floating-badge-number">MBA</div>
-                  <div class="floating-badge-text">SANTA CLARA<br>UNIVERSITY</div>
+              <!-- Man's Portrait (Base sits directly on the section separator) -->
+              <img 
+                src="assets/pavan-darshan.png" 
+                alt="Pavan Darshan Doddala - Finance & Project Leadership Professional" 
+                class="hero-portrait-image"
+                width="819" 
+                height="1024"
+                loading="eager"
+                fetchpriority="high"
+              />
+
+              <!-- Metric Badges Container -->
+              <div class="hero-badges-container">
+                <!-- Metric Badge 1: Top Left -->
+                <div class="hero-floating-badge badge-top-left">
+                  <div class="floating-badge-inner">
+                    <div class="floating-badge-number">5+</div>
+                    <div class="floating-badge-text">YEARS OF<br>EXPERIENCE</div>
+                  </div>
+                </div>
+
+                <!-- Metric Badge 2: Bottom Right -->
+                <div class="hero-floating-badge badge-bottom-right">
+                  <div class="floating-badge-inner">
+                    <div class="floating-badge-number">MBA</div>
+                    <div class="floating-badge-text">SANTA CLARA<br>UNIVERSITY</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Section Separator at base of hero section -->
-      <div class="hero-section-separator" aria-hidden="true"></div>
-    </section>
+        <!-- Section Separator at base of hero section -->
+        <div class="hero-section-separator" aria-hidden="true"></div>
+      </section>
+    </div>
 
     <!-- =======================================================================
          3. ABOUT / PROFESSIONAL SNAPSHOT
