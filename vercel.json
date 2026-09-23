@@ -2,32 +2,16 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/blog",
-      "destination": "/blog/index.html"
-    },
-    {
       "source": "/blog/:slug",
-      "destination": "/blog/post.html"
-    },
-    {
-      "source": "/admin",
-      "destination": "/admin/index.html"
-    },
-    {
-      "source": "/admin/posts",
-      "destination": "/admin/posts.html"
+      "destination": "/blog/post"
     },
     {
       "source": "/admin/posts/new",
-      "destination": "/admin/post-edit.html"
+      "destination": "/admin/post-edit"
     },
     {
       "source": "/admin/posts/:id/edit",
-      "destination": "/admin/post-edit.html"
-    },
-    {
-      "source": "/admin/subscribers",
-      "destination": "/admin/subscribers.html"
+      "destination": "/admin/post-edit"
     }
   ],
   "headers": [
