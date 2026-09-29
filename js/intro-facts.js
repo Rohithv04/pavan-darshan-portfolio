@@ -26,18 +26,6 @@ export const INTRO_FACTS = [
     mobile:  { x: "0vw",   y: "-33vh", z: 0,  rot: 0 } // Centered directly above head
   },
 
-  // --------------------------------------------------------------------------
-  // 2. SILENT AUCTIONS RESEARCH (Upper-Left Outer) — Applied Finance Research
-  // --------------------------------------------------------------------------
-  {
-    id: "res-silent-auctions",
-    type: "research",
-    size: "small",
-    pivot: { rot: 5, tiltX: 2 },
-    desktop: { x: "-36vw", y: "-16vh", z: 10, rot: -2.5 },
-    tablet:  null,
-    mobile:  null
-  },
 
   // --------------------------------------------------------------------------
   // 3. $2M COST OPTIMIZATION (Mid-Left) — Quantified Impact

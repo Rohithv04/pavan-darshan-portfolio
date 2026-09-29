@@ -337,9 +337,9 @@ function initAnimations() {
             ease: "back.out(1.2)"
           }, 24);
 
-        // Wave 3: Investment Banking focus, Enterprise Systems, Promotion, Research Papers, Analytics Stack
+        // Wave 3: Investment Banking focus, Enterprise Systems, Promotion, Analytics Stack
         masterIntroTL
-          .to("#pos-focus-ib, #pos-proj-enterprise, #pos-exec-leadership, #pos-res-silent-auctions, #pos-analytics-stack", {
+          .to("#pos-focus-ib, #pos-proj-enterprise, #pos-exec-leadership, #pos-analytics-stack", {
             opacity: 1,
             scale: 1.0,
             duration: 14,
@@ -403,7 +403,7 @@ function initAnimations() {
 
         // 78% -> 92%: COLLAPSED CARD CLUSTER MOVES DOWNWARD TOGETHER & EXITS
         masterIntroTL
-          .to("#pos-focus-ib, #pos-res-silent-auctions, #pos-cost-opt, #pos-lending-growth, #pos-payroll-auto, #pos-analytics-stack, #pos-proj-enterprise, #pos-risk-gov, #pos-exec-leadership", {
+          .to("#pos-focus-ib, #pos-cost-opt, #pos-lending-growth, #pos-payroll-auto, #pos-analytics-stack, #pos-proj-enterprise, #pos-risk-gov, #pos-exec-leadership", {
             xPercent: -50,
             yPercent: -50,
             y: 150,

@@ -485,9 +485,8 @@
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1024px) {
-  /* Tablet adjustments: 7 clean non-overlapping cards */
-  #pos-analytics-stack,
-  #pos-res-silent-auctions {
+  /* Tablet adjustments: clean non-overlapping cards */
+  #pos-analytics-stack {
     display: none !important;
   }
 
@@ -514,9 +513,8 @@
 }
 
 @media (max-width: 768px) {
-  /* Mobile: Exactly 6 perimeter cards around Pavan, zero face overlap */
+  /* Mobile: perimeter cards around Pavan, zero face overlap */
   #pos-analytics-stack,
-  #pos-res-silent-auctions,
   #pos-proj-enterprise {
     display: none !important;
   }
