@@ -1233,45 +1233,50 @@ function initAnimations() {
     });
 
     focusTL.from("#focus .section-header > *", {
-      y: 28,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.09,
-      ease: "power3.out"
-    })
-    // Primary Career Direction Box
-    .from(".focus-primary-box, .secondary-focus-list", {
       y: 24,
       opacity: 0,
       duration: 0.65,
-      stagger: 0.1,
-      ease: "power3.out"
-    }, "-=0.35")
-    // Capability groups (Finance, Capital Markets, Analytics, Execution)
-    .from(".skill-category", {
-      y: 20,
+      stagger: 0.08,
+      ease: "power3.out",
+      clearProps: "all"
+    })
+    // Primary Career Direction & Secondary Areas (stable entrance)
+    .from(".career-left-sticky", {
+      y: 15,
       opacity: 0,
       duration: 0.5,
-      stagger: 0.1,
       ease: "power2.out",
-      clearProps: "opacity,transform"
+      clearProps: "all"
     }, "-=0.3");
 
-    // Subtle chips micro-stagger inside skill categories
-    const skillCategories = document.querySelectorAll(".skill-category");
-    skillCategories.forEach((cat) => {
-      const chips = cat.querySelectorAll(".skill-chip");
+    // Reveal capability cards individually once as each enters the viewport
+    const capabilityCards = document.querySelectorAll(".career-right .skill-category");
+    capabilityCards.forEach((card) => {
+      gsap.from(card, {
+        y: 15,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+        clearProps: "all",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 88%",
+          once: true
+        }
+      });
+
+      const chips = card.querySelectorAll(".skill-chip");
       if (chips.length) {
         gsap.from(chips, {
-          y: 10,
+          y: 8,
           opacity: 0,
-          duration: 0.45,
-          stagger: 0.03,
+          duration: 0.4,
+          stagger: 0.025,
           ease: "power2.out",
-          clearProps: "opacity,transform",
+          clearProps: "all",
           scrollTrigger: {
-            trigger: cat,
-            start: "top 85%",
+            trigger: card,
+            start: "top 88%",
             once: true
           }
         });

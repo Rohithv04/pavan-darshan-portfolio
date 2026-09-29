@@ -130,10 +130,24 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .career-layout,
   .focus-grid,
   .contact-grid {
     grid-template-columns: 1fr;
     gap: var(--space-2xl);
+  }
+
+  .career-left {
+    height: auto;
+  }
+
+  .career-left-sticky {
+    position: static;
+    top: auto;
+  }
+
+  .career-right {
+    width: 100%;
   }
 }
 

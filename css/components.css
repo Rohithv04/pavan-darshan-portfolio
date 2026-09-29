@@ -1835,13 +1835,28 @@
 }
 
 /* --------------------------------------------------------------------------
-   11. CAREER FOCUS & SKILLS
+   11. CAREER FOCUS & SKILLS (Sticky Two-Column Layout)
    -------------------------------------------------------------------------- */
-.focus-grid {
+.career-capabilities {
+  position: relative;
+}
+
+.career-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4xl);
-  align-items: start;
+  grid-template-columns: minmax(360px, 0.82fr) minmax(0, 1.18fr);
+  gap: var(--space-2xl);
+  align-items: stretch;
+}
+
+.career-left {
+  position: relative;
+  height: 100%;
+}
+
+.career-left-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: calc(var(--header-height, 76px) + 32px);
 }
 
 .focus-primary-box {
@@ -1849,7 +1864,7 @@
   border: 1px solid rgba(198, 161, 91, 0.28);
   border-radius: var(--radius-md);
   padding: var(--space-xl);
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-lg);
 }
 
 .focus-primary-title {
@@ -1866,11 +1881,22 @@
   line-height: 1.6;
 }
 
+.secondary-focus-wrap {
+  margin-top: 0;
+}
+
+.secondary-focus-title {
+  margin-bottom: var(--space-sm);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .secondary-focus-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: var(--space-md);
+  margin-top: 0;
 }
 
 .focus-pill {
@@ -1880,6 +1906,16 @@
   border-radius: var(--radius-pill);
   font-size: 0.85rem;
   color: var(--text-secondary);
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.focus-pill:hover {
+  border-color: rgba(198, 161, 91, 0.35);
+  color: var(--text-primary);
+}
+
+.career-right {
+  min-width: 0;
 }
 
 /* Skills Categories */
