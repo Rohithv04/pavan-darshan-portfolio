@@ -10,7 +10,7 @@
  * ============================================================================
  */
 
-export const INTRO_WATERMARK = "FINANCE • STRATEGY • EXECUTION";
+export const INTRO_WATERMARK = "FINANCIAL MANAGEMENT • STRATEGY • EXECUTION";
 
 export const INTRO_FACTS = [
   // --------------------------------------------------------------------------

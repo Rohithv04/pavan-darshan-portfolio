@@ -1,7 +1,7 @@
 {
   "name": "pavan-darshan",
   "version": "1.0.0",
-  "description": "A responsive, single-page personal portfolio website for **Pavan Darshan Doddala** (Finance & Project Leadership Professional; Full-Time MBA Candidate at Santa Clara University’s Leavey School of Business).",
+  "description": "A responsive, single-page personal portfolio website for **Pavan Darshan Doddala** (Financial Management & Project Leadership Professional; Full-Time MBA Candidate at Santa Clara University’s Leavey School of Business).",
   "main": "index.js",
   "type": "module",
   "scripts": {

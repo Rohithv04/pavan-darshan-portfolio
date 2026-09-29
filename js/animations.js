@@ -962,7 +962,7 @@ function initAnimations() {
 
       impactTL.to(counterObj, {
         val: targetVal,
-        duration: 1.5,
+        duration: 0.85,
         ease: "power2.out",
         onUpdate: () => {
           numEl.textContent = isFloat ? counterObj.val.toFixed(1) : Math.round(counterObj.val).toString();

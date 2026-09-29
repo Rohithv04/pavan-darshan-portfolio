@@ -1,23 +1,23 @@
-# Pavan Darshan Doddala — Executive Finance Portfolio, Insights & CMS
+# Pavan Darshan Doddala — Investment Banking & Financial Management Portfolio, Insights & CMS
 
-A responsive personal portfolio, editorial finance blog, newsletter system, and private lightweight CMS for **Pavan Darshan Doddala** (Finance & Project Leadership Professional; Full-Time MBA Candidate at Santa Clara University’s Leavey School of Business).
+A responsive personal portfolio, editorial finance blog, newsletter system, and private lightweight CMS for **Pavan Darshan Doddala** (Financial Management & Project Leadership Professional; Full-Time MBA Candidate at Santa Clara University’s Leavey School of Business).
 
-Built with a premium black and champagne gold theme inspired by investment banking and elite management consulting, featuring deep obsidian and charcoal tones (`#0A0A0A` / `#111111`), refined champagne gold accents (`#C6A15B` / `#D8BC7A`), crisp typography (`Plus Jakarta Sans` & `Inter`), custom vector financial diagrams, responsive micro-interactions, and a secure Supabase backend.
+Built with a premium black and champagne gold theme inspired by investment banking and elite corporate advisory, featuring deep obsidian and charcoal tones (`#0A0A0A` / `#111111`), refined champagne gold accents (`#C6A15B` / `#D8BC7A`), crisp typography (`Plus Jakarta Sans` & `Inter`), custom vector financial diagrams, responsive micro-interactions, and a secure Supabase backend.
 
 ---
 
 ## 🌟 Key Features
 
 - **Executive Aesthetic**: Premium black + champagne gold theme with restrained accents, warm white typography, and subtle surface elevation.
+- **Top-Left Wordmark**: `PAVAN DODDALA | INVESTMENT BANKER` aligned with primary career direction.
 - **Dynamic Impact Section**: 6 quantifiable achievement metrics with viewport count-up animations and interactive hover card expansion.
 - **Experience Timeline**: Career progression with promotional badges and structured bullet points across banking and enterprise systems.
-- **Selected Projects**: Custom inline SVG illustrations for POS-to-GL ledger workflows, automated payroll calculation engines, credit risk curves, and SME alternative-data underwriting architecture.
-- **Applied Research**: 10 core research papers with micro-statistics, embedded PDF modal preview, and direct downloads.
-- **Public Insights (Blog)**: Minimal, editorial, finance-focused publication system (`/blog` and `/blog/:slug`) with category filtering, live keyword search, dynamic reading times, author bio, and OpenGraph / JSON-LD Article structured data.
-- **Interactive Newsletter**: Built-in email subscription with duplicate protection, validation, and real-time feedback at `/blog` and the footer of every article.
-- **Private Lightweight CMS**: Secure admin portal (`/admin`) for drafting, publishing, editing, and deleting articles, uploading featured/inline images, and managing email subscribers with CSV export.
-- **Supabase Backend**: Native database, Row Level Security (RLS), GoTrue Authentication, and `blog-images` Storage.
-- **Homepage Integration**: Dynamic "Recent Thinking" preview on the homepage that automatically presents 2–3 latest published articles.
+- **Corporate Work Projects**: Professional workplace execution featuring custom SVG process diagrams for POS-to-GL workflows, automated payroll calculation engines, credit risk curves, enterprise cost analysis, and SME credit research concept.
+- **Research Projects**: 10 completed independent research manuscripts with domain badges, custom SVG visual diagrams, and an interactive executive overview modal.
+- **Insights (Thoughts & Ideas)**: Short-form perspectives, weekly notes, and commentary across Financial Management, markets, strategy, and enterprise technology.
+- **Weekly Notes & Newsletter**: Built-in email subscription with duplicate protection and real-time Supabase integration.
+- **Career Focus & 7 Skill Categories**: Primary focus on Investment Banking Analyst & MBA Associate opportunities, with 7 granular skill categories.
+- **Academic Foundation**: Santa Clara University (MBA), Stevens Institute of Technology (M.Eng.), and SRM Institute of Science & Technology (B.Tech.), with dedicated certification icons and certificate PDF linking hooks.
 
 ---
 
