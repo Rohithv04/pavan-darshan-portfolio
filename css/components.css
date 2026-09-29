@@ -1976,30 +1976,24 @@
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-4xl);
-  align-items: start;
+  gap: var(--space-3xl);
+  align-items: stretch;
 }
 
-.contact-info-block {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-}
-
-.contact-bio-text {
-  font-size: 1.0625rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-.contact-details-card {
+.contact-details-card,
+.contact-form-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: var(--space-xl);
+  padding: var(--space-2xl);
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+
+.contact-details-card {
   gap: var(--space-md);
+  justify-content: space-between;
 }
 
 .contact-detail-row {
@@ -2046,12 +2040,6 @@
 
 /* Contact Form */
 .contact-form-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: var(--space-2xl);
-  display: flex;
-  flex-direction: column;
   gap: var(--space-lg);
 }
 

@@ -505,31 +505,35 @@ function initAnimations() {
         }
       });
 
-      contactTL.from("#contact .section-eyebrow, #contact .section-title, #contact .contact-bio-text", {
+      contactTL.from("#contact .section-header > *", {
         y: 24,
         opacity: 0,
         duration: 0.65,
-        stagger: 0.1,
-        ease: "power3.out"
+        stagger: 0.09,
+        ease: "power3.out",
+        clearProps: "all"
       })
-      .from(".contact-info-block", {
+      .from(".contact-details-card", {
         x: -25,
         opacity: 0,
         duration: 0.75,
-        ease: "power3.out"
+        ease: "power3.out",
+        clearProps: "all"
       }, "-=0.35")
       .from(".contact-form-card", {
         x: 25,
         opacity: 0,
         duration: 0.75,
-        ease: "power3.out"
+        ease: "power3.out",
+        clearProps: "all"
       }, "<")
       .from(".contact-form-card .form-group, .contact-form-card .btn", {
         y: 14,
         opacity: 0,
         duration: 0.45,
         stagger: 0.07,
-        ease: "power2.out"
+        ease: "power2.out",
+        clearProps: "all"
       }, "-=0.35");
     });
 
@@ -678,31 +682,35 @@ function initAnimations() {
         }
       });
 
-      contactTL.from("#contact .section-eyebrow, #contact .section-title, #contact .contact-bio-text", {
+      contactTL.from("#contact .section-header > *", {
         y: 24,
         opacity: 0,
         duration: 0.65,
-        stagger: 0.1,
-        ease: "power3.out"
+        stagger: 0.09,
+        ease: "power3.out",
+        clearProps: "all"
       })
-      .from(".contact-info-block", {
+      .from(".contact-details-card", {
         x: -20,
         opacity: 0,
         duration: 0.7,
-        ease: "power3.out"
+        ease: "power3.out",
+        clearProps: "all"
       }, "-=0.35")
       .from(".contact-form-card", {
         x: 20,
         opacity: 0,
         duration: 0.7,
-        ease: "power3.out"
+        ease: "power3.out",
+        clearProps: "all"
       }, "<")
       .from(".contact-form-card .form-group, .contact-form-card .btn", {
         y: 14,
         opacity: 0,
         duration: 0.45,
         stagger: 0.07,
-        ease: "power2.out"
+        ease: "power2.out",
+        clearProps: "all"
       }, "-=0.35");
     });
 
@@ -848,18 +856,27 @@ function initAnimations() {
         }
       });
 
-      contactTLMobile.from("#contact .contact-info-block > *", {
+      contactTLMobile.from("#contact .section-header > *", {
         y: 20,
         opacity: 0,
         duration: 0.6,
         stagger: 0.08,
-        ease: "power3.out"
+        ease: "power3.out",
+        clearProps: "all"
       })
+      .from(".contact-details-card", {
+        y: 22,
+        opacity: 0,
+        duration: 0.65,
+        ease: "power3.out",
+        clearProps: "all"
+      }, "-=0.25")
       .from(".contact-form-card", {
         y: 22,
         opacity: 0,
         duration: 0.65,
-        ease: "power3.out"
+        ease: "power3.out",
+        clearProps: "all"
       }, "-=0.25")
       .from(".contact-form-card .form-group, .contact-form-card .btn", {
         y: 12,
