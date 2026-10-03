@@ -14,8 +14,8 @@ Built with a premium black and champagne gold theme inspired by investment banki
 - **Experience Timeline**: Career progression with promotional badges and structured bullet points across banking and enterprise systems.
 - **Corporate Work Projects**: Professional workplace execution featuring custom SVG process diagrams for POS-to-GL workflows, automated payroll calculation engines, credit risk curves, enterprise cost analysis, and SME credit research concept.
 - **Research Projects**: 10 completed independent research manuscripts with domain badges, custom SVG visual diagrams, and an interactive executive overview modal.
-- **Insights (Thoughts & Ideas)**: Short-form perspectives, weekly notes, and commentary across Financial Management, markets, strategy, and enterprise technology.
-- **Weekly Notes & Newsletter**: Built-in email subscription with duplicate protection and real-time Supabase integration.
+- **Insights (Thoughts & Ideas)**: Short-form perspectives, weekly thoughts, and commentary across Financial Management, markets, strategy, and enterprise technology.
+- **Weekly Thoughts & Newsletter**: Built-in email subscription with duplicate protection and real-time Supabase integration.
 - **Career Focus & 7 Skill Categories**: Primary focus on Investment Banking Analyst & MBA Associate opportunities, with 7 granular skill categories.
 - **Academic Foundation**: Santa Clara University (MBA), Stevens Institute of Technology (M.Eng.), and SRM Institute of Science & Technology (B.Tech.), with dedicated certification icons and certificate PDF linking hooks.
 
