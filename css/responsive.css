@@ -149,6 +149,11 @@
   .career-right {
     width: 100%;
   }
+
+  .certifications-wrap {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -277,6 +282,12 @@
   .research-grid,
   .extra-research-drawer {
     grid-template-columns: 1fr;
+  }
+
+  /* Certifications Grid: 1 column */
+  .certifications-wrap {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
   }
 
   /* Experience Timeline */

@@ -488,21 +488,113 @@ function initHeroDocuments() {
 }
 
 /**
- * Certificate PDF Linking Capability (Data Model Hook)
- * Enables "View Certificate" when data-certificate-url is populated with a valid file path.
+ * Certificate Preview Modal Controller
+ * Enables interactive in-page preview of professional certificates.
+ * When "View Certificate" (or the card) is clicked, opens #certPreviewModal with iframe preview,
+ * direct download action, and open-in-tab capability.
  */
 function initCertificates() {
+  const certModal = document.getElementById('certPreviewModal');
+  const certModalBackdrop = document.getElementById('certModalBackdrop');
+  const certModalClose = document.getElementById('certModalClose');
+  const certModalTitle = document.getElementById('certModalTitle');
+  const certModalEyebrow = document.getElementById('certModalEyebrow');
+  const certModalIframe = document.getElementById('certModalIframe');
+  const certModalNewTab = document.getElementById('certModalNewTab');
+  const certModalDownload = document.getElementById('certModalDownload');
+  const certLoader = document.getElementById('certLoader');
+  let lastActiveCertElement = null;
+
+  function openCertPreview(certUrl, title, issuer) {
+    if (!certModal || !certModalIframe) {
+      window.open(certUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    lastActiveCertElement = document.activeElement;
+
+    if (certModalTitle) certModalTitle.textContent = title;
+    if (certModalEyebrow) certModalEyebrow.textContent = `PROFESSIONAL CERTIFICATION • ${issuer.toUpperCase()}`;
+    if (certModalNewTab) certModalNewTab.href = certUrl;
+    if (certModalDownload) {
+      certModalDownload.href = certUrl;
+      const filename = certUrl.split('/').pop() || `${title.replace(/\s+/g, '_')}.pdf`;
+      certModalDownload.setAttribute('download', filename);
+    }
+
+    if (certLoader) certLoader.classList.remove('is-hidden');
+    certModalIframe.src = certUrl;
+
+    certModalIframe.onload = () => {
+      if (certLoader) certLoader.classList.add('is-hidden');
+    };
+
+    certModal.classList.add('is-active');
+    certModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      if (certModalClose) certModalClose.focus();
+    }, 100);
+  }
+
+  function closeCertModal() {
+    if (!certModal) return;
+    certModal.classList.remove('is-active');
+    certModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (certModalIframe) certModalIframe.src = 'about:blank';
+    if (certLoader) certLoader.classList.remove('is-hidden');
+    if (lastActiveCertElement) lastActiveCertElement.focus();
+  }
+
+  if (certModalClose) {
+    certModalClose.addEventListener('click', closeCertModal);
+  }
+
+  if (certModalBackdrop) {
+    certModalBackdrop.addEventListener('click', closeCertModal);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && certModal && certModal.classList.contains('is-active')) {
+      closeCertModal();
+    }
+  });
+
   const certCards = document.querySelectorAll('.cert-card');
   certCards.forEach(card => {
     const certUrl = card.getAttribute('data-certificate-url');
+    const titleEl = card.querySelector('.cert-title');
+    const issuerEl = card.querySelector('.cert-issuer');
+    const title = titleEl ? titleEl.textContent.trim() : 'Professional Certificate';
+    const issuer = issuerEl ? issuerEl.textContent.trim() : 'Verified Issuer';
+
     if (certUrl && certUrl.trim() !== '') {
       card.setAttribute('data-has-cert', 'true');
+      card.style.cursor = 'pointer';
+
       const btn = card.querySelector('.cert-btn');
       if (btn) {
         btn.href = certUrl;
+        btn.style.display = 'inline-flex';
         btn.target = '_blank';
         btn.rel = 'noopener noreferrer';
+        btn.setAttribute('aria-label', `Preview ${title} Certificate`);
+
+        btn.addEventListener('click', (e) => {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+          e.preventDefault();
+          e.stopPropagation();
+          openCertPreview(certUrl, title, issuer);
+        });
       }
+
+      // Clicking anywhere on the card opens the preview
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.cert-btn')) return;
+        openCertPreview(certUrl, title, issuer);
+      });
     }
   });
 }

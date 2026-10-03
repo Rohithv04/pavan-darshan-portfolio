@@ -17,7 +17,7 @@ Built with a premium black and champagne gold theme inspired by investment banki
 - **Insights (Thoughts & Ideas)**: Short-form perspectives, weekly thoughts, and commentary across Financial Management, markets, strategy, and enterprise technology.
 - **Weekly Thoughts & Newsletter**: Built-in email subscription with duplicate protection and real-time Supabase integration.
 - **Career Focus & 7 Skill Categories**: Primary focus on Investment Banking Analyst & MBA Associate opportunities, with 7 granular skill categories.
-- **Academic Foundation**: Santa Clara University (MBA), Stevens Institute of Technology (M.Eng.), and SRM Institute of Science & Technology (B.Tech.), with dedicated certification icons and certificate PDF linking hooks.
+- **Academic Foundation**: Santa Clara University (MBA), Stevens Institute of Technology (M.Eng.), and SRM Institute of Science & Technology (B.Tech.), with dedicated professional certification cards and interactive PDF preview modal (Product Manager, Product Leader, Product Marketing Manager, Product Micro Analytics, Scrum Master).
 
 ---
 
