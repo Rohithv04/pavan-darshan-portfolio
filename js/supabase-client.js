@@ -235,10 +235,10 @@ export const DEFAULT_RESUME = {
   id: 'default',
   file_name: 'Pavan_Darshan_Doddala_Resume.pdf',
   file_url: '/assets/Pavan_Darshan_Doddala_Resume.pdf',
-  file_size: 245760,
+  file_size: 169858,
   mime_type: 'application/pdf',
   is_active: true,
-  uploaded_at: '2026-09-23T00:00:00.000Z',
+  uploaded_at: '2026-10-08T00:00:00.000Z',
   is_default: true
 };
 
