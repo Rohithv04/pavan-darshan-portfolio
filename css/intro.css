@@ -140,6 +140,22 @@
   pointer-events: none;
 }
 
+/* Career Progression card sits strictly in front over portrait */
+#pos-exec-leadership,
+.card-pos-wrap[data-id="exec-leadership"],
+#pos-exec-leadership .card-parallax-wrap,
+#pos-exec-leadership .card-drag-wrap,
+#pos-exec-leadership .card-idle-wrap,
+#pos-exec-leadership .visual-card {
+  z-index: 100 !important;
+}
+
+#card-exec-leadership {
+  background-color: rgba(14, 14, 14, 0.96) !important;
+  border-color: rgba(198, 161, 91, 0.55) !important;
+  box-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.95), 0 0 24px rgba(198, 161, 91, 0.16) !important;
+}
+
 /* 2. Parallax Wrapper: Controlled strictly by cursor quickTo() */
 .card-parallax-wrap {
   position: relative;
@@ -440,7 +456,7 @@
    ========================================================================== */
 .intro-scroll-indicator {
   position: absolute;
-  bottom: 28px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -534,7 +550,14 @@
     height: 42vh;
     max-height: 310px;
     min-height: 240px;
-    z-index: 50 !important; /* Pavan strictly on top of all card layers */
+    z-index: 50 !important; /* Pavan strictly on top of background card layers */
+  }
+
+  /* Career Progression card strictly above portrait on mobile */
+  #pos-exec-leadership,
+  .card-pos-wrap[data-id="exec-leadership"],
+  #pos-exec-leadership .visual-card {
+    z-index: 100 !important;
   }
 
   .intro-portrait-img {

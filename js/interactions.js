@@ -172,6 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. CERTIFICATE PDF LINKING SUPPORT (Requirement 12)
   // --------------------------------------------------------------------------
   initCertificates();
+
+  // --------------------------------------------------------------------------
+  // 6. CAREER FOCUS & CAPABILITIES (Inline Expandable Cards)
+  // --------------------------------------------------------------------------
+  initSkillCards();
 });
 
 /**
@@ -598,3 +603,39 @@ function initCertificates() {
     }
   });
 }
+
+/**
+ * ============================================================================
+ * 6. CAREER FOCUS & CAPABILITIES CONTROLLER (Inline Expandable Cards)
+ * Allows expanding individual capability cards to reveal secondary skills
+ * with smooth inline transition and automatic ScrollTrigger resynchronization.
+ * ============================================================================
+ */
+function initSkillCards() {
+  const moreButtons = document.querySelectorAll('.skill-more-btn');
+  moreButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.skill-category');
+      if (!card) return;
+
+      const isExpanded = card.classList.toggle('is-expanded');
+      btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+
+      const textEl = btn.querySelector('.skill-more-text');
+      if (textEl) {
+        textEl.textContent = isExpanded ? 'SHOW LESS' : '+ VIEW MORE';
+      }
+
+      const secondaryWrap = card.querySelector('.skill-chips-secondary');
+      if (secondaryWrap) {
+        secondaryWrap.setAttribute('aria-hidden', isExpanded ? 'false' : 'true');
+      }
+
+      // Re-synchronize ScrollTrigger after layout height change
+      if (window.ScrollTrigger) {
+        window.ScrollTrigger.refresh();
+      }
+    });
+  });
+}
+

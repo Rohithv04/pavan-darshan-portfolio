@@ -32,7 +32,24 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/blog.css">
-  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/intro.css?v=3.1">
+
+  <!-- Executive Priority Stacking: Promoted Card strictly renders above portrait -->
+  <style>
+    #pos-exec-leadership,
+    .card-pos-wrap[data-id="exec-leadership"],
+    #pos-exec-leadership .card-parallax-wrap,
+    #pos-exec-leadership .card-drag-wrap,
+    #pos-exec-leadership .card-idle-wrap,
+    #pos-exec-leadership .visual-card {
+      z-index: 100 !important;
+    }
+    #card-exec-leadership {
+      background-color: rgba(14, 14, 14, 0.96) !important;
+      border-color: rgba(198, 161, 91, 0.55) !important;
+      box-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.95), 0 0 24px rgba(198, 161, 91, 0.16) !important;
+    }
+  </style>
 
   <!-- Structured Data (JSON-LD Person Schema) -->
   <script type="application/ld+json">
@@ -319,11 +336,11 @@
           </div>
 
           <!-- 9. Career Progression: Promoted in 3 Months (Medium) -->
-          <div class="card-pos-wrap" id="pos-exec-leadership" data-id="exec-leadership" data-wave="2" data-layer="foreground">
+          <div class="card-pos-wrap" id="pos-exec-leadership" data-id="exec-leadership" data-wave="2" data-layer="foreground" style="z-index: 100 !important;">
             <div class="card-parallax-wrap" id="plx-exec-leadership">
               <div class="card-drag-wrap card-draggable" id="drag-exec-leadership">
                 <div class="card-idle-wrap" id="idle-exec-leadership">
-                  <div class="visual-card card-capability card-size-md" id="card-exec-leadership">
+                  <div class="visual-card card-capability card-size-md" id="card-exec-leadership" style="z-index: 100 !important;">
                     <div class="card-header">
                       <span class="card-eyebrow">CAREER PROGRESSION</span>
                       <span class="card-badge gold">PROMOTED IN 3 MOS</span>
@@ -1858,38 +1875,58 @@
           <!-- RIGHT COLUMN: Normal vertical scrolling flow -->
           <div class="career-right">
             <div class="skills-stack">
-              <!-- Category 1: Financial Management -->
+              <!-- Category 1: Financial Management & Corporate Finance -->
               <div class="skill-category">
-                <div class="skill-cat-title">Financial Management</div>
+                <div class="skill-cat-title">Financial Management &amp; Corporate Finance</div>
                 <div class="skill-chips">
                   <span class="skill-chip">Financial Analysis</span>
                   <span class="skill-chip">Financial Statement Analysis</span>
-                  <span class="skill-chip">Cost Analysis</span>
-                  <span class="skill-chip">Business Value Assessment</span>
+                  <span class="skill-chip">Cost &amp; Cost-Benefit Analysis</span>
+                  <span class="skill-chip">Financial Feasibility Analysis</span>
+                  <span class="skill-chip">Investment Appraisal — ROI / NPV / Payback</span>
                   <span class="skill-chip">Capital Allocation</span>
-                  <span class="skill-chip">Budgeting Concepts</span>
-                  <span class="skill-chip">KPI Analysis</span>
-                  <span class="skill-chip">Financial Reporting</span>
-                  <span class="skill-chip">Risk-Adjusted Performance</span>
-                  <span class="skill-chip">Management Reporting</span>
+                  <span class="skill-chip">Budgeting &amp; Forecasting</span>
+                  <span class="skill-chip">Financial Decision Support</span>
                 </div>
+                <div class="skill-chips-secondary" id="more-skills-01" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Business Value Assessment</span>
+                    <span class="skill-chip">Profitability Analysis</span>
+                    <span class="skill-chip">Scenario Analysis</span>
+                    <span class="skill-chip">KPI &amp; Management Reporting</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-01">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
               </div>
 
-              <!-- Category 2: Banking & Credit -->
+              <!-- Category 2: Banking, Credit & Risk -->
               <div class="skill-category">
-                <div class="skill-cat-title">Banking &amp; Credit</div>
+                <div class="skill-cat-title">Banking, Credit &amp; Risk</div>
                 <div class="skill-chips">
-                  <span class="skill-chip">SME Lending</span>
-                  <span class="skill-chip">Retail Lending</span>
+                  <span class="skill-chip">SME &amp; Retail Lending</span>
                   <span class="skill-chip">Credit Underwriting</span>
+                  <span class="skill-chip">Credit Assessment</span>
                   <span class="skill-chip">Credit Risk Analysis</span>
-                  <span class="skill-chip">Portfolio Quality</span>
-                  <span class="skill-chip">Customer Acquisition</span>
-                  <span class="skill-chip">Market Segmentation</span>
-                  <span class="skill-chip">Portfolio Risk</span>
+                  <span class="skill-chip">Credit Portfolio Risk</span>
+                  <span class="skill-chip">Non-Performing Asset Analysis</span>
+                  <span class="skill-chip">Risk Management</span>
                   <span class="skill-chip">Banking Strategy</span>
-                  <span class="skill-chip">Financial Institution Strategy</span>
                 </div>
+                <div class="skill-chips-secondary" id="more-skills-02" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Lending Strategy</span>
+                    <span class="skill-chip">Customer Acquisition Strategy</span>
+                    <span class="skill-chip">Market Segmentation</span>
+                    <span class="skill-chip">Regulatory &amp; Compliance Awareness</span>
+                    <span class="skill-chip">Digital Banking</span>
+                    <span class="skill-chip">Risk-Adjusted Decision Making</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-02">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
               </div>
 
               <!-- Category 3: Investment Banking & Capital Markets -->
@@ -1897,84 +1934,170 @@
                 <div class="skill-cat-title">Investment Banking &amp; Capital Markets</div>
                 <div class="skill-chips">
                   <span class="skill-chip">Investment Banking Strategy</span>
+                  <span class="skill-chip">Capital Markets Research</span>
                   <span class="skill-chip">ECM Research</span>
                   <span class="skill-chip">DCM Research</span>
                   <span class="skill-chip">Cross-Border Banking</span>
                   <span class="skill-chip">Market Microstructure</span>
-                  <span class="skill-chip">Equity Factor Research</span>
-                  <span class="skill-chip">Portfolio Risk</span>
-                  <span class="skill-chip">Industry Research</span>
-                  <span class="skill-chip">Market Research</span>
-                  <span class="skill-chip">Capital Markets Research</span>
+                  <span class="skill-chip">Capital Structure Concepts</span>
+                  <span class="skill-chip">Transaction Analysis</span>
                 </div>
+                <div class="skill-chips-secondary" id="more-skills-03" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Universal Banking Strategy</span>
+                    <span class="skill-chip">Equity Factor Research</span>
+                    <span class="skill-chip">Volatility &amp; Regime Analysis</span>
+                    <span class="skill-chip">Industry &amp; Competitive Research</span>
+                    <span class="skill-chip">Financial Institution Analysis</span>
+                    <span class="skill-chip">Corporate Finance Research</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-03">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
               </div>
 
-              <!-- Category 4: Business & Project Management -->
+              <!-- Category 4: Strategy, Product & Business Transformation -->
               <div class="skill-category">
-                <div class="skill-cat-title">Business &amp; Project Management</div>
+                <div class="skill-cat-title">Strategy, Product &amp; Business Transformation</div>
+                <div class="skill-chips">
+                  <span class="skill-chip">Business Strategy</span>
+                  <span class="skill-chip">Strategic Analysis</span>
+                  <span class="skill-chip">Product Strategy</span>
+                  <span class="skill-chip">Business Transformation</span>
+                  <span class="skill-chip">Digital Transformation</span>
+                  <span class="skill-chip">Business Process Reengineering</span>
+                  <span class="skill-chip">AS-IS / TO-BE Analysis</span>
+                  <span class="skill-chip">Business Case Development</span>
+                </div>
+                <div class="skill-chips-secondary" id="more-skills-04" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Operating Model Improvement</span>
+                    <span class="skill-chip">Product &amp; Business Requirements</span>
+                    <span class="skill-chip">Gap Analysis</span>
+                    <span class="skill-chip">Workflow Design</span>
+                    <span class="skill-chip">Process Automation</span>
+                    <span class="skill-chip">Change Management Concepts</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-04">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
+              </div>
+
+              <!-- Category 5: Project & Program Management -->
+              <div class="skill-category">
+                <div class="skill-cat-title">Project &amp; Program Management</div>
                 <div class="skill-chips">
                   <span class="skill-chip">Project Management</span>
+                  <span class="skill-chip">Program Coordination</span>
+                  <span class="skill-chip">Project Planning</span>
                   <span class="skill-chip">Stakeholder Management</span>
-                  <span class="skill-chip">Cross-Functional Leadership</span>
-                  <span class="skill-chip">Requirements Analysis</span>
-                  <span class="skill-chip">AS-IS / TO-BE Analysis</span>
-                  <span class="skill-chip">Process Mapping</span>
-                  <span class="skill-chip">UAT</span>
-                  <span class="skill-chip">Release Coordination</span>
-                  <span class="skill-chip">Issue Resolution</span>
-                  <span class="skill-chip">Agile</span>
-                  <span class="skill-chip">Scrum</span>
-                  <span class="skill-chip">Process Improvement</span>
+                  <span class="skill-chip">Requirements Management</span>
+                  <span class="skill-chip">UAT &amp; Testing Coordination</span>
+                  <span class="skill-chip">Agile &amp; Scrum</span>
+                  <span class="skill-chip">Cross-Functional Delivery</span>
                 </div>
+                <div class="skill-chips-secondary" id="more-skills-05" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Scope Management</span>
+                    <span class="skill-chip">Process Mapping</span>
+                    <span class="skill-chip">Release Coordination</span>
+                    <span class="skill-chip">Risk &amp; Dependency Management</span>
+                    <span class="skill-chip">Backlog Prioritization</span>
+                    <span class="skill-chip">Implementation Coordination</span>
+                    <span class="skill-chip">Stakeholder Reporting</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-05">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
               </div>
 
-              <!-- Category 5: Analytics & Technology -->
+              <!-- Category 6: Data, Analytics & Technology -->
               <div class="skill-category">
-                <div class="skill-cat-title">Analytics &amp; Technology</div>
+                <div class="skill-cat-title">Data, Analytics &amp; Technology</div>
                 <div class="skill-chips">
                   <span class="skill-chip">Microsoft Excel</span>
                   <span class="skill-chip">SQL</span>
                   <span class="skill-chip">Tableau</span>
                   <span class="skill-chip">Python</span>
                   <span class="skill-chip">SAS</span>
+                  <span class="skill-chip">Statistical Analysis</span>
                   <span class="skill-chip">Predictive Analytics</span>
-                  <span class="skill-chip">KPI Dashboards</span>
-                  <span class="skill-chip">Data Visualization</span>
-                  <span class="skill-chip">Reporting</span>
-                  <span class="skill-chip">Data Analysis</span>
+                  <span class="skill-chip">Quantitative Research</span>
                 </div>
+                <div class="skill-chips-secondary" id="more-skills-06" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Data Analysis</span>
+                    <span class="skill-chip">Portfolio Analytics</span>
+                    <span class="skill-chip">KPI Development</span>
+                    <span class="skill-chip">Data Visualization</span>
+                    <span class="skill-chip">Business Intelligence</span>
+                    <span class="skill-chip">Performance Analytics</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-06">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
               </div>
 
-              <!-- Category 6: Enterprise Systems -->
+              <!-- Category 7: Enterprise Systems & Automation -->
               <div class="skill-category">
-                <div class="skill-cat-title">Enterprise Systems</div>
+                <div class="skill-cat-title">Enterprise Systems &amp; Automation</div>
                 <div class="skill-chips">
                   <span class="skill-chip">ERP Concepts</span>
-                  <span class="skill-chip">Point of Sale Systems</span>
-                  <span class="skill-chip">Inventory Management</span>
+                  <span class="skill-chip">Cloud-Native ERP</span>
+                  <span class="skill-chip">Point-of-Sale Systems</span>
+                  <span class="skill-chip">Inventory Management Systems</span>
                   <span class="skill-chip">Payroll Automation</span>
                   <span class="skill-chip">Financial Workflows</span>
-                  <span class="skill-chip">Reconciliation</span>
-                  <span class="skill-chip">Transaction Capture</span>
-                  <span class="skill-chip">Validation</span>
-                  <span class="skill-chip">Exception Handling</span>
-                  <span class="skill-chip">Enterprise Reporting</span>
+                  <span class="skill-chip">Workflow Automation</span>
+                  <span class="skill-chip">Systems Integration Concepts</span>
                 </div>
+                <div class="skill-chips-secondary" id="more-skills-07" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Reconciliation Workflows</span>
+                    <span class="skill-chip">Business Rules &amp; Validation Controls</span>
+                    <span class="skill-chip">Exception Handling</span>
+                    <span class="skill-chip">Enterprise Reporting</span>
+                    <span class="skill-chip">Requirements-to-System Translation</span>
+                    <span class="skill-chip">Data Governance Concepts</span>
+                    <span class="skill-chip">UAT &amp; System Validation</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-07">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
               </div>
 
-              <!-- Category 7: Leadership & Communication -->
-              <div class="skill-category" style="grid-column: 1 / -1;">
-                <div class="skill-cat-title">Leadership &amp; Communication</div>
+              <!-- Category 8: Leadership, Communication & Research -->
+              <div class="skill-category">
+                <div class="skill-cat-title">Leadership, Communication &amp; Research</div>
                 <div class="skill-chips">
                   <span class="skill-chip">Executive Presentations</span>
-                  <span class="skill-chip">Business Communication</span>
-                  <span class="skill-chip">Research Writing</span>
-                  <span class="skill-chip">Cross-Functional Facilitation</span>
+                  <span class="skill-chip">Executive &amp; Business Communication</span>
                   <span class="skill-chip">Stakeholder Communication</span>
-                  <span class="skill-chip">Requirements Documentation</span>
+                  <span class="skill-chip">Cross-Functional Facilitation</span>
+                  <span class="skill-chip">Research Writing</span>
+                  <span class="skill-chip">Academic &amp; Financial Research</span>
                   <span class="skill-chip">Analytical Problem Solving</span>
                   <span class="skill-chip">Strategic Thinking</span>
                 </div>
+                <div class="skill-chips-secondary" id="more-skills-08" aria-hidden="true">
+                  <div class="skill-chips skill-chips-inner">
+                    <span class="skill-chip">Requirements Documentation</span>
+                    <span class="skill-chip">Research Design</span>
+                    <span class="skill-chip">Literature Review</span>
+                    <span class="skill-chip">Structured Problem Solving</span>
+                    <span class="skill-chip">Stakeholder Alignment</span>
+                    <span class="skill-chip">Team Leadership</span>
+                    <span class="skill-chip">Presentation Development</span>
+                  </div>
+                </div>
+                <button type="button" class="skill-more-btn" aria-expanded="false" aria-controls="more-skills-08">
+                  <span class="skill-more-text">+ VIEW MORE</span>
+                </button>
               </div>
             </div>
           </div>
@@ -2356,7 +2479,7 @@
     }
   }
   </script>
-  <script type="module" src="js/animations.js"></script>
+  <script type="module" src="js/animations.js?v=3.1"></script>
 
   <!-- Supabase Dynamic Homepage Insights -->
   <script src="js/env.js" onerror="/* env.js is optional; client will fallback to /api/config */"></script>

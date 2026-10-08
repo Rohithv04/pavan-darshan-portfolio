@@ -10,7 +10,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { INTRO_FACTS, INTRO_WATERMARK } from "./intro-facts.js";
+import { INTRO_FACTS, INTRO_WATERMARK } from "./intro-facts.js?v=3.1";
 
 // Register ScrollTrigger plugin once
 gsap.registerPlugin(ScrollTrigger);
@@ -119,6 +119,9 @@ function initAnimations() {
             });
           }
         });
+
+        // Ensure Career Progression card is strictly in front of portrait in stacking context
+        gsap.set("#pos-exec-leadership", { zIndex: 100 });
 
         // Initial state of Pavan, halo, and watermark (Pavan strictly in front at z: 40)
         gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: 40, y: 0 });
@@ -564,6 +567,9 @@ function initAnimations() {
           }
         });
 
+        // Ensure Career Progression card is strictly in front of portrait on tablet
+        gsap.set("#pos-exec-leadership", { zIndex: 100 });
+
         gsap.set("#introPortrait", { scale: 0.75, opacity: 0, z: 35, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
         gsap.set("#introWatermark", { opacity: 0, scale: 0.95 });
@@ -739,7 +745,7 @@ function initAnimations() {
               yPercent: -50,
               x: fact.mobile.x,
               y: fact.mobile.y,
-              z: 0, // Cards stay behind Pavan in 3D camera depth
+              z: fact.mobile.z !== undefined ? fact.mobile.z : 0,
               rotation: fact.mobile.rot,
               opacity: 0,
               scale: 0.6,
@@ -748,7 +754,10 @@ function initAnimations() {
           }
         });
 
-        // Pavan is strictly on top of everything: z: 30, z-index: 50
+        // Ensure Career Progression card is strictly in front of portrait on mobile
+        gsap.set("#pos-exec-leadership", { zIndex: 100 });
+
+        // Pavan background portrait at z: 30
         gsap.set("#introPortrait", { scale: 0.78, opacity: 0, z: 30, y: 0 });
         gsap.set(".intro-portrait-halo", { scale: 0.5, opacity: 0 });
 
@@ -1282,7 +1291,7 @@ function initAnimations() {
         }
       });
 
-      const chips = card.querySelectorAll(".skill-chip");
+      const chips = card.querySelectorAll(":scope > .skill-chips > .skill-chip");
       if (chips.length) {
         gsap.from(chips, {
           y: 8,

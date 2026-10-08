@@ -113,8 +113,8 @@ export const INTRO_FACTS = [
     type: "capability",
     size: "medium",
     pivot: { rot: -2, tiltX: -4 },
-    desktop: { x: "8vw", y: "36vh", z: 20, rot: -1 },
-    tablet:  { x: "6vw", y: "35vh", z: 15, rot: -1 },
-    mobile:  { x: "0vw", y: "35vh", z: 0, rot: 0 } // Centered directly below torso
+    desktop: { x: "8vw", y: "32vh", z: 70, rot: -1 },
+    tablet:  { x: "7vw", y: "32vh", z: 60, rot: -1 },
+    mobile:  { x: "0vw", y: "35vh", z: 50, rot: 0 } // Centered directly below torso, in front of portrait
   }
 ];
