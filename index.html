@@ -29,7 +29,7 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/components.css?v=3.3">
+  <link rel="stylesheet" href="css/components.css?v=3.4">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/blog.css">
   <link rel="stylesheet" href="css/intro.css?v=3.1">
@@ -92,13 +92,21 @@
   </script>
 </head>
 <body>
-  <!-- Page Opening Countdown Intro Animation (Requirement 15) -->
+  <!-- Page Opening 1-100 Preloader with Loading Line -->
   <div id="introCountdownOverlay" class="intro-countdown-overlay" aria-hidden="true">
     <div class="intro-countdown-content">
-      <div class="intro-countdown-step intro-countdown-number" id="countdownNumber">3</div>
-      <div class="intro-countdown-step intro-countdown-brand" id="countdownName">
+      <div class="intro-counter-eyebrow">PORTFOLIO EXPERIENCE</div>
+      <div class="intro-counter-wrap">
+        <span class="intro-counter-val" id="countdownNumber">1</span>
+        <span class="intro-counter-unit">%</span>
+      </div>
+      <div class="intro-loading-line-track" aria-hidden="true">
+        <div class="intro-loading-line-fill" id="countdownLineFill"></div>
+      </div>
+      <div class="intro-countdown-brand">
         PAVAN <span class="highlight">DODDALA</span>
       </div>
+      <div class="intro-countdown-tagline">FINANCIAL MANAGEMENT &amp; PROJECT LEADERSHIP</div>
     </div>
   </div>
 
@@ -2505,7 +2513,7 @@
   </div>
 
   <!-- Core JavaScript Scripts -->
-  <script src="js/interactions.js"></script>
+  <script src="js/interactions.js?v=3.5"></script>
   <script src="js/main.js"></script>
 
   <!-- GSAP Animation System -->

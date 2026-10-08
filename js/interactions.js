@@ -180,76 +180,72 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Short, premium introductory countdown: 3 -> 2 -> 1 -> PAVAN DODDALA -> Reveal
- * Total runtime: ~2.0 seconds maximum.
- * Persists in sessionStorage so it only shows once per browser session.
- * Respects prefers-reduced-motion.
+ * Initial Preloader Counter: 1 to 100 with smooth Loading Line.
+ * Runs on website open, counting from 1% to 100% with animated progress line.
+ * Transitions smoothly into the main website experience upon completion.
  */
 function initIntroCountdown() {
   const overlay = document.getElementById('introCountdownOverlay');
   if (!overlay) return;
 
-  const hasShown = sessionStorage.getItem('portfolioIntroShown');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (hasShown || prefersReducedMotion) {
+  if (prefersReducedMotion) {
     overlay.classList.add('is-finished');
     overlay.remove();
     return;
   }
 
   const numberEl = document.getElementById('countdownNumber');
-  const nameEl = document.getElementById('countdownName');
+  const lineEl = document.getElementById('countdownLineFill');
 
-  // Step 2 at 450ms
-  setTimeout(() => {
+  const startVal = 1;
+  const targetVal = 100;
+  const duration = 1800; // 1.8 seconds duration for a crisp, snappy feel
+  const startTime = performance.now();
+
+  function updateCounter(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    // Easing: smooth quadratic ease-in-out curve
+    const eased = progress < 0.5 
+      ? 2 * progress * progress 
+      : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+    const currentVal = Math.max(1, Math.min(100, Math.round(startVal + (targetVal - startVal) * eased)));
+
     if (numberEl) {
-      numberEl.style.opacity = '0';
-      numberEl.style.transform = 'scale(0.92)';
-      setTimeout(() => {
-        numberEl.textContent = '2';
-        numberEl.style.opacity = '1';
-        numberEl.style.transform = 'scale(1)';
-      }, 70);
+      numberEl.textContent = currentVal;
     }
-  }, 450);
-
-  // Step 1 at 900ms
-  setTimeout(() => {
-    if (numberEl) {
-      numberEl.style.opacity = '0';
-      numberEl.style.transform = 'scale(0.92)';
-      setTimeout(() => {
-        numberEl.textContent = '1';
-        numberEl.style.opacity = '1';
-        numberEl.style.transform = 'scale(1)';
-      }, 70);
+    if (lineEl) {
+      lineEl.style.width = `${currentVal}%`;
     }
-  }, 900);
 
-  // Name reveal at 1350ms
-  setTimeout(() => {
-    if (numberEl) numberEl.style.display = 'none';
-    if (nameEl) {
-      nameEl.style.display = 'block';
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    } else {
+      // Completed 100%
+      if (numberEl) numberEl.textContent = '100';
+      if (lineEl) lineEl.style.width = '100%';
+
+      // Hold briefly at 100% then smoothly fade and reveal website
       setTimeout(() => {
-        nameEl.style.opacity = '1';
-        nameEl.style.transform = 'scale(1) translateY(0)';
-      }, 30);
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'scale(1.02)';
+
+        setTimeout(() => {
+          overlay.classList.add('is-finished');
+          overlay.remove();
+
+          if (window.ScrollTrigger) {
+            window.ScrollTrigger.refresh();
+          }
+        }, 450);
+      }, 120);
     }
-  }, 1350);
+  }
 
-  // Fade out overlay at 1800ms
-  setTimeout(() => {
-    overlay.style.opacity = '0';
-  }, 1800);
-
-  // Complete and remove at 2150ms
-  setTimeout(() => {
-    overlay.classList.add('is-finished');
-    overlay.remove();
-    sessionStorage.setItem('portfolioIntroShown', 'true');
-  }, 2150);
+  requestAnimationFrame(updateCounter);
 }
 
 /**
