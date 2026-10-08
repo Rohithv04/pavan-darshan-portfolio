@@ -139,7 +139,7 @@ const RESEARCH_PAPERS = {
 // Clean Document Configuration Model (Hero & Project Level)
 const documents = {
   resume: 'assets/Pavan_Darshan_Doddala_Resume.pdf',
-  sop: null // Formal Statement of Purpose asset path when available (e.g. 'assets/Pavan_Darshan_Doddala_SOP.pdf')
+  sop: 'assets/Pavan_Darshan_Doddala_Professional_Statement.pdf'
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -484,7 +484,7 @@ function initHeroDocuments() {
       sopBtn.style.display = 'inline-flex';
       sopBtn.setAttribute('target', '_blank');
       sopBtn.setAttribute('rel', 'noopener noreferrer');
-      const filename = documents.sop.split('/').pop() || 'Pavan_Darshan_Doddala_SOP.pdf';
+      const filename = documents.sop.split('/').pop() || 'Pavan_Darshan_Doddala_Professional_Statement.pdf';
       sopBtn.setAttribute('download', filename);
     } else {
       sopBtn.style.display = 'none';
